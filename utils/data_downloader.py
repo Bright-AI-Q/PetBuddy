@@ -35,7 +35,7 @@ class DataDownloader:
         output_dir = Path(self.config['output_dir'])
         extract_to = self.config['extract_to']
 
-        # Ensure output directory exists
+        # Ensure output directory and data directory exist
         output_dir.mkdir(parents=True, exist_ok=True)
 
         for url in self.config['download_urls']:
