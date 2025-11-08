@@ -1,3 +1,17 @@
+"""
+Data Downloader Utility
+Author: Bright wang
+Project: PetBuddy-GT-deep learning project
+
+Description:
+A configurable data downloader that supports:
+- Multiple URL downloads with progress display
+- Automatic extraction of zip/tar archives
+- Configurable output directories per URL
+- Skip existing downloads to avoid duplicates
+- SSL verification and error handling
+"""
+
 import os
 import requests
 import zipfile
