@@ -70,13 +70,13 @@ PetBuddy/
 │   ├── train.py        # trains & logs csv
 │   ├── test.py
 │   └── latex_table.py  # outputs ablation_table.tex
-├── pet_knowledge/      # 5k Q-A jsonl (AI-gen → team-verified)
-├── qlora/              # 4-bit QLoRA weights & script
+├── llm/
+│   ├── pet_knowledge/  # 5k Q-A jsonl (AI-gen → team-verified)
+│   └── qlora/          # 4-bit QLoRA weights & script
 ├── runs/               # weights + ablation_results.csv
 ├── report/             # ready for LaTeX: figures + tables
 ├── app/                # Frontend and backend application
 ├── data/               # Dataset and training data
-├── llm/                # Language model components
 ├── utils/              # Utility functions
 └── requirements.txt    # Python dependencies
 ```
