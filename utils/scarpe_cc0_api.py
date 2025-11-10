@@ -4,6 +4,27 @@ from io import BytesIO
 from requests.adapters import HTTPAdapter
 from urllib3.util import Retry
 
+"""
+CC0 API Scraper for PetBuddy
+---------------------------------
+Purpose:
+1. Harvest high-resolution cat & dog images under CC0 license,
+   ensuring commercial-friendly use without attribution.
+2. Enlarge the multi-pet subset (≥2 pets/image) to boost
+   detection recall and robustness in natural scenes.
+3. Provide weak-label pseudo-annotations (bbox only) via
+   YOLO-pre-trained model, reducing manual annotation cost.
+4. Complement Oxford/Stanford datasets (single-pet, breed-level)
+   with diverse lighting, occlusion and background variability.
+
+Output:
+- images/          : CC0 jpg files (md5-named, de-duplicated)
+- weak_anno.json   : COCO-format pseudo-labels (cat/dog bbox)
+- meta.csv         : source, license, original URL for citation
+
+Usage:
+    python tools/scrape_cc0_api.py --keywords "cat dog" --pages 20
+"""
 
 KEYS = {
     "unsplash": "okHZH4sXawjvGt0YxJSXWg_qZmrcxgB85hznv3_gKoo",
