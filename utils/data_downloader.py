@@ -1,8 +1,7 @@
 """
 Data Downloader Utility
+Project: PetBuddy project
 Author: Bright wang
-Project: PetBuddy-GT-deep learning project
-
 Description:
 A configurable data downloader that supports:
 - Multiple URL downloads with progress display

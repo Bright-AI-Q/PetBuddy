@@ -4,6 +4,7 @@ from io import BytesIO
 from requests.adapters import HTTPAdapter
 from urllib3.util import Retry
 
+
 KEYS = {
     "unsplash": "okHZH4sXawjvGt0YxJSXWg_qZmrcxgB85hznv3_gKoo",
     "pixabay":  "53168718-95d2066104d2bce65b39a18be",
