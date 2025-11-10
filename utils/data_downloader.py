@@ -1,6 +1,6 @@
 """
 Data Downloader Utility
-Project: PetBuddy project
+Project: PetBuddy
 Author: Bright wang
 Description:
 A configurable data downloader that supports:

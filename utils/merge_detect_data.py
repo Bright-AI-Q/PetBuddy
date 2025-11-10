@@ -3,7 +3,7 @@
 Dataset Merger for PetBuddy
 ---------------------------------
 Author: Bright Wang
-Project: PetBuddy project
+Project: PetBuddy
 
 Purpose:
 1. Merge multiple pet datasets into unified YOLO/COCO format
