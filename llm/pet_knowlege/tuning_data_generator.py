@@ -130,6 +130,11 @@ breed_url = {
     'Wire-haired fox terrier': "",
     'Yorkshire terrier': "https://www.dog-breeds.net/yorkshire-terrier",
 }
+# To populate more websites to scrape here
+urls = ["https://www.dog-breeds.net/affenpinscher/", 
+        "https://www.dog-breeds.net/afghan-hound/",
+        "https://www.dog-breeds.net/airedale-terrier/",
+        ]
 headers = {"User-Agent": "Mozilla/5.0"}
 
 def scrape_dog_breed(url):
