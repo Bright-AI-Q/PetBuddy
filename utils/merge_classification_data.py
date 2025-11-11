@@ -18,41 +18,41 @@ OXFORD_ROOT   = Path("../data/oxford_pets")
 STANFORD_ROOT = Path("../data/stanford_dogs")
 OUTPUT_ROOT   = Path("../data/merged_cls_dataset")
 
-# 品种计数器
+# Breed counter
 breed_counter = {}
 
 def get_cat_breeds():
-    """从YOLO标签文件提取猫类品种列表（class_id=0）"""
+    """Extract cat breed list from YOLO label files (class_id=0)"""
     cat_breeds = set()
     for txt_file in (OXFORD_ROOT / "annotations/yolo").rglob("*.txt"):
         with open(txt_file) as f:
             first_line = f.readline().strip()
-            if first_line.startswith('0 '):  # class_id=0表示猫
+            if first_line.startswith('0 '):  # class_id=0 indicates cat
                 breed = txt_file.stem.split('_')[0].lower()
                 cat_breeds.add(breed)
     return cat_breeds
 
-# 动态获取猫类品种
+# Dynamically get cat breeds
 CAT_BREEDS = get_cat_breeds()
 
 def get_breed_number(breed_name: str) -> str:
-    """为品种分配唯一编号（从0001开始）"""
+    """Assign unique breed number (starting from 0001)"""
     breed_lower = breed_name.lower()
     if breed_lower not in breed_counter:
         breed_counter[breed_lower] = len(breed_counter) + 1
     return f"{breed_counter[breed_lower]:04d}"
 
 def oxford_to_pet_id(oxford_name: str) -> str:
-    """返回格式: pets_[编号]_[breedname]"""
+    """Return format: pets_[number]_[breedname]"""
     breed_num = get_breed_number(oxford_name)
     return f"pets_{breed_num}_{oxford_name.lower()}"
 
 def build_oxford_cls(out_dir: Path):
-    """Oxford → pet_0_[breedname] 格式文件夹"""
+    """Oxford → pets_[number]_[breedname] format folders"""
     src_imgs = OXFORD_ROOT / "images"
     images = list(src_imgs.rglob("*.jpg"))
     total = len(images)
-    print(f"?? Processing {total} Oxford images...")
+    print(f"🔸 Processing {total} Oxford images...")
 
     for i, img in enumerate(images, 1):
         breed = "_".join(img.stem.split('_')[:-1])
@@ -67,15 +67,15 @@ def build_oxford_cls(out_dir: Path):
             print(f"⚠️ Failed to process {img}: {str(e)}")
 
 def build_stanford_cls(out_dir: Path):
-    """Stanford → pets_[编号]_[breedname] 格式文件夹"""
+    """Stanford → pets_[number]_[breedname] format folders"""
     src_imgs = STANFORD_ROOT / "Images"
     images = list(src_imgs.rglob("*.jpg"))
     total = len(images)
-    print(f"?? Processing {total} Stanford images...")
+    print(f"🔸 Processing {total} Stanford images...")
 
     for i, img in enumerate(images, 1):
-        breed_name = img.parent.name.split('-')[1]  # 从目录名提取品种名
-        dir_name = oxford_to_pet_id(breed_name)  # 使用统一的命名函数
+        breed_name = img.parent.name.split('-')[1]  # Extract breed name from directory
+        dir_name = oxford_to_pet_id(breed_name)  # Use unified naming function
         dst_dir = out_dir / dir_name
         try:
             dst_dir.mkdir(parents=True, exist_ok=True)
@@ -86,7 +86,7 @@ def build_stanford_cls(out_dir: Path):
             print(f"⚠️ Failed to process {img}: {str(e)}")
 
 def build_dataset_yaml(out_dir: Path):
-    """生成 YOLOv8-cls 清单"""
+    """Generate YOLOv8-cls dataset.yaml"""
     breeds = sorted([d.name for d in out_dir.iterdir() if d.is_dir()])
     with open(out_dir / "dataset.yaml", "w") as f:
         f.write(f"path: {out_dir.absolute()}\n")
@@ -96,11 +96,11 @@ def build_dataset_yaml(out_dir: Path):
         f.write("names: [\n" + ",\n".join(f'  "{b}"' for b in breeds) + "\n]\n")
 
 def ensure_dir(path: Path):
-    """确保输出目录存在"""
+    """Ensure output directory exists"""
     path.mkdir(parents=True, exist_ok=True)
 
 def validate_input_dirs():
-    """验证输入目录是否存在"""
+    """Validate input directories exist"""
     if not OXFORD_ROOT.exists():
         raise FileNotFoundError(f"Oxford dataset not found at {OXFORD_ROOT}")
     if not STANFORD_ROOT.exists():
