@@ -1,271 +1,200 @@
-import requests
-from bs4 import BeautifulSoup
-import json
-from urllib.parse import urlparse
-import re
+from transformers import AutoModelForCausalLM, AutoTokenizer, BitsAndBytesConfig, TrainingArguments
+from datasets import load_dataset
+from peft import LoraConfig
+from trl import SFTTrainer
+import torch
 import os
+import gc
+from pathlib import Path
+import yaml
+import argparse
+import json
 
-# Data is outputed to dog_databse directory
-os.makedirs("pet_database", exist_ok=True)
+MODEL_NAME = "Qwen/Qwen2.5-1.5B-Instruct"
+TRAIN_DATA = "pet_knowlege/dataset_train.jsonl"
+VAL_DATA = "pet_knowlege/dataset_val.jsonl"
+RESULTS_FILE = "optuna_semantic_bert_results.json"
+OUTPUT_DIR = "qwen-petnet-final"
 
-breed_url = {
-    'Affenpinscher':"https://www.dog-breeds.net/affenpinscher/",
-    'Afghan hound': "https://www.dog-breeds.net/afghan-hound/",
-    'African hunting dog': "",
-    'Airedale': "https://www.dog-breeds.net/airedale-terrier/",
-    'American Staffordshire terrier': "https://www.dog-breeds.net/american-Staffordshire-terrier",
-    'Appenzeller': "",
-    'Australian terrier': "https://www.dog-breeds.net/australian-terrier",
-    'Basenji': "https://www.dog-breeds.net/basenji",
-    'Basset': "https://www.dog-breeds.net/basset-hound",
-    'Beagle': "https://www.dog-breeds.net/beagle", 
-    'Bedlington terrier': "https://www.dog-breeds.net/bedlington-terrier",
-    'Bernese mountain dog': "https://www.dog-breeds.net/bernese-mountain-dog",
-    'Black-and-tan Coonhound': "https://www.dog-breeds.net/black-and-tan-coonhound",
-    'Blenheim spaniel': "",
-    'Bloodhound': "https://www.dog-breeds.net/Bloodhound",
-    'Bluetick': "",
-    'Border collie': "https://www.dog-breeds.net/border-collie",
-    'Border terrier': "https://www.dog-breeds.net/border-terrier",
-    'Borzoi': "https://www.dog-breeds.net/Borzoi",
-    'Boston bull': "https://www.dog-breeds.net/boston-terrier",
-    'Bouvier des Flandres': "",
-    'Boxer': "https://www.dog-breeds.net/Boxer",
-    'Brabancon griffon': "",
-    'Briard': "https://www.dog-breeds.net/Briard",
-    'Brittany spaniel': "https://www.dog-breeds.net/Brittany-spaniel",
-    'Bull mastiff': "https://www.dog-breeds.net/Bullmastiff",
-    'Cairn': "https://www.dog-breeds.net/cairn-terrier",
-    'Cardigan': "https://www.dog-breeds.net/cardigan-welsh-corgi",
-    'Chesapeake Bay retriever': "",
-    'Chihuahua': "https://www.dog-breeds.net/Chihuahua",
-    'Chow': "https://www.dog-breeds.net/chow-chow",
-    'Clumber': "https://www.dog-breeds.net/clumber-Spaniel",
-    'Cocker spaniel': "https://www.dog-breeds.net/cocker-Spaniel",
-    'Collie': "https://www.dog-breeds.net/collie",
-    'Curly-coated retriever': "https://www.dog-breeds.net/curly-coated-retriever",
-    'Dandie Dinmont': "https://www.dog-breeds.net/Dandie-dinmont-terrier",
-    'Dhole': "",
-    'Dingo': "", 
-    'Doberman': "https://www.dog-breeds.net/doberman-pinscher",
-    'English foxhound': "https://www.dog-breeds.net/English-foxhound",
-    'English setter': "https://www.dog-breeds.net/English-setter",
-    'English springer': "https://www.dog-breeds.net/English-springer-spaniel",
-    'EntleBucher': "",
-    'Eskimo dog': "",
-    'Flat-coated retriever': "https://www.dog-breeds.net/flat-coated-retriever",
-    'French bulldog': "https://www.dog-breeds.net/french-bulldog",
-    'German shepherd': "https://www.dog-breeds.net/German-shepherd",
-    'German short-haired pointer': "https://www.dog-breeds.net/German-shorthaired-pointer",
-    'Giant schnauzer': "https://www.dog-breeds.net/giant-schnauzer",
-    'Golden retriever': "https://www.dog-breeds.net/golden-retriever",
-    'Gordon setter': "https://www.dog-breeds.net/gordon-setter",
-    'Great Dane': "https://www.dog-breeds.net/great-dane",
-    'Great Pyrenees': "https://www.dog-breeds.net/great-pyrenees",
-    'Greater Swiss Mountain dog': "https://www.dog-breeds.net/greater-swiss-mountain-dog",
-    'Groenendael':"", 
-    'Ibizan hound': "https://www.dog-breeds.net/ibizan-hound",
-    'Irish setter': "https://www.dog-breeds.net/irish-setter/",
-    'Irish terrier': "",
-    'Irish water spaniel': "https://www.dog-breeds.net/irish-water-spaniel",
-    'Irish wolfhound': "https://www.dog-breeds.net/irish-wolfhound",
-    'Italian greyhound': "https://www.dog-breeds.net/italian-greyhound",
-    'Japanese spaniel': "https://www.dog-breeds.net/Japanese-chin",
-    'Keeshond': "https://www.dog-breeds.net/Keeshond",
-    'Kelpie': "",
-    'Kerry blue terrier': "https://www.dog-breeds.net/kerry-blue-terrier",
-    'Komondor': "https://www.dog-breeds.net/Komondor",
-    'Kuvasz': "https://www.dog-breeds.net/Kuvasz",
-    'Labrador retriever': "https://www.dog-breeds.net/labrador-retriever",
-    'Lakeland terrier': "https://www.dog-breeds.net/lakeland-terrier",
-    'Leonberg': "",
-    'Lhasa': "https://www.dog-breeds.net/lhasa-apso",
-    'Malamute': "",
-    'Malinois': "",
-    'Maltese dog': "https://www.dog-breeds.net/Maltese",
-    'Mexican hairless': "",
-    'Miniature pinscher': "https://www.dog-breeds.net/Miniature-pinscher",
-    'Miniature poodle': "",
-    'Miniature schnauzer': "https://www.dog-breeds.net/Miniature-schnauzer",
-    'Newfoundland': "https://www.dog-breeds.net/Newfoundland",
-    'Norfolk terrier': "https://www.dog-breeds.net/Norfolk-terrier",
-    'Norwegian elkhound': "https://www.dog-breeds.net/Norwegian-elkhound",
-    'Norwich terrier': "https://www.dog-breeds.net/Norwich-terrier",
-    'Old English sheepdog': "https://www.dog-breeds.net/old-english-sheepdog",
-    'Otterhound': "https://www.dog-breeds.net/Otterhound",
-    'Papillon': "https://www.dog-breeds.net/Papillon",
-    'Pekinese': "https://www.dog-breeds.net/Pekingese",
-    'Pembroke': "https://www.dog-breeds.net/Pembroke-welsh-corgi",
-    'Pomeranian': "https://www.dog-breeds.net/Pomeranian",
-    'Pug': "https://www.dog-breeds.net/pug",
-    'Redbone': "",
-    'Rhodesian ridgeback': "https://www.dog-breeds.net/Rhodesian-ridgeback",
-    'Rottweiler': "https://www.dog-breeds.net/Rottweiler",
-    'Saint Bernard': "https://www.dog-breeds.net/saint-bernard",
-    'Saluki': "https://www.dog-breeds.net/Saluki",
-    'Samoyed': "https://www.dog-breeds.net/Samoyed",
-    'Schipperke': "https://www.dog-breeds.net/Schipperke",
-    'Scotch terrier': "https://www.dog-breeds.net/Scottish-terrier",
-    'Scottish deerhound': "https://www.dog-breeds.net/Scottish-deerhound",
-    'Sealyham terrier': "https://www.dog-breeds.net/sealyham-terrier/",
-    'Shetland sheepdog': "https://www.dog-breeds.net/Shetland-sheepdog",
-    'Shih-Tzu': "https://www.dog-breeds.net/shih-tzu",
-    'Siberian husky': "https://www.dog-breeds.net/siberian-husky",
-    'Silky terrier': "https://www.dog-breeds.net/silky-terrier",
-    'Soft-coated wheaten terrier': "https://www.dog-breeds.net/soft-coated-wheaten-terrier",
-    'Staffordshire bullterrier': "https://www.dog-breeds.net/Staffordshire-bull-terrier",
-    'Standard poodle': "https://www.dog-breeds.net/Poodle",
-    'Standard schnauzer': "https://www.dog-breeds.net/Standard-Schnauzer",
-    'Sussex spaniel': "https://www.dog-breeds.net/sussex-spaniel",
-    'Tibetan mastiff': "",
-    'Tibetan terrier': "https://www.dog-breeds.net/Tibetan-terrier",
-    'Toy poodle': "",
-    'Toy terrier': "https://www.dog-breeds.net/toy-fox-terrier/",
-    'Vizsla': "https://www.dog-breeds.net/Vizsla",
-    'Walker hound':  "",
-    'Weimaraner': "https://www.dog-breeds.net/Weimaraner",
-    'Welsh springer spaniel': "https://www.dog-breeds.net/welsh-springer-spaniel",
-    'Welsh Highland white terrier': "https://www.dog-breeds.net/west-highland-white-terrier",
-    'Whippet': "https://www.dog-breeds.net/whippet",
-    'Wire-haired fox terrier': "",
-    'Yorkshire terrier': "https://www.dog-breeds.net/yorkshire-terrier",
-}
-# To populate more websites to scrape here
-urls = ["https://www.dog-breeds.net/affenpinscher/", 
-        "https://www.dog-breeds.net/afghan-hound/",
-        "https://www.dog-breeds.net/airedale-terrier/",
-        ]
-headers = {"User-Agent": "Mozilla/5.0"}
+def cleanup_memory():
+    """Clean GPU memory"""
+    gc.collect()
+    torch.cuda.empty_cache()
+    if torch.cuda.is_available():
+        torch.cuda.synchronize()
 
-def scrape_dog_breed(url):
-    response = requests.get(url, headers=headers)
-    response.raise_for_status()
-    soup = BeautifulSoup(response.text, "html.parser")
-
-    # --- Extract breed name ---
-    title_tag = soup.select_one("title")
-    if title_tag:
-        title_text = title_tag.get_text(strip=True)
-        breed = title_text.split("Dog")[0].strip()
-    else:
-        breed = urlparse(url).path.strip("/").split("/")[-1].replace("-", " ").title()
-
-    # --- Extract all text content sections ---
-    sections = []
-    # find headings we consider as section starts
-    heading_tags = soup.find_all(re.compile(r"^h[2-4]$"))
-
-    for heading in heading_tags:
-        sec_title = heading.get_text(" ", strip=True)
-        if not sec_title:
-            continue
-
-        # optional: clean emojis/prefix punctuation from heading
-        clean_title = re.sub(r"^[^\w\s]+", "", sec_title).strip()
-        if not clean_title:
-            clean_title = sec_title
-
-        # gather content until the next heading (h2-h4) or <hr>
-        content_parts = []
-        for sib in heading.next_siblings:
-            # if sibling is another heading tag -> stop collecting
-            if getattr(sib, "name", None) and re.match(r"^h[2-4]$", sib.name):
-                break
-            # stop at hr (footer divider)
-            if getattr(sib, "name", None) and sib.name == "hr":
-                break
-            # if it's a Tag, extract its text (covers div, p, ul, etc.)
-            if hasattr(sib, "get_text"):
-                txt = sib.get_text(" ", strip=True)
-                if txt:
-                    content_parts.append(txt)
-            # if it's a NavigableString, include text as well
-            else:
-                txt = str(sib).strip()
-                if txt:
-                    content_parts.append(txt)
-
-        content = " ".join(content_parts).strip()
-
-        # debug: if content empty, print small context (helps diagnosing why)
-        if not content:
-            # show what the heading's next element HTML looks like (first 200 chars)
-            nxt = heading.find_next()
-            snippet = ""
-            if nxt is not None:
-                snippet = str(nxt)[:200]
-            print(f"⚠️ Empty section captured for heading: '{clean_title}'\n  next HTML snippet: {snippet}\n")
-
-        sections.append({"section": clean_title, "content": content})
-
-    # --- Clean unused sections ---
-    cleaned_sections = [s for s in sections if s["section"].lower() != "general"]
-
-    ## Clean links to other pages from scraped data
-    for item in cleaned_sections:
-        item["section"] = remove_emojis(item["section"])  # remove emoji from headers
-        item["content"] = remove_link_sentences(item["content"]) # remove link sentences
-        item["content"] = remove_emojis(item["content"]) # remove emojis from contents
-
-    return {
-        "breed": cleaned_sections[0]["section"],
-        "sections": cleaned_sections[:-1] # last section is removed because it usually contains ads, copyrights, etc.
-    }
-
-def remove_emojis(text):
-    # Remove all emojis and special symbols
-    emoji_pattern = re.compile(
-        "["
-        "\U0001F600-\U0001F64F"  # emoticons
-        "\U0001F300-\U0001F5FF"  # symbols & pictographs
-        "\U0001F680-\U0001F6FF"  # transport & map
-        "\U0001F1E0-\U0001F1FF"  # flags
-        "\U00002700-\U000027BF"  # Dingbats
-        "\U0001F900-\U0001F9FF"  # Supplemental Symbols & Pictographs
-        "\U00002600-\U000026FF"  # Misc symbols
-        "\U00002B00-\U00002BFF"  # Misc symbols & arrows
-        "\U0001FA70-\U0001FAFF"  # Symbols & Pictographs Extended-A
-        "]",
-        flags=re.UNICODE,
-    )
-    return emoji_pattern.sub(r"", text)
-
-def remove_link_sentences(text):
-    # Split text into sentences
-    sentences = re.split(r'(?<=[.!?]) +', text)
-    # Filter sentences that likely correspond to links
-    cleaned = [
-        s for s in sentences
-        if not re.search(r'\b(click here|read more|learn more|find out|see here|article|page|directory|Dog Health Dictionary|Healthy Dog Diet)\b', s, re.IGNORECASE)
-    ]
-    return " ".join(cleaned)
-
-# Clean the breed name to use as a safe filename
-def safe_filename(name):
-    # Keep letters, numbers, dash, underscore; replace spaces with underscore
-    name = re.sub(r"[^\w\s-]", "", name)
-    name = name.strip().replace(" ", "_")
-    return name
-
-# --- Run scraper ---
-if __name__ == "__main__":
-    for breed, url in breed_url.items(): 
-        if not url:
-            print(f"Skipping {breed}: no URL provided.")
-            continue
+def load_config(config_path: str) -> dict:
+    config_path = Path(config_path)
+    if not config_path.exists():
+        raise FileNotFoundError(f"Config file not found: {config_path}")
+    with open(config_path, 'r') as f:
+        config = yaml.safe_load(f)
+    return config
         
-        data = scrape_dog_breed(url)
-        data["breed"] = breed
-        print(f"🐶 {breed}")
-        for sec in data["sections"][:3]:
-            print(f"\n🦴 {sec['section']}")
-            print(sec["content"][:50] + "...")
+def main():
+    parser = argparse.ArgumentParser(description='Train Qwen model with optimized hyperparameters')
+    parser.add_argument('--results', type=str, default=RESULTS_FILE,
+                        help='Path to Optuna results JSON file')
+    parser.add_argument('--output', type=str, default=OUTPUT_DIR,
+                        help='Output directory for trained model')
+    parser.add_argument('--epochs', type=int, default=3,
+                        help='Number of training epochs')
+    parser.add_argument('--train_data', type=str, default=TRAIN_DATA,
+                        help='Path to training data')
+    parser.add_argument('--val_data', type=str, default=VAL_DATA,
+                        help='Path to validation data')
+    args = parser.parse_args()
+    
+    best_config = load_config("configs/qwen_base.yaml")
+    best_params = best_config['train']
+    
+    # Clean memory before starting
+    print("Cleaning GPU memory...")
+    cleanup_memory()
+    print("✓ Memory cleaned\n")
+    
+    # Load model
+    print("Loading model...")
+    bnb_config = BitsAndBytesConfig(
+        load_in_4bit=True,
+        bnb_4bit_quant_type="nf4",
+        bnb_4bit_compute_dtype=torch.float16,
+        bnb_4bit_use_double_quant=True,
+    )
+    
+    model = AutoModelForCausalLM.from_pretrained(
+        MODEL_NAME,
+        quantization_config=bnb_config,
+        device_map="auto",
+        torch_dtype=torch.float16,
+    )
+    print(f"✓ Model loaded: {MODEL_NAME}")
+    
+    # Load tokenizer
+    tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME, use_fast=False)
+    tokenizer.pad_token = tokenizer.eos_token
+    tokenizer.padding_side = "right"
+    print("✓ Tokenizer loaded")
+    
+    # Load dataset
+    print("\nLoading dataset...")
+    dataset = load_dataset("json", data_files={
+        "train": args.train_data,
+        "validation": args.val_data
+    })
+    print(f"✓ Training samples: {len(dataset['train'])}")
+    print(f"✓ Validation samples: {len(dataset['validation'])}")
+    
+    # Formatting function
+    def formatting_func(example):
+        # If your training data has breed/question/reference_answer fields, use them.
+        question = example["instruction"]
+        reference_answer = example["output"]
 
-        # --- Save to file ---
-        filename = safe_filename(breed) + ".json"
-        filepath = os.path.join("pet_database", filename)
+        # Build a chat-style prompt
+        messages = [
+            {"role": "user", "content": question},
+            {"role": "assistant", "content": reference_answer}
+        ]
+        # Since we have already included the assistant's response, we do not need to add generation prompt
+        text = tokenizer.apply_chat_template(messages, tokenize=False, add_generation_prompt=False)
+        return text
+    
+    # LoRA configuration
+    print("\nConfiguring LoRA...")
+    peft_config = LoraConfig(
+        r=best_params["lora_r"],
+        lora_alpha=best_params["lora_alpha"],
+        target_modules=[
+            "q_proj", "k_proj", "v_proj", "o_proj",
+            "gate_proj", "up_proj"  # Full set for final training
+        ],
+        lora_dropout=best_params["lora_dropout"],
+        task_type="CAUSAL_LM"
+    )
+    print(f"✓ LoRA rank: {best_params['lora_r']}")
+    print(f"✓ LoRA alpha: {best_params['lora_alpha']}")
+    print(f"✓ LoRA dropout: {best_params['lora_dropout']}")
+    
+    # Training arguments
+    print("\nConfiguring training...")
+    training_args = TrainingArguments(
+        output_dir=args.output,
+        per_device_train_batch_size=1,  # Keep at 1 for 8GB GPU
+        per_device_eval_batch_size=1,
+        gradient_accumulation_steps=best_params["gradient_accumulation_steps"],
+        gradient_checkpointing=True,
+        learning_rate=best_params["learning_rate"],
+        lr_scheduler_type="cosine",
+        num_train_epochs=args.epochs,
+        logging_steps=10,
+        eval_strategy="steps",
+        eval_steps=150,
+        save_steps=100,
+        save_total_limit=2,  # Keep 2 checkpoints
+        fp16=True,
+        optim="paged_adamw_8bit",
+        max_grad_norm=0.3,
+        warmup_ratio=best_params["warmup_ratio"],
+        group_by_length=True,
+        dataloader_pin_memory=False,
+        metric_for_best_model="eval_loss",
+    )
+    print(f"✓ Learning rate: {best_params['learning_rate']:.6f}")
+    print(f"✓ Gradient accumulation: {best_params['gradient_accumulation_steps']}")
+    print(f"✓ Warmup ratio: {best_params['warmup_ratio']}")
+    print(f"✓ Max length: {best_params['max_length']}")
+    print(f"✓ Training epochs: {args.epochs}")
+    
+    # Create trainer
+    print("\nInitializing trainer...")
+    trainer = SFTTrainer(
+        model=model,
+        args=training_args,
+        train_dataset=dataset["train"],
+        eval_dataset=dataset["validation"],
+        peft_config=peft_config,
+        formatting_func=formatting_func,
+    )
+    print("✓ Trainer initialized")
+    
+    # Train
+    print("\n" + "="*70)
+    print("STARTING TRAINING")
+    print("="*70 + "\n")
+    
+    trainer.train()
+    
+    # Save final model
+    print("\n" + "="*70)
+    print("SAVING MODEL")
+    print("="*70)
+    
+    final_output = f"{args.output}/final"
+    trainer.save_model(final_output)
+    print(f"✓ Model saved to: {final_output}")
+    
+    # Save training info
+    training_info = {
+        "model_name": MODEL_NAME,
+        "best_params": best_params,
+        "num_train_samples": len(dataset["train"]),
+        "num_val_samples": len(dataset["validation"]),
+        "num_epochs": args.epochs,
+        "output_dir": final_output,
+    }
+    
+    info_path = f"{final_output}/training_info.json"
+    with open(info_path, 'w') as f:
+        json.dump(training_info, f, indent=2)
+    print(f"✓ Training info saved to: {info_path}")
+    
+    print("\n" + "="*70)
+    print("🎉 TRAINING COMPLETE!")
+    print("="*70)
+    print(f"Final model: {final_output}")
+    print(f"Checkpoints: {args.output}")
+    print("="*70 + "\n")
 
-        with open(filepath, "w", encoding="utf-8") as f:
-            json.dump(data, f, ensure_ascii=False, indent=2)
-
-        print(f"\n✅ Saved to {filepath}")
+if __name__ == "__main__":
+    main()
