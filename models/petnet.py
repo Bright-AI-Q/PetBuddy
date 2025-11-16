@@ -1,5 +1,11 @@
 """
-统一宠物识别网络 - 支持单宠物和多宠物模式
+Unified Pet Recognition Network - Supports both single and multi-pet modes
+
+Key Features:
+- Modular architecture with interchangeable components
+- Supports both detection and classification tasks
+- Integrated self-knowledge distillation
+- Dual attention mechanism (ECA + Positional)
 """
 import torch
 import torch.nn as nn
@@ -17,22 +23,33 @@ class PetNet(nn.Module):
                  selfkd_cfg: Optional[Dict] = None,
                  max_pets_per_image: int = 10):
         """
-        统一的宠物识别网络
+        Unified pet recognition network with modular design
 
         Args:
-            num_classes: 类别数量
-            stage_repeats: 各阶段重复块数
-            ldre_cfg: LDRE配置
-            attn_cfg: 注意力配置
-            selfkd_cfg: 自知识蒸馏配置
-            max_pets_per_image: 每张图像最大宠物数
+            num_classes: Number of pet categories
+            stage_repeats: Block repetition counts for each stage [stage1, stage2, stage3]
+            ldre_cfg: Configuration for Local Dropout Random Erasing (LDRE)
+                - enable: bool - whether to enable LDRE
+                - prob: float - probability of applying LDRE
+                - grid_size: int - grid size for LDRE
+                - drop_count: int - number of regions to drop
+            attn_cfg: Configuration for dual attention mechanism
+                - enable: bool - whether to enable attention
+                - pos_enc: str - type of positional encoding ('relative'/'absolute')
+                - eca_kernel: int - kernel size for ECAAttention
+            selfkd_cfg: Configuration for self-knowledge distillation
+                - enable: bool - whether to enable self-KD
+                - T: float - temperature parameter
+                - w: List[float] - loss weights for each stage
+                - alpha: float - interpolation weight
+            max_pets_per_image: Maximum number of pets to process per image
         """
         super().__init__()
         self.num_classes = num_classes
         self.max_pets_per_image = max_pets_per_image
 
-        # 初始化SelfKD模块列表
-        self.selfkd_modules = nn.ModuleList([None, None, None])  # 对应3个stage
+        # Initialize SelfKD module list
+        self.selfkd_modules = nn.ModuleList([None, None, None])  # For 3 stages
 
         # Stem
         self.stem = nn.Sequential(
@@ -66,7 +83,7 @@ class PetNet(nn.Module):
             attn_cfg_filtered = {k: v for k, v in attn_cfg.items() if k not in ['enable', 'pos_enc']}
             eca_kernel = attn_cfg_filtered.pop('eca_kernel', 3)
             layers.append(ECAPos(out_c, H=7, W=7, eca_kernel=eca_kernel))
-        # SelfKD是知识蒸馏模块，不在前向传播的主路径中使用
+        # SelfKD is a knowledge distillation module, not used in the main forward path
         if self._is_module_enabled(selfkd_cfg) and stage_idx < len(self.selfkd_modules):
             # Remove 'enable' and 'w' keys from config before passing to SelfKD
             # SelfKD only accepts channels_list, T, alpha parameters
@@ -92,18 +109,18 @@ class PetNet(nn.Module):
         return nn.Sequential(*layers)
 
     def forward_single(self, x: torch.Tensor) -> torch.Tensor:
-        """处理单宠物输入"""
+        """Process single pet input"""
         x = self.stem(x)
 
-        # 如果需要stage输出用于SelfKD
+        # Collect stage outputs for SelfKD if needed
         stage_outs = []
         if self.training and any(self.selfkd_modules):
             for i, stage in enumerate([self.stage1, self.stage2, self.stage3]):
                 x = stage(x)
-                # 收集每个stage的输出用于SelfKD
+                # Collect each stage output for SelfKD
                 stage_outs.append(x)
         else:
-            # 正常前向传播
+            # Normal forward propagation
             for stage in [self.stage1, self.stage2, self.stage3]:
                 x = stage(x)
 
@@ -111,23 +128,23 @@ class PetNet(nn.Module):
         return (x, stage_outs) if stage_outs else x
 
     def forward_multi(self, images: List[torch.Tensor]) -> Tuple[torch.Tensor, List]:
-        """处理多宠物输入"""
+        """Process multiple pet inputs"""
         batch_logits = []
         batch_stage_outs = [] if self.training else None
 
         for img in images:
-            # 处理每个宠物图像
+            # Process each pet image
             logits, stage_outs = self.forward_single(img.unsqueeze(0))
             batch_logits.append(logits.squeeze(0))
 
             if batch_stage_outs is not None:
                 batch_stage_outs.append(stage_outs)
 
-        # 堆叠所有结果
+        # Stack all results
         stacked_logits = torch.stack(batch_logits)
 
         if batch_stage_outs is not None:
-            # 重组stage输出
+            # Reorganize stage outputs
             stage_outputs = []
             for i in range(len(batch_stage_outs[0])):
                 stage_outputs.append(torch.stack([outs[i] for outs in batch_stage_outs]))
@@ -137,19 +154,19 @@ class PetNet(nn.Module):
 
     def forward(self, x: Union[torch.Tensor, List[torch.Tensor]]) -> Union[torch.Tensor, Tuple]:
         """
-        统一的前向传播
+        Unified forward propagation
 
         Args:
-            x: 可以是单张图像 (B, 3, H, W) 或多宠物图像列表 [N, 3, H, W]
+            x: Can be single image tensor (B, 3, H, W) or list of multi-pet images [N, 3, H, W]
 
         Returns:
-            单宠物: logits (B, num_classes) 或 (logits, stage_logits)
-            多宠物: 堆叠的logits (N, num_classes) 或 (stacked_logits, stage_logits)
+            Single pet: logits (B, num_classes) or (logits, stage_logits)
+            Multi-pet: stacked logits (N, num_classes) or (stacked_logits, stage_logits)
         """
         if isinstance(x, list):
-            # 多宠物模式
+            # Multi-pet mode
             return self.forward_multi(x)
         else:
-            # 单宠物模式
+            # Single-pet mode
             return self.forward_single(x)
 

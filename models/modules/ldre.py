@@ -10,14 +10,15 @@ class LDRE(nn.Module):
 
     def forward(self, x):
         """
-        LDRE占位符实现 - 应该在数据预处理阶段处理原始图像
+        LDRE placeholder implementation - Should process raw images in data preprocessing stage
 
-        注意：这个实现只是一个占位符，真正的LDRE功能应该在数据加载器的
-        预处理阶段实现，处理原始图像而不是中间特征。
+        Note: This is just a placeholder. The actual LDRE functionality should be
+        implemented in the data loader's preprocessing stage, operating on raw images
+        rather than intermediate features.
         """
         if not self.training or torch.rand(1).item() > self.prob:
             return x
 
-        # 当前简化实现：直接返回输入
-        # 完整实现应该移到数据预处理阶段
+        # Current simplified implementation: return input directly
+        # Full implementation should be moved to data preprocessing stage
         return x
