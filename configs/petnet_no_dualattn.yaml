@@ -1,24 +1,22 @@
 model:
   stage_repeats: [2, 3, 4]
   attn_cfg:
-    enable: true
-    pos_enc: "relative"
-    eca_kernel: 3
+    enable: False
   selfkd_cfg:
-    enable: true
+    enable: True
     T: 4
     w: [0.5, 0.3, 0.2]
     alpha: 0.999
 
 train:
-  batch_size: 16  # Reduced batch size to fit GPU memory
+  batch_size: 16
   learning_rate: 0.001
   num_epochs: 120
   optimizer: "adamw"
   weight_decay: 0.01
   warmup_epochs: 5
-  patience: 10     # Early stopping patience (number of epochs without improvement)
-  min_delta: 0.1   # Minimum improvement threshold (percentage)
+  patience: 10
+  min_delta: 0.1
 
 data:
   dataset: "merged_pet_dataset"
@@ -27,17 +25,17 @@ data:
   test_split: 0.1
   input_size: [224, 224]
   ldre_cfg:
-    enable: true
+    enable: True
     prob: 0.5
     grid_size: 16
     drop_count: 2
 
 evaluation:
-  metrics: ["accuracy", "precision", "recall", "f1"]
-  save_confusion_matrix: true
+  metrics: ['accuracy', 'precision', 'recall', 'f1']
+  save_confusion_matrix: True
 
 logging:
   log_dir: "runs/petnet_cls"
-  save_checkpoints: true
+  save_checkpoints: True
   checkpoint_freq: 10
-  tensorboard: true
+  tensorboard: True
