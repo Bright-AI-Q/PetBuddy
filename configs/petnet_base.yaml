@@ -11,7 +11,7 @@ model:
     alpha: 0.999
 
 train:
-  batch_size: 16    # 进一步减小批次大小以适应145个类别的更大模型
+  batch_size: 16    # Batch size for training aad batch szie when you have gpu resources
   learning_rate: 0.003
   num_epochs: 120
   optimizer: "adamw"

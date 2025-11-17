@@ -6,10 +6,10 @@ model:
     enable: False
 train:
   batch_size: 16
-  learning_rate: 0.001
+  learning_rate: 0.003
   num_epochs: 120
   optimizer: "adamw"
-  weight_decay: 0.01
+  weight_decay: 0.00004
   warmup_epochs: 5
   patience: 10
   min_delta: 0.1
