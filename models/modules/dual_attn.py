@@ -1,3 +1,24 @@
+#!/usr/bin/env python3
+"""
+Project: PetBuddy
+Author: Bright Wang
+File: dual_attn.py
+====================================
+Dual Attention Mechanism (ECA + Positional) Module
+
+Purpose:
+- Implement combined ECA (Efficient Channel Attention) and positional attention
+- Provide adaptive feature enhancement for pet recognition models
+- Support dynamic adjustment of positional encoding to input size
+
+Features:
+1. Dual Attention: Combines channel-wise and spatial attention mechanisms
+2. Dynamic Position Encoding: Automatic resizing to match input dimensions
+3. Efficient Design: Lightweight computation with minimal parameters
+4. Configurable Kernel: Adjustable ECA kernel size for different feature scales
+5. Robust Implementation: Handles varying input sizes through bilinear interpolation
+"""
+
 import torch, cv2
 import torch.nn as nn
 import torch.nn.functional as F

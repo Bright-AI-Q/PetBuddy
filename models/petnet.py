@@ -1,11 +1,22 @@
+#!/usr/bin/env python3
 """
-Unified Pet Recognition Network - Supports both single and multi-pet modes
+Project: PetBuddy
+Author: Bright Wang
+File: petnet.py
+====================================
+Unified Pet Recognition Network (PetNet)
+
+Purpose:
+- Provide unified architecture for both single-pet and multi-pet recognition
+- Support modular design with configurable components
+- Enable both classification and detection tasks
 
 Key Features:
-- Modular architecture with interchangeable components
-- Supports both detection and classification tasks
-- Integrated self-knowledge distillation
-- Dual attention mechanism (ECA + Positional)
+1. Modular Architecture: Interchangeable components (IRB, LDRE, SelfKD, DualAttn)
+2. Multi-mode Support: Handles both single-pet and multi-pet inputs
+3. Integrated Techniques: Self-knowledge distillation and dual attention mechanisms
+4. Configurable Design: Flexible configuration for each module
+5. Production Ready: Optimized for both training and inference
 """
 import torch
 import torch.nn as nn

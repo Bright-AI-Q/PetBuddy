@@ -1,3 +1,24 @@
+#!/usr/bin/env python3
+"""
+Project: PetBuddy
+Author: Bright Wang
+File: self_kd.py
+====================================
+Self Knowledge Distillation Module
+
+Purpose:
+- Implement self-knowledge distillation for pet recognition model training
+- Provide feature-level distillation between teacher and student networks
+- Support temperature-scaled KL divergence for soft target learning
+
+Features:
+1. Stage-wise Distillation: Separate distillation for each model stage
+2. EMA Teacher: Exponentially moving average teacher feature updates
+3. Temperature Scaling: Configurable temperature for soft target smoothing
+4. Batch Consistency: Automatic handling of batch size changes
+5. Lightweight Design: Minimal overhead with efficient KL divergence computation
+"""
+
 import torch.nn as nn
 import torch.nn.functional as F
 
