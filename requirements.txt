@@ -9,5 +9,7 @@ Pillow>=10.0.0
 pycocotools>=2.0.0
 scikit-learn>=1.0.0
 optuna>=3.0.0
+plotly>=5.0.0
+kaleido>=0.2.0
 pylatex>=1.4.1
 seaborn>=0.13.0

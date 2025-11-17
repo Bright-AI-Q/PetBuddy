@@ -1,10 +1,10 @@
-import requests, os, csv, time, json, hashlib
-from PIL import Image
-from io import BytesIO
-from requests.adapters import HTTPAdapter
-from urllib3.util import Retry
-
+#!/usr/bin/env python3
 """
+Project: PetBuddy
+Author: Bright Wang
+File: scarpe_cc0_api.py
+====================================
+
 CC0 API Scraper for PetBuddy
 ---------------------------------
 Purpose:
@@ -25,6 +25,14 @@ Output:
 Usage:
     python tools/scrape_cc0_api.py --keywords "cat dog" --pages 20
 """
+
+import requests, os, csv, time, json, hashlib
+from PIL import Image
+from io import BytesIO
+from requests.adapters import HTTPAdapter
+from urllib3.util import Retry
+
+
 
 KEYS = {
     "unsplash": "okHZH4sXawjvGt0YxJSXWg_qZmrcxgB85hznv3_gKoo",

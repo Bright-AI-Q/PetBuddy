@@ -11,17 +11,18 @@ model:
     alpha: 0.999
 
 train:
-  batch_size: 16  # Reduced batch size to fit GPU memory
-  learning_rate: 0.001
+  batch_size: 16    # 进一步减小批次大小以适应145个类别的更大模型
+  learning_rate: 0.003
   num_epochs: 120
   optimizer: "adamw"
-  weight_decay: 0.01
+  weight_decay: 0.00004
   warmup_epochs: 5
   patience: 10     # Early stopping patience (number of epochs without improvement)
   min_delta: 0.1   # Minimum improvement threshold (percentage)
+  label_smoothing: 0.1  # <-- ADD THIS LINE
 
 data:
-  dataset: "merged_pet_dataset"
+  dataset: "pet_cls_training"
   train_split: 0.8
   val_split: 0.1
   test_split: 0.1

@@ -9,17 +9,18 @@ model:
     alpha: 0.999
 
 train:
-  batch_size: 16
-  learning_rate: 0.001
+  batch_size: 8
+  learning_rate: 0.003
   num_epochs: 120
   optimizer: "adamw"
-  weight_decay: 0.01
+  weight_decay: 0.00004
   warmup_epochs: 5
   patience: 10
   min_delta: 0.1
+  label_smoothing: 0.1  # <-- ADD THIS LINE
 
 data:
-  dataset: "merged_pet_dataset"
+  dataset: "pet_cls_training"
   train_split: 0.8
   val_split: 0.1
   test_split: 0.1

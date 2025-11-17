@@ -15,7 +15,7 @@ train:
   min_delta: 0.1
 
 data:
-  dataset: "merged_pet_dataset"
+  dataset: "pet_cls_training"
   train_split: 0.8
   val_split: 0.1
   test_split: 0.1

@@ -16,7 +16,7 @@ from models.modules.ldre import LDRE
 from models.modules.dual_attn import ECAPos
 
 class PetNet(nn.Module):
-    def __init__(self, num_classes: int = 37,
+    def __init__(self, num_classes: int = 144,
                  stage_repeats: List[int] = [2, 3, 4],
                  ldre_cfg: Optional[Dict] = None,
                  attn_cfg: Optional[Dict] = None,
@@ -53,21 +53,21 @@ class PetNet(nn.Module):
 
         # Stem
         self.stem = nn.Sequential(
-            nn.Conv2d(3, 24, 3, stride=2, padding=1, bias=False),
-            nn.BatchNorm2d(24), nn.ReLU6()
+            nn.Conv2d(3, 32, 3, stride=2, padding=1, bias=False),
+            nn.BatchNorm2d(32), nn.ReLU6()
         )
 
         # 3 Stages
-        self.stage1 = self._make_stage(24, 40, stage_repeats[0], 2, ldre_cfg, attn_cfg, selfkd_cfg, 0)
-        self.stage2 = self._make_stage(40, 80, stage_repeats[1], 2, ldre_cfg, attn_cfg, selfkd_cfg, 1)
-        self.stage3 = self._make_stage(80, 160, stage_repeats[2], 2, ldre_cfg, attn_cfg, selfkd_cfg, 2)
+        self.stage1 = self._make_stage(32, 48, stage_repeats[0], 2, ldre_cfg, attn_cfg, selfkd_cfg, 0)
+        self.stage2 = self._make_stage(48, 96, stage_repeats[1], 2, ldre_cfg, attn_cfg, selfkd_cfg, 1)
+        self.stage3 = self._make_stage(96, 192, stage_repeats[2], 2, ldre_cfg, attn_cfg, selfkd_cfg, 2)
 
         # Head
         self.head = nn.Sequential(
             nn.AdaptiveAvgPool2d(1),
             nn.Flatten(),
             nn.Dropout(0.2),
-            nn.Linear(160, num_classes)
+            nn.Linear(192, num_classes)
         )
 
     def _add_optional_modules(self, layers: List[nn.Module], out_c: int,
