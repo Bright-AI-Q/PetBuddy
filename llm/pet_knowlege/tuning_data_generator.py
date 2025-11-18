@@ -103,38 +103,38 @@ breed_url = {
     'Pekinese': "https://www.dog-breeds.net/Pekingese",
     'Pembroke': "https://www.dog-breeds.net/Pembroke-welsh-corgi",
     'Pomeranian': "https://www.dog-breeds.net/Pomeranian",
-    'Pug': 
-    'Redbone':
-    'Rhodesian ridgeback':
-    'Rottweiler':
-    'Saint Bernard':
-    'Saluki':
-    'Samoyed':
-    'Schipperke':
-    'Scotch terrier':
-    'Scottish deerhound':
-    'Sealyham terrier':
-    'Shetland sheepdog':
-    'Shih-Tzu':
-    'Siberian husky':
-    'Silky terrier':
-    'Soft-coated wheaten terrier':
-    'Staffordshire bullterrier':
-    'Standard poodle':
-    'Standard schnauzer':
-    'Sussex spaniel':
-    'Tibetan mastiff':
-    'Tibetan terrier':
-    'Toy poodle':
-    'Toy terrier':
-    'Vizsla':
-    'Walker hound':
-    'Weimaraner':
-    'Welsh springer spaniel':
-    'Welsh Highland white terrier':
-    'Whippet':
-    'Wire-haired fox terrier':
-    'Yorkshire terrier':
+    'Pug': "https://www.dog-breeds.net/pug",
+    'Redbone': "",
+    'Rhodesian ridgeback': "https://www.dog-breeds.net/Rhodesian-ridgeback",
+    'Rottweiler': "https://www.dog-breeds.net/Rottweiler",
+    'Saint Bernard': "https://www.dog-breeds.net/saint-bernard",
+    'Saluki': "https://www.dog-breeds.net/Saluki",
+    'Samoyed': "https://www.dog-breeds.net/Samoyed",
+    'Schipperke': "https://www.dog-breeds.net/Schipperke",
+    'Scotch terrier': "https://www.dog-breeds.net/Scottish-terrier",
+    'Scottish deerhound': "https://www.dog-breeds.net/Scottish-deerhound",
+    'Sealyham terrier': "https://www.dog-breeds.net/sealyham-terrier/",
+    'Shetland sheepdog': "https://www.dog-breeds.net/Shetland-sheepdog",
+    'Shih-Tzu': "https://www.dog-breeds.net/shih-tzu",
+    'Siberian husky': "https://www.dog-breeds.net/siberian-husky",
+    'Silky terrier': "https://www.dog-breeds.net/silky-terrier",
+    'Soft-coated wheaten terrier': "https://www.dog-breeds.net/soft-coated-wheaten-terrier",
+    'Staffordshire bullterrier': "https://www.dog-breeds.net/Staffordshire-bull-terrier",
+    'Standard poodle': "https://www.dog-breeds.net/Poodle",
+    'Standard schnauzer': "https://www.dog-breeds.net/Standard-Schnauzer",
+    'Sussex spaniel': "https://www.dog-breeds.net/sussex-spaniel",
+    'Tibetan mastiff': "",
+    'Tibetan terrier': "https://www.dog-breeds.net/Tibetan-terrier",
+    'Toy poodle': "",
+    'Toy terrier': "https://www.dog-breeds.net/toy-fox-terrier/",
+    'Vizsla': "https://www.dog-breeds.net/Vizsla",
+    'Walker hound':  "",
+    'Weimaraner': "https://www.dog-breeds.net/Weimaraner",
+    'Welsh springer spaniel': "https://www.dog-breeds.net/welsh-springer-spaniel",
+    'Welsh Highland white terrier': "https://www.dog-breeds.net/west-highland-white-terrier",
+    'Whippet': "https://www.dog-breeds.net/whippet",
+    'Wire-haired fox terrier': "",
+    'Yorkshire terrier': "https://www.dog-breeds.net/yorkshire-terrier",
 }
 headers = {"User-Agent": "Mozilla/5.0"}
 
