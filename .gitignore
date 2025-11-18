@@ -4,3 +4,37 @@
 !.gitkeep
 .venv
 .idea
+
+# System files
+.DS_Store
+
+# Python compiled files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Model checkpoints/weights
+*.pt
+*.pth
+
+# Experiment outputs/runs
+runs/
+petnet_study.db
+tools/experiments/petnet_study.db
+tools/experiments/runs/
+ablation_results.csv
+experiment_summary.json
+
+# Images and documents
+*.jpg
+*.jpeg
+*.png
+*.pdf
+
+# DVC/parameter files (if not needed for collaboration)
+dvc.yaml
+params.yaml
+image_names.txt
+label_names.txt
+ablation_analysis.png
