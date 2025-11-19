@@ -13,7 +13,10 @@ import torch.nn.functional as F
 import torch.optim as optim
 import yaml
 from optuna.trial import TrialState
+from torch import GradScaler, autocast
 from torch.nn.parallel import DistributedDataParallel as DDP
+
+torch.set_float32_matmul_precision('high')
 
 # Add project root directory to Python path
 sys.path.append(str(Path(__file__).parent.parent.parent))
@@ -131,10 +134,12 @@ def objective(trial: optuna.trial.Trial, distributed=False):
             ldre_cfg=data_config.get('ldre_cfg')
         )
 
+    num_workers = 8
     train_loader = build_dataloader(
         root_dir=root_dir,
         batch_size=train_config['batch_size'],
         shuffle=True,
+        num_workers=num_workers,
         sampler=train_sampler,
         transform_type="yolo_to_cls",
         split="train",
@@ -144,6 +149,7 @@ def objective(trial: optuna.trial.Trial, distributed=False):
         root_dir=root_dir,
         batch_size=train_config['batch_size'],
         shuffle=False,
+        num_workers=num_workers,
         sampler=val_sampler,
         transform_type="yolo_to_cls",
         split="val",
@@ -153,6 +159,8 @@ def objective(trial: optuna.trial.Trial, distributed=False):
     # Training parameters
     num_epochs = train_config['num_epochs']
     accumulation_steps = 4  # Gradient accumulation steps
+
+    scaler = GradScaler(enabled=(device == "cuda"))
 
     # Training loop
     best_acc = 0.0
@@ -170,27 +178,29 @@ def objective(trial: optuna.trial.Trial, distributed=False):
             inputs, labels = batch_data['images'], batch_data['labels']
             inputs, labels = inputs.to(device), labels.to(device)
 
-            # Forward pass
-            outputs = model(inputs)
+            with autocast(device_type=str(device)):
+                # Forward pass
+                outputs = model(inputs)
 
-            # Handle model output (could be tuple or tensor)
-            if isinstance(outputs, tuple):
-                logits = outputs[0]  # Extract classification logits
-                stage_outs = outputs[1]  # Intermediate outputs for SelfKD
-            else:
-                logits = outputs
+                # Handle model output (could be tuple or tensor)
+                if isinstance(outputs, tuple):
+                    logits = outputs[0]  # Extract classification logits
+                    stage_outs = outputs[1]  # Intermediate outputs for SelfKD
+                else:
+                    logits = outputs
 
-            # Calculate loss
-            loss = F.cross_entropy(logits, labels,
-                                  label_smoothing=train_config.get('label_smoothing', 0.0))
+                # Calculate loss
+                loss = F.cross_entropy(logits, labels,
+                                      label_smoothing=train_config.get('label_smoothing', 0.0))
 
-            # Gradient accumulation
-            loss = loss / accumulation_steps
-            loss.backward()
+                # Gradient accumulation
+                loss = loss / accumulation_steps
+            scaler.scale(loss).backward()
 
             # Optimizer step
             if (i + 1) % accumulation_steps == 0:
-                optimizer.step()
+                scaler.step(optimizer)
+                scaler.update()
                 optimizer.zero_grad()
 
             # Record statistics
