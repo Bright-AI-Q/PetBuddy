@@ -1,6 +1,6 @@
 #!/bin/bash
 #SBATCH -N 1
-#SBATCH -c 8
+#SBATCH -c 16
 #SBATCH --ntasks-per-node=1
 #SBATCH -t 16:00:00
 #SBATCH --gres=gpu:L40S:1
@@ -13,5 +13,5 @@ if [ $SLURM_GPUS_ON_NODE -gt 1 ]; then
   torchrun --standalone --nproc_per_node="gpu" ../tools/experiments/optuna_train.py
 else
   echo "Running on single GPU"
-  python ../tools/experiments/optuna_train.py
+  python -u ../tools/experiments/optuna_train.py
 fi
