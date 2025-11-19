@@ -72,7 +72,7 @@ def objective(trial: optuna.trial.Trial, distributed=False):
     config['train']['weight_decay'] = weight_decay
     config['train']['optimizer'] = optimizer_name.lower()
 
-    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    device = torch.device("cuda" if torch.cuda.is_available() else ("mps" if torch.backends.mps.is_available() else "cpu"))
     print(f"🚀 Starting trial {trial.number}: lr={lr:.2e}, wd={weight_decay:.2e}, opt={optimizer_name}")
 
     # Get parameters from config
@@ -94,7 +94,8 @@ def objective(trial: optuna.trial.Trial, distributed=False):
     model.to(device)
 
     if distributed:
-        model = DDP(model)
+        local_rank = int(os.environ["LOCAL_RANK"])
+        model = DDP(model, device_ids=[local_rank], output_device=local_rank)
 
     # Create optimizer
     if optimizer_name == "AdamW":
