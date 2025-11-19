@@ -20,7 +20,7 @@ Features:
 5. Cross-dataset: Support for Oxford Pets, Stanford Dogs, and custom datasets
 """
 import torch
-from torch.utils.data import Dataset, DataLoader
+from torch.utils.data import Dataset, DataLoader, DistributedSampler
 from torchvision import transforms
 from pathlib import Path
 import cv2
@@ -251,7 +251,7 @@ def collate_fn(batch):
     }
 
 def build_dataloader(root_dir, batch_size=32, shuffle=True,
-                           num_workers=4, split="train", **kwargs):
+                           num_workers=4, split="train", sampler=None, **kwargs):
     """
     Build pet classification data loader
 
@@ -272,7 +272,27 @@ def build_dataloader(root_dir, batch_size=32, shuffle=True,
         batch_size=batch_size,
         shuffle=shuffle,
         num_workers=num_workers,
+        sampler=sampler,
         collate_fn=collate_fn,
         pin_memory=torch.cuda.is_available(),  # Only enable pin_memory when CUDA is available
         persistent_workers=num_workers > 0  # Avoid frequent creation/destruction of worker processes
     )
+
+def build_datasampler(root_dir, shuffle=True, split="train", **kwargs):
+    """
+    Build pet classification data sampler (only for distributed env)
+
+    Args:
+        root_dir: Dataset root directory
+        batch_size: Batch size
+        shuffle: Whether to shuffle data
+        num_workers: Number of worker processes
+        split: Dataset split ("train"/"val"/"test")
+    """
+
+    # Extract LDRE configuration from kwargs
+    ldre_cfg = kwargs.pop('ldre_cfg', None)
+
+    dataset = PetDataset(root_dir, split=split, ldre_cfg=ldre_cfg, **kwargs)
+
+    return DistributedSampler(dataset, shuffle=shuffle)

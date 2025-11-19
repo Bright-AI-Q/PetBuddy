@@ -2,24 +2,38 @@
 Optuna hyperparameter optimization training script
 Modified from tools/train.py with Optuna integration
 """
-import torch
-import torch.nn as nn
-import torch.optim as optim
-from pathlib import Path
+import os
 import sys
-import yaml
-import copy
-import optuna
-from optuna.trial import TrialState
-from datetime import datetime
-import torch.nn.functional as F
+from pathlib import Path
 
+import optuna
+import torch
+import torch.distributed as dist
+import torch.nn.functional as F
+import torch.optim as optim
+import yaml
+from optuna.trial import TrialState
+from torch.nn.parallel import DistributedDataParallel as DDP
 
 # Add project root directory to Python path
 sys.path.append(str(Path(__file__).parent.parent.parent))
 
 from models.petnet import PetNet
-from utils.data_loader import build_dataloader
+from utils.data_loader import build_dataloader, build_datasampler
+
+
+def is_distributed():
+    """Check if it is distributed envirionment or not"""
+    return "WORLD_SIZE" in os.environ
+
+def setup_distributed_env():
+    if not is_distributed():
+        return False, 0, 1
+    dist.init_process_group(backend="nccl")
+    rank = dist.get_rank()
+    world_size = dist.get_world_size()
+
+    return True, rank, world_size
 
 def load_config(config_path: str) -> dict:
     """Load configuration from YAML file"""
@@ -39,8 +53,12 @@ def get_actual_num_classes(dataset_name):
     print(f"📊 Actual number of classes in dataset '{dataset_name}': {actual_num_classes}")
     return actual_num_classes
 
-def objective(trial: optuna.trial.Trial):
+def objective(trial: optuna.trial.Trial, distributed=False):
     """Optuna objective function for hyperparameter optimization"""
+
+    if distributed:
+        trial = optuna.integration.TorchDistributedTrial(trial)
+
     # --- Phase 1: Core parameter optimization ---
     lr = trial.suggest_float("lr", 1e-5, 1e-2, log=True)
     weight_decay = trial.suggest_float("weight_decay", 1e-6, 1e-2, log=True)
@@ -75,6 +93,9 @@ def objective(trial: optuna.trial.Trial):
     )
     model.to(device)
 
+    if distributed:
+        model = DDP(model)
+
     # Create optimizer
     if optimizer_name == "AdamW":
         optimizer = optim.AdamW(model.parameters(), lr=lr, weight_decay=weight_decay)
@@ -90,10 +111,30 @@ def objective(trial: optuna.trial.Trial):
 
     # Create data loaders - use correct parameters
     root_dir = f"data/{dataset_to_use}"
+
+    train_sampler = None
+    val_sampler = None
+    if distributed:
+        train_sampler = build_datasampler(
+            root_dir=root_dir,
+            shuffle=True,
+            split="train",
+            transform_type="yolo_to_cls",
+            ldre_cfg=data_config.get('ldre_cfg')
+        )
+        val_sampler = build_datasampler(
+            root_dir=root_dir,
+            shuffle=False,
+            split="val",
+            transform_type="yolo_to_cls",
+            ldre_cfg=data_config.get('ldre_cfg')
+        )
+
     train_loader = build_dataloader(
         root_dir=root_dir,
         batch_size=train_config['batch_size'],
         shuffle=True,
+        sampler=train_sampler,
         transform_type="yolo_to_cls",
         split="train",
         ldre_cfg=data_config.get('ldre_cfg')
@@ -102,6 +143,7 @@ def objective(trial: optuna.trial.Trial):
         root_dir=root_dir,
         batch_size=train_config['batch_size'],
         shuffle=False,
+        sampler=val_sampler,
         transform_type="yolo_to_cls",
         split="val",
         ldre_cfg=data_config.get('ldre_cfg')
@@ -115,6 +157,10 @@ def objective(trial: optuna.trial.Trial):
     best_acc = 0.0
     for epoch in range(num_epochs):
         model.train()
+
+        if train_sampler is not None:
+            train_sampler.set_epoch(epoch)
+
         running_loss = 0.0
         correct = 0
         total = 0
@@ -174,6 +220,11 @@ def objective(trial: optuna.trial.Trial):
                 val_total += labels.size(0)
                 val_correct += predicted.eq(labels).sum().item()
 
+        if distributed:
+            val_correct = torch.tensor([val_correct], dtype=torch.int, device=device)
+            dist.all_reduce(val_correct)
+            val_correct = val_correct.item()
+
         val_acc = 100. * val_correct / val_total
         best_acc = max(best_acc, val_acc)
 
@@ -191,6 +242,15 @@ def objective(trial: optuna.trial.Trial):
 
 def main():
     """Main function to run Optuna optimization"""
+
+    distributed, rank, world_size = setup_distributed_env()
+
+    if distributed:
+        print(f"Running in distributed environment: rank {rank}/{world_size}")
+        dist.barrier()
+    else:
+        print(f"Running in single machine, default to rank 0")
+
     # Create pruner
     pruner = optuna.pruners.MedianPruner(
         n_startup_trials=5,
@@ -198,104 +258,120 @@ def main():
         interval_steps=1
     )
 
-    # Create study object
-    study = optuna.create_study(
-        study_name="petnet_optimization_phase1",
-        direction="maximize",
-        pruner=pruner,
-        storage="sqlite:///petnet_study.db",
-        load_if_exists=True
-    )
+    study = None
+    n_trials = 50
+    if rank == 0:
+        # Run by default in single machine, otherwise main machine runs the study
+        # Create study object
+        study = optuna.create_study(
+            study_name="petnet_optimization_phase1",
+            direction="maximize",
+            pruner=pruner,
+            storage="sqlite:///petnet_study.db",
+            load_if_exists=True
+        )
 
-    print("🔬 Starting Optuna hyperparameter optimization (Phase 1: Core parameters)")
-    print("📊 Optimizing: Learning rate, weight decay, optimizer type")
-    print("📈 Objective: Maximize validation accuracy")
+        print("🔬 Starting Optuna hyperparameter optimization (Phase 1: Core parameters)")
+        print("📊 Optimizing: Learning rate, weight decay, optimizer type")
+        print("📈 Objective: Maximize validation accuracy")
 
-    # Start optimization
-    study.optimize(objective, n_trials=50)
+        # Start optimization
+        study.optimize(objective, n_trials=n_trials)
+    else:
+        for i in range(n_trials):
+            try:
+                objective(None, distributed)
+            except optuna.exceptions.TrialPruned:
+                print(f"Trial {i+1}/{n_trials} pruned")
+                pass
 
-    # Print result statistics
-    pruned_trials = study.get_trials(deepcopy=False, states=[TrialState.PRUNED])
-    complete_trials = study.get_trials(deepcopy=False, states=[TrialState.COMPLETE])
+    if rank == 0:
+        # If running on single machine, this will always run, otherwise run on master node
+        # Print result statistics
+        pruned_trials = study.get_trials(deepcopy=False, states=[TrialState.PRUNED])
+        complete_trials = study.get_trials(deepcopy=False, states=[TrialState.COMPLETE])
 
-    print("\n📊 Optimization statistics:")
-    print(f"   Total trials: {len(study.trials)}")
-    print(f"   Pruned trials: {len(pruned_trials)}")
-    print(f"   Completed trials: {len(complete_trials)}")
+        print("\n📊 Optimization statistics:")
+        print(f"   Total trials: {len(study.trials)}")
+        print(f"   Pruned trials: {len(pruned_trials)}")
+        print(f"   Completed trials: {len(complete_trials)}")
 
-    # Print best parameters
-    best_trial = study.best_trial
-    print(f"\n🏆 Best trial:")
-    print(f"   Validation accuracy: {best_trial.value:.2f}%")
-    print(f"   Parameters:")
-    for key, value in best_trial.params.items():
-        print(f"     {key}: {value}")
+        # Print best parameters
+        best_trial = study.best_trial
+        print(f"\n🏆 Best trial:")
+        print(f"   Validation accuracy: {best_trial.value:.2f}%")
+        print(f"   Parameters:")
+        for key, value in best_trial.params.items():
+            print(f"     {key}: {value}")
 
-    # Save best configuration
-    best_config = load_config("configs/petnet_base.yaml")
-    best_config['train']['learning_rate'] = best_trial.params['lr']
-    best_config['train']['weight_decay'] = best_trial.params['weight_decay']
-    best_config['train']['optimizer'] = best_trial.params['optimizer'].lower()
+        # Save best configuration
+        best_config = load_config("configs/petnet_base.yaml")
+        best_config['train']['learning_rate'] = best_trial.params['lr']
+        best_config['train']['weight_decay'] = best_trial.params['weight_decay']
+        best_config['train']['optimizer'] = best_trial.params['optimizer'].lower()
 
-    best_config_path = "configs/petnet_optimized_phase1.yaml"
-    with open(best_config_path, 'w') as f:
-        yaml.dump(best_config, f, default_flow_style=False)
+        best_config_path = "configs/petnet_optimized_phase1.yaml"
+        with open(best_config_path, 'w') as f:
+            yaml.dump(best_config, f, default_flow_style=False)
 
-    print(f"\n💾 Best configuration saved to: {best_config_path}")
+        print(f"\n💾 Best configuration saved to: {best_config_path}")
 
-    # --- Generate Optuna visualization charts ---
-    print("\n📊 Generating Optuna visualization charts...")
-    try:
-        # 1. Optimization history plot
-        print("📈 Generating optimization history plot...")
-        fig_history = optuna.visualization.plot_optimization_history(study)
-        fig_history.write_image("optuna_optimization_history.png")
-        fig_history.write_image("optuna_optimization_history.svg")
-        print("✅ Optimization history plot saved: optuna_optimization_history.png, optuna_optimization_history.svg")
+        # --- Generate Optuna visualization charts ---
+        print("\n📊 Generating Optuna visualization charts...")
+        try:
+            # 1. Optimization history plot
+            print("📈 Generating optimization history plot...")
+            fig_history = optuna.visualization.plot_optimization_history(study)
+            fig_history.write_image("optuna_optimization_history.png")
+            fig_history.write_image("optuna_optimization_history.svg")
+            print("✅ Optimization history plot saved: optuna_optimization_history.png, optuna_optimization_history.svg")
 
-        # 2. Parameter importance plot
-        print("📊 Generating parameter importance plot...")
-        fig_importance = optuna.visualization.plot_param_importances(study)
-        fig_importance.write_image("optuna_parameter_importance.svg")
-        print("✅ Parameter importance plot saved: optuna_parameter_importance.svg")
+            # 2. Parameter importance plot
+            print("📊 Generating parameter importance plot...")
+            fig_importance = optuna.visualization.plot_param_importances(study)
+            fig_importance.write_image("optuna_parameter_importance.svg")
+            print("✅ Parameter importance plot saved: optuna_parameter_importance.svg")
 
-        # 3. Parallel coordinate plot
-        print("📐 Generating parallel coordinate plot...")
-        fig_parallel = optuna.visualization.plot_parallel_coordinate(study)
-        fig_parallel.write_image("optuna_parallel_coordinate.svg")
-        print("✅ Parallel coordinate plot saved: optuna_parallel_coordinate.svg")
+            # 3. Parallel coordinate plot
+            print("📐 Generating parallel coordinate plot...")
+            fig_parallel = optuna.visualization.plot_parallel_coordinate(study)
+            fig_parallel.write_image("optuna_parallel_coordinate.svg")
+            print("✅ Parallel coordinate plot saved: optuna_parallel_coordinate.svg")
 
-        # 4. Slice plot
-        print("🔍 Generating slice plot...")
-        fig_slice = optuna.visualization.plot_slice(study)
-        fig_slice.write_image("optuna_slice_plot.svg")
-        print("✅ Slice plot saved: optuna_slice_plot.svg")
+            # 4. Slice plot
+            print("🔍 Generating slice plot...")
+            fig_slice = optuna.visualization.plot_slice(study)
+            fig_slice.write_image("optuna_slice_plot.svg")
+            print("✅ Slice plot saved: optuna_slice_plot.svg")
 
-        print("\n🎉 All visualization charts generated successfully!")
+            print("\n🎉 All visualization charts generated successfully!")
 
-    except ImportError as e:
-        print(f"⚠️  Visualization dependencies not installed: {e}")
-        print("Please install required dependencies: pip install plotly kaleido")
-    except Exception as e:
-        print(f"❌ Error generating charts: {e}")
+        except ImportError as e:
+            print(f"⚠️  Visualization dependencies not installed: {e}")
+            print("Please install required dependencies: pip install plotly kaleido")
+        except Exception as e:
+            print(f"❌ Error generating charts: {e}")
 
-    # Print detailed trial results table
-    print("\n📋 Detailed trial results:")
-    print("Trial | Accuracy(%) | Learning Rate | Weight Decay | Optimizer")
-    print("-" * 70)
-    for i, trial in enumerate(study.trials):
-        if trial.state == TrialState.COMPLETE:
-            acc = trial.value
-            params = trial.params
-            print(f"{i:5d} | {acc:8.2f} | {params.get('lr', 'N/A'):.2e} | {params.get('weight_decay', 'N/A'):.2e} | {params.get('optimizer', 'N/A')}")
+        # Print detailed trial results table
+        print("\n📋 Detailed trial results:")
+        print("Trial | Accuracy(%) | Learning Rate | Weight Decay | Optimizer")
+        print("-" * 70)
+        for i, trial in enumerate(study.trials):
+            if trial.state == TrialState.COMPLETE:
+                acc = trial.value
+                params = trial.params
+                print(f"{i:5d} | {acc:8.2f} | {params.get('lr', 'N/A'):.2e} | {params.get('weight_decay', 'N/A'):.2e} | {params.get('optimizer', 'N/A')}")
 
-    # Create parameter table for paper
-    print("\n📄 Paper parameter table:")
-    print("| Hyperparameter | Optimized Value |")
-    print("| :--- | :--- |")
-    print(f"| Optimizer | {best_trial.params['optimizer']} |")
-    print(f"| Learning Rate | {best_trial.params['lr']:.2e} |")
-    print(f"| Weight Decay | {best_trial.params['weight_decay']:.2e} |")
+        # Create parameter table for paper
+        print("\n📄 Paper parameter table:")
+        print("| Hyperparameter | Optimized Value |")
+        print("| :--- | :--- |")
+        print(f"| Optimizer | {best_trial.params['optimizer']} |")
+        print(f"| Learning Rate | {best_trial.params['lr']:.2e} |")
+        print(f"| Weight Decay | {best_trial.params['weight_decay']:.2e} |")
+
+    if distributed:
+        dist.destroy_process_group()
 
 if __name__ == "__main__":
     main()
