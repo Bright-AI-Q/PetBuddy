@@ -8,6 +8,8 @@
 #SBATCH -J petbuddy    # jobs name
 #SBATCH -o ./slurm_outs/slurm_%j.out   # file to write logs, prints, etc
 
+cp -r data/pet_cls_training /dev/shm/petbuddy/data/pet_cls_training
+
 if [ $SLURM_GPUS_ON_NODE -gt 1 ]; then
   echo "Running process with $SLURM_GPUS_ON_NODE GPUs"
   torchrun --standalone --nproc_per_node="gpu" ../tools/experiments/optuna_train.py
@@ -15,3 +17,5 @@ else
   echo "Running on single GPU"
   python -u ../tools/experiments/optuna_train.py
 fi
+
+rm -rf /dev/shm/petbuddy/data/pet_cls_training

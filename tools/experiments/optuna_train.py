@@ -13,7 +13,7 @@ import torch.nn.functional as F
 import torch.optim as optim
 import yaml
 from optuna.trial import TrialState
-from torch import GradScaler, autocast
+from torch.amp import GradScaler, autocast
 from torch.nn.parallel import DistributedDataParallel as DDP
 
 torch.set_float32_matmul_precision('high')
@@ -63,8 +63,8 @@ def objective(trial: optuna.trial.Trial, distributed=False):
         trial = optuna.integration.TorchDistributedTrial(trial)
 
     # --- Phase 1: Core parameter optimization ---
-    lr = trial.suggest_float("lr", 1e-5, 1e-2, log=True)
-    weight_decay = trial.suggest_float("weight_decay", 1e-6, 1e-2, log=True)
+    lr = trial.suggest_float("lr", 1e-4, 1e-2, log=True)
+    weight_decay = trial.suggest_float("weight_decay", 1e-5, 1e-2, log=True)
     optimizer_name = trial.suggest_categorical("optimizer", ["AdamW", "SGD"])
 
     # --- Load base configuration ---
@@ -114,7 +114,7 @@ def objective(trial: optuna.trial.Trial, distributed=False):
     )
 
     # Create data loaders - use correct parameters
-    root_dir = f"data/{dataset_to_use}"
+    root_dir = f"/dev/shm/petbuddy/data/pet_cls_training"
 
     train_sampler = None
     val_sampler = None
@@ -138,7 +138,7 @@ def objective(trial: optuna.trial.Trial, distributed=False):
     train_loader = build_dataloader(
         root_dir=root_dir,
         batch_size=train_config['batch_size'],
-        shuffle=True,
+        shuffle=(train_sampler is None),
         num_workers=num_workers,
         sampler=train_sampler,
         transform_type="yolo_to_cls",
@@ -160,7 +160,7 @@ def objective(trial: optuna.trial.Trial, distributed=False):
     num_epochs = train_config['num_epochs']
     accumulation_steps = 4  # Gradient accumulation steps
 
-    scaler = GradScaler(enabled=(device == "cuda"))
+    scaler = GradScaler(enabled=(str(device) == "cuda"))
 
     # Training loop
     best_acc = 0.0
@@ -178,7 +178,7 @@ def objective(trial: optuna.trial.Trial, distributed=False):
             inputs, labels = batch_data['images'], batch_data['labels']
             inputs, labels = inputs.to(device), labels.to(device)
 
-            with autocast(device_type=str(device)):
+            with autocast(device_type=str(device), enabled=(str(device) == "cuda")):
                 # Forward pass
                 outputs = model(inputs)
 
@@ -218,23 +218,26 @@ def objective(trial: optuna.trial.Trial, distributed=False):
             for batch_data in val_loader:
                 inputs, labels = batch_data['images'], batch_data['labels']
                 inputs, labels = inputs.to(device), labels.to(device)
-                outputs = model(inputs)
 
-                # Handle model output (could be tuple or tensor)
-                if isinstance(outputs, tuple):
-                    logits = outputs[0]  # Extract classification logits
-                else:
-                    logits = outputs
+                with autocast(device_type=str(device), enabled=(str(device) == "cuda")):
+                    outputs = model(inputs)
+                    # Handle model output (could be tuple or tensor)
+                    if isinstance(outputs, tuple):
+                        logits = outputs[0]  # Extract classification logits
+                    else:
+                        logits = outputs
 
                 _, predicted = logits.max(1)
-
                 val_total += labels.size(0)
                 val_correct += predicted.eq(labels).sum().item()
 
         if distributed:
-            val_correct = torch.tensor([val_correct], dtype=torch.int, device=device)
+            val_correct = torch.tensor([val_correct], dtype=torch.long, device=device)
+            val_total = torch.tensor([val_total], dtype=torch.long, device=device)
             dist.all_reduce(val_correct)
+            dist.all_reduce(val_total)
             val_correct = val_correct.item()
+            val_total = val_total.item()
 
         val_acc = 100. * val_correct / val_total
         best_acc = max(best_acc, val_acc)
@@ -269,32 +272,23 @@ def main():
         interval_steps=1
     )
 
-    study = None
+    # Run by default in single machine, otherwise main machine runs the study
+    # Create study object
+    study = optuna.create_study(
+        study_name="petnet_optimization_phase1",
+        direction="maximize",
+        pruner=pruner,
+        storage="sqlite:///petnet_study.db",
+        load_if_exists=True
+    )
+
+    print("🔬 Starting Optuna hyperparameter optimization (Phase 1: Core parameters)")
+    print("📊 Optimizing: Learning rate, weight decay, optimizer type")
+    print("📈 Objective: Maximize validation accuracy")
+
+    # Start optimization
     n_trials = 50
-    if rank == 0:
-        # Run by default in single machine, otherwise main machine runs the study
-        # Create study object
-        study = optuna.create_study(
-            study_name="petnet_optimization_phase1",
-            direction="maximize",
-            pruner=pruner,
-            storage="sqlite:///petnet_study.db",
-            load_if_exists=True
-        )
-
-        print("🔬 Starting Optuna hyperparameter optimization (Phase 1: Core parameters)")
-        print("📊 Optimizing: Learning rate, weight decay, optimizer type")
-        print("📈 Objective: Maximize validation accuracy")
-
-        # Start optimization
-        study.optimize(objective, n_trials=n_trials)
-    else:
-        for i in range(n_trials):
-            try:
-                objective(None, distributed)
-            except optuna.exceptions.TrialPruned:
-                print(f"Trial {i+1}/{n_trials} pruned")
-                pass
+    study.optimize(lambda trial: objective(trial, distributed), n_trials=n_trials)
 
     if rank == 0:
         # If running on single machine, this will always run, otherwise run on master node
