@@ -12,7 +12,6 @@ import torch.distributed as dist
 import torch.nn.functional as F
 import torch.optim as optim
 import yaml
-from optuna.pruners import HyperbandPruner
 from optuna.trial import TrialState
 from torch.amp import GradScaler, autocast
 from torch.nn.parallel import DistributedDataParallel as DDP
@@ -63,26 +62,29 @@ def objective(trial: optuna.trial.Trial, distributed=False):
     if distributed:
         trial = optuna.integration.TorchDistributedTrial(trial)
 
+    optuna_config = load_config("configs/optuna_tuning.yaml")
+    tuner_config = optuna_config["tuner"]
+
     # --- Phase 1: Core parameter optimization ---
-    lr = trial.suggest_float("lr", 1e-4, 1e-2, log=True)
-    weight_decay = trial.suggest_float("weight_decay", 1e-5, 1e-2, log=True)
+    lr = trial.suggest_float("lr", tuner_config["lr_low"], tuner_config["lr_high"], log=True)
+    weight_decay = trial.suggest_float("weight_decay", tuner_config["weight_decay_low"], tuner_config["weight_decay_high"], log=True)
     optimizer_name = trial.suggest_categorical("optimizer", ["AdamW", "SGD"])
 
     # --- Load base configuration ---
-    config = load_config("configs/petnet_base.yaml")
+    petnet_config = load_config("configs/petnet_base.yaml")
 
     # Override configuration values with Optuna suggested parameters
-    config['train']['learning_rate'] = lr
-    config['train']['weight_decay'] = weight_decay
-    config['train']['optimizer'] = optimizer_name.lower()
+    petnet_config['train']['learning_rate'] = lr
+    petnet_config['train']['weight_decay'] = weight_decay
+    petnet_config['train']['optimizer'] = optimizer_name.lower()
 
     device = torch.device("cuda" if torch.cuda.is_available() else ("mps" if torch.backends.mps.is_available() else "cpu"))
     print(f"🚀 Starting trial {trial.number}: lr={lr:.2e}, wd={weight_decay:.2e}, opt={optimizer_name}")
 
-    # Get parameters from config
-    model_config = config['model']
-    train_config = config['train']
-    data_config = config['data']
+    # Get parameters from petnet_config
+    model_config = petnet_config['model']
+    train_config = petnet_config['train']
+    data_config = petnet_config['data']
 
     # Check dataset
     dataset_to_use = "pet_cls_training" if (Path('data') / 'pet_cls_training').exists() else "merged_cls_dataset"
@@ -135,7 +137,7 @@ def objective(trial: optuna.trial.Trial, distributed=False):
             ldre_cfg=data_config.get('ldre_cfg')
         )
 
-    num_workers = 8
+    num_workers = data_config["num_workers"]
     train_loader = build_dataloader(
         root_dir=root_dir,
         batch_size=train_config['batch_size'],
