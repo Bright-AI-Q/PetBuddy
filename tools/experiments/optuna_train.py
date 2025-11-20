@@ -12,6 +12,7 @@ import torch.distributed as dist
 import torch.nn.functional as F
 import torch.optim as optim
 import yaml
+from optuna.pruners import HyperbandPruner
 from optuna.trial import TrialState
 from torch.amp import GradScaler, autocast
 from torch.nn.parallel import DistributedDataParallel as DDP
@@ -114,7 +115,7 @@ def objective(trial: optuna.trial.Trial, distributed=False):
     )
 
     # Create data loaders - use correct parameters
-    root_dir = f"/dev/shm/petbuddy/data/pet_cls_training"
+    root_dir = data_config["root_dir"]
 
     train_sampler = None
     val_sampler = None
@@ -158,7 +159,7 @@ def objective(trial: optuna.trial.Trial, distributed=False):
 
     # Training parameters
     num_epochs = train_config['num_epochs']
-    accumulation_steps = 4  # Gradient accumulation steps
+    accumulation_steps = train_config['gradient_accumulation_steps']  # Gradient accumulation steps
 
     scaler = GradScaler(enabled=(str(device) == "cuda"))
 
@@ -265,12 +266,22 @@ def main():
     else:
         print(f"Running in single machine, default to rank 0")
 
-    # Create pruner
-    pruner = optuna.pruners.MedianPruner(
-        n_startup_trials=5,
-        n_warmup_steps=10,
-        interval_steps=1
-    )
+    config = load_config("configs/optuna_tuning.yaml")
+
+    config_pruner = config["pruner"]
+    if config_pruner["type"] == "hyperband":
+        pruner = optuna.pruners.HyperbandPruner(
+            min_resource=config_pruner["min_resource"],
+            max_resource=config_pruner["max_resource"],
+            reduction_factor=config_pruner["reduction_factor"],
+        )
+    else:
+        # Default to median pruner
+        pruner = optuna.pruners.MedianPruner(
+            n_startup_trials=config_pruner["n_startup_trials"],
+            n_warmup_steps=config_pruner["n_warmup_steps"],
+            interval_steps=config_pruner["interval_steps"],
+        )
 
     # Run by default in single machine, otherwise main machine runs the study
     # Create study object
@@ -287,7 +298,7 @@ def main():
     print("📈 Objective: Maximize validation accuracy")
 
     # Start optimization
-    n_trials = 50
+    n_trials = config["tuner"]["n_trials"]
     study.optimize(lambda trial: objective(trial, distributed), n_trials=n_trials)
 
     if rank == 0:

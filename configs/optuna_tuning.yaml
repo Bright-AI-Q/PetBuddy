@@ -1,0 +1,13 @@
+pruner:
+  type: hyperband # or median
+  # These are for hyperband pruner
+  min_resource: 1
+  max_resource: 120
+  reduction_factor: 3
+  # These are for median pruner
+  n_startup_trials: 5
+  n_warmup_steps: 10
+  interval_steps: 1
+
+tuner:
+  n_trials: 50
