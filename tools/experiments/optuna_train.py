@@ -163,7 +163,7 @@ def objective(trial: optuna.trial.Trial, distributed=False):
     num_epochs = train_config['num_epochs']
     accumulation_steps = train_config['gradient_accumulation_steps']  # Gradient accumulation steps
 
-    scaler = GradScaler(enabled=(str(device) == "cuda"))
+    scaler = GradScaler(enabled=(device.type == "cuda"))
 
     # Training loop
     best_acc = 0.0
@@ -181,7 +181,7 @@ def objective(trial: optuna.trial.Trial, distributed=False):
             inputs, labels = batch_data['images'], batch_data['labels']
             inputs, labels = inputs.to(device), labels.to(device)
 
-            with autocast(device_type=str(device), enabled=(str(device) == "cuda")):
+            with autocast(device_type=device.type, enabled=(device.type == "cuda")):
                 # Forward pass
                 outputs = model(inputs)
 
@@ -301,7 +301,7 @@ def main():
 
     # Start optimization
     n_trials = config["tuner"]["n_trials"]
-    study.optimize(lambda trial: objective(trial, distributed), n_trials=n_trials)
+    study.optimize(lambda t: objective(t, distributed), n_trials=n_trials)
 
     if rank == 0:
         # If running on single machine, this will always run, otherwise run on master node
