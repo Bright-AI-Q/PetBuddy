@@ -12,7 +12,7 @@ Purpose:
 - Enable both classification and detection tasks
 
 Key Features:
-1. Modular Architecture: Interchangeable components (IRB, LDRE, SelfKD, DualAttn)
+1. Modular Architecture: Interchangeable components (IRB, SelfKD, DualAttn)
 2. Multi-mode Support: Handles both single-pet and multi-pet inputs
 3. Integrated Techniques: Self-knowledge distillation and dual attention mechanisms
 4. Configurable Design: Flexible configuration for each module
@@ -23,13 +23,11 @@ import torch.nn as nn
 from typing import Optional, Dict, List, Tuple, Union
 from models.modules.irb import IRB
 from models.modules.self_kd import SelfKD
-from models.modules.ldre import LDRE
 from models.modules.dual_attn import ECAPos
 
 class PetNet(nn.Module):
     def __init__(self, num_classes: int = 144,
                  stage_repeats: List[int] = [2, 3, 4],
-                 ldre_cfg: Optional[Dict] = None,
                  attn_cfg: Optional[Dict] = None,
                  selfkd_cfg: Optional[Dict] = None,
                  max_pets_per_image: int = 10):
@@ -39,11 +37,6 @@ class PetNet(nn.Module):
         Args:
             num_classes: Number of pet categories
             stage_repeats: Block repetition counts for each stage [stage1, stage2, stage3]
-            ldre_cfg: Configuration for Local Dropout Random Erasing (LDRE)
-                - enable: bool - whether to enable LDRE
-                - prob: float - probability of applying LDRE
-                - grid_size: int - grid size for LDRE
-                - drop_count: int - number of regions to drop
             attn_cfg: Configuration for dual attention mechanism
                 - enable: bool - whether to enable attention
                 - pos_enc: str - type of positional encoding ('relative'/'absolute')
@@ -69,9 +62,9 @@ class PetNet(nn.Module):
         )
 
         # 3 Stages
-        self.stage1 = self._make_stage(32, 48, stage_repeats[0], 2, ldre_cfg, attn_cfg, selfkd_cfg, 0)
-        self.stage2 = self._make_stage(48, 96, stage_repeats[1], 2, ldre_cfg, attn_cfg, selfkd_cfg, 1)
-        self.stage3 = self._make_stage(96, 192, stage_repeats[2], 2, ldre_cfg, attn_cfg, selfkd_cfg, 2)
+        self.stage1 = self._make_stage(32, 48, stage_repeats[0], 2, attn_cfg, selfkd_cfg, 0)
+        self.stage2 = self._make_stage(48, 96, stage_repeats[1], 2, attn_cfg, selfkd_cfg, 1)
+        self.stage3 = self._make_stage(96, 192, stage_repeats[2], 2, attn_cfg, selfkd_cfg, 2)
 
         # Head
         self.head = nn.Sequential(
@@ -82,14 +75,10 @@ class PetNet(nn.Module):
         )
 
     def _add_optional_modules(self, layers: List[nn.Module], out_c: int,
-                            ldre_cfg: Optional[Dict],
                             attn_cfg: Optional[Dict],
                             selfkd_cfg: Optional[Dict],
                             stage_idx: int) -> None:
         """Add optional modules based on their configs"""
-        if self._is_module_enabled(ldre_cfg):
-            ldre_cfg_filtered = {k: v for k, v in ldre_cfg.items() if k != 'enable'}
-            layers.append(LDRE(**ldre_cfg_filtered))
         if self._is_module_enabled(attn_cfg):
             attn_cfg_filtered = {k: v for k, v in attn_cfg.items() if k not in ['enable', 'pos_enc']}
             eca_kernel = attn_cfg_filtered.pop('eca_kernel', attn_cfg["eca_kernel"])
@@ -107,7 +96,6 @@ class PetNet(nn.Module):
         return cfg is not None and cfg.get('enable', False)
 
     def _make_stage(self, in_c: int, out_c: int, n: int, stride: int,
-                   ldre_cfg: Optional[Dict],
                    attn_cfg: Optional[Dict],
                    selfkd_cfg: Optional[Dict],
                    stage_idx: int) -> nn.Sequential:
@@ -116,7 +104,7 @@ class PetNet(nn.Module):
         for i in range(n):
             s = stride if i == 0 else 1
             layers.append(IRB(in_c if i == 0 else out_c, out_c, stride=s, expand_ratio=6))
-            self._add_optional_modules(layers, out_c, ldre_cfg, attn_cfg, selfkd_cfg, stage_idx)
+            self._add_optional_modules(layers, out_c, attn_cfg, selfkd_cfg, stage_idx)
         return nn.Sequential(*layers)
 
     def forward_single(self, x: torch.Tensor) -> torch.Tensor:
