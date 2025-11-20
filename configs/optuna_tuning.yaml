@@ -11,7 +11,7 @@ pruner:
 
 tuner:
   n_trials: 50
-  lr_low: 1e-5
-  lr_high: 1e-2
-  weight_decay_low: 1e-6
-  weight_decay_high: 1e-2
+  lr_low: 1.0e-4
+  lr_high: 1.0e-2
+  weight_decay_low: 1.0e-5
+  weight_decay_high: 1.0e-2

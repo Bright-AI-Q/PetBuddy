@@ -24,7 +24,7 @@ train:
 
 data:
   dataset: "pet_cls_training"
-  root_dir: "dev/shm/data/pet_cls_training"
+  root_dir: "data/pet_cls_training"
   num_workers: 8    # data loader workers
   train_split: 0.8
   val_split: 0.1
