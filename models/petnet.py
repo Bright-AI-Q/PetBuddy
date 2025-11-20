@@ -92,7 +92,7 @@ class PetNet(nn.Module):
             layers.append(LDRE(**ldre_cfg_filtered))
         if self._is_module_enabled(attn_cfg):
             attn_cfg_filtered = {k: v for k, v in attn_cfg.items() if k not in ['enable', 'pos_enc']}
-            eca_kernel = attn_cfg_filtered.pop('eca_kernel', 3)
+            eca_kernel = attn_cfg_filtered.pop('eca_kernel', attn_cfg["eca_kernel"])
             layers.append(ECAPos(out_c, H=7, W=7, eca_kernel=eca_kernel))
         # SelfKD is a knowledge distillation module, not used in the main forward path
         if self._is_module_enabled(selfkd_cfg) and stage_idx < len(self.selfkd_modules):
@@ -161,7 +161,7 @@ class PetNet(nn.Module):
                 stage_outputs.append(torch.stack([outs[i] for outs in batch_stage_outs]))
             return stacked_logits, stage_outputs
 
-        return stacked_logits
+        return stacked_logits, []
 
     def forward(self, x: Union[torch.Tensor, List[torch.Tensor]]) -> Union[torch.Tensor, Tuple]:
         """
