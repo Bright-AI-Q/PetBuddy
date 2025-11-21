@@ -14,6 +14,7 @@ sys.path.append(str(Path(__file__).parent.parent))
 from models.petnet import PetNet
 from utils.data_loader import build_dataloader
 import copy
+from torchvision.transforms import v2
 
 def load_config(config_path: str) -> dict:
     """Load configuration from YAML file"""
@@ -66,6 +67,7 @@ def train_with_config(config_path: str = "configs/petnet_base.yaml"):
     model = PetNet(
         num_classes=model_config['num_classes'],
         stage_repeats=model_config['stage_repeats'],
+        model_cfg=model_config['model_cfg'],
         attn_cfg=model_config['attn_cfg'],
         selfkd_cfg=model_config['selfkd_cfg']
     )
@@ -151,6 +153,7 @@ def train_with_config(config_path: str = "configs/petnet_base.yaml"):
             inputs, labels = batch_data['images'], batch_data['labels']
             inputs, labels = inputs.to(device), labels.to(device)
 
+            inputs, labels = v2.CutMix(num_classes=actual_num_classes)
 
             outputs = model(inputs)
             if isinstance(outputs, tuple):
