@@ -77,7 +77,7 @@ class PetNet(nn.Module):
             nn.AdaptiveAvgPool2d(1),
             nn.Flatten(),
             nn.Dropout(0.2),
-            nn.Linear(192, num_classes)
+            nn.Linear(stage_channels[3], num_classes)
         )
 
     def _add_optional_modules(self, layers: List[nn.Module], out_c: int,
