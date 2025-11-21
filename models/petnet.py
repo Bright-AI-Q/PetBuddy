@@ -28,6 +28,7 @@ from models.modules.dual_attn import ECAPos
 class PetNet(nn.Module):
     def __init__(self, num_classes: int = 144,
                  stage_repeats: List[int] = [2, 3, 4],
+                 model_cfg: Optional[Dict] = None,
                  attn_cfg: Optional[Dict] = None,
                  selfkd_cfg: Optional[Dict] = None,
                  max_pets_per_image: int = 10):
@@ -37,6 +38,8 @@ class PetNet(nn.Module):
         Args:
             num_classes: Number of pet categories
             stage_repeats: Block repetition counts for each stage [stage1, stage2, stage3]
+            model_cfg: Configuration file for model
+                - stage_channels: list of output channel widths for the model
             attn_cfg: Configuration for dual attention mechanism
                 - enable: bool - whether to enable attention
                 - pos_enc: str - type of positional encoding ('relative'/'absolute')
@@ -55,16 +58,19 @@ class PetNet(nn.Module):
         # Initialize SelfKD module list
         self.selfkd_modules = nn.ModuleList([None, None, None])  # For 3 stages
 
+        # Get output channel widths from config
+        stage_channels = model_cfg['stage_channels']
+
         # Stem
         self.stem = nn.Sequential(
-            nn.Conv2d(3, 32, 3, stride=2, padding=1, bias=False),
+            nn.Conv2d(3, stage_channels[0], 3, stride=2, padding=1, bias=False),
             nn.BatchNorm2d(32), nn.ReLU6()
         )
 
         # 3 Stages
-        self.stage1 = self._make_stage(32, 48, stage_repeats[0], 2, attn_cfg, selfkd_cfg, 0)
-        self.stage2 = self._make_stage(48, 96, stage_repeats[1], 2, attn_cfg, selfkd_cfg, 1)
-        self.stage3 = self._make_stage(96, 192, stage_repeats[2], 2, attn_cfg, selfkd_cfg, 2)
+        self.stage1 = self._make_stage(stage_channels[0], stage_channels[1], stage_repeats[0], 2, attn_cfg, selfkd_cfg, 0)
+        self.stage2 = self._make_stage(stage_channels[1], stage_channels[2], stage_repeats[1], 2, attn_cfg, selfkd_cfg, 1)
+        self.stage3 = self._make_stage(stage_channels[2], stage_channels[3], stage_repeats[2], 2, attn_cfg, selfkd_cfg, 2)
 
         # Head
         self.head = nn.Sequential(
