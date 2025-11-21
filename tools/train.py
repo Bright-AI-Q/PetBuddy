@@ -66,7 +66,6 @@ def train_with_config(config_path: str = "configs/petnet_base.yaml"):
     model = PetNet(
         num_classes=model_config['num_classes'],
         stage_repeats=model_config['stage_repeats'],
-        ldre_cfg=config['data'].get('ldre_cfg'),
         attn_cfg=model_config['attn_cfg'],
         selfkd_cfg=model_config['selfkd_cfg']
     )
