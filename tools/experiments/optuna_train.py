@@ -212,6 +212,8 @@ def objective(trial: optuna.trial.Trial, distributed=False):
             total += labels.size(0)
             correct += predicted.eq(labels).sum().item()
 
+        train_acc = 100. * correct / total
+
         # Validation phase
         model.eval()
         val_correct = 0
@@ -253,7 +255,7 @@ def objective(trial: optuna.trial.Trial, distributed=False):
         if trial.should_prune():
             raise optuna.exceptions.TrialPruned()
 
-        print(f"Epoch {epoch+1}/{num_epochs} - Val Acc: {val_acc:.2f}%, Best: {best_acc:.2f}%")
+        print(f"Epoch {epoch+1}/{num_epochs} - Train Acc: {train_acc:.2f}%, Val Acc: {val_acc:.2f}%, Best: {best_acc:.2f}%")
 
     return best_acc
 
