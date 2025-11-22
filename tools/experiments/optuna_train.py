@@ -73,6 +73,7 @@ def objective(trial: optuna.trial.Trial):
     # Create model
     model = PetNet(
         stage_repeats=model_config['stage_repeats'],
+        model_cfg =model_config['model_cfg'],
         num_classes=actual_num_classes,
         attn_cfg=model_config['attn_cfg'],
         selfkd_cfg=model_config['selfkd_cfg']

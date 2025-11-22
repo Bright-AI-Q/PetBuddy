@@ -4,6 +4,8 @@
 !.gitkeep
 .venv
 .idea
+/tmp/
+/tmp/*
 
 # System files
 .DS_Store
