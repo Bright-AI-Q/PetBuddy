@@ -38,9 +38,8 @@ def main():
 
     # Extract to parent/data folder
     print("📂 Extracting data...")
-    data_folder = parent_dir / "data"
     with zipfile.ZipFile(output, 'r') as zip_ref:
-        zip_ref.extractall(data_folder)
+        zip_ref.extractall(parent_dir)
 
     # Delete the zip file
     os.remove(output)
