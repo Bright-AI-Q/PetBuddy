@@ -493,8 +493,8 @@ def main():
         stanford_yolo_dir.mkdir(parents=True, exist_ok=True)
         print(f"✅ Created YOLO annotations directory: {stanford_yolo_dir}")
 
-    tmp_imgs = Path("/tmp/merge_imgs"); tmp_imgs.mkdir(exist_ok=True)
-    tmp_lbls = Path("/tmp/merge_lbls"); tmp_lbls.mkdir(exist_ok=True)
+    tmp_imgs = Path("../tmp/merge_imgs"); tmp_imgs.mkdir(parents=True, exist_ok=True)
+    tmp_lbls = Path("../tmp/merge_lbls"); tmp_lbls.mkdir(parents=True, exist_ok=True)
 
     # 1. Process each source: copy + convert
     if config["oxford"]:
