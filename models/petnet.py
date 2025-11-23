@@ -21,6 +21,8 @@ Key Features:
 import torch
 import torch.nn as nn
 from typing import Optional, Dict, List, Tuple, Union
+
+from models.modules.coord_attn import CoordAttn
 from models.modules.irb import IRB
 from models.modules.self_kd import SelfKD
 from models.modules.dual_attn import ECAPos
@@ -40,6 +42,7 @@ class PetNet(nn.Module):
             stage_repeats: Block repetition counts for each stage [stage1, stage2, stage3]
             model_cfg: Configuration file for model
                 - stage_channels: list of output channel widths for the model
+                - enable_coord_attn: bool - whether to enable coordinate attention
             attn_cfg: Configuration for dual attention mechanism
                 - enable: bool - whether to enable attention
                 - pos_enc: str - type of positional encoding ('relative'/'absolute')
@@ -72,13 +75,25 @@ class PetNet(nn.Module):
         self.stage2 = self._make_stage(stage_channels[1], stage_channels[2], stage_repeats[1], 2, attn_cfg, selfkd_cfg, 1)
         self.stage3 = self._make_stage(stage_channels[2], stage_channels[3], stage_repeats[2], 2, attn_cfg, selfkd_cfg, 2)
 
+        if model_cfg['enable_coord_attn']:
+            self.coord_attn = CoordAttn(stage_channels[3], stage_channels[3])
+
         # Head
-        self.head = nn.Sequential(
-            nn.AdaptiveAvgPool2d(1),
-            nn.Flatten(),
-            nn.Dropout(0.2),
-            nn.Linear(stage_channels[3], num_classes)
-        )
+        if model_cfg['enable_coord_attn']:
+            self.head = nn.Sequential(
+                CoordAttn(stage_channels[3], stage_channels[3]),
+                nn.AdaptiveAvgPool2d(1),
+                nn.Flatten(),
+                nn.Dropout(0.2),
+                nn.Linear(stage_channels[3], num_classes)
+            )
+        else:
+            self.head = nn.Sequential(
+                nn.AdaptiveAvgPool2d(1),
+                nn.Flatten(),
+                nn.Dropout(0.2),
+                nn.Linear(stage_channels[3], num_classes)
+            )
 
     def _add_optional_modules(self, layers: List[nn.Module], out_c: int,
                             attn_cfg: Optional[Dict],

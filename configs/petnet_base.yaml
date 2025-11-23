@@ -2,6 +2,7 @@ model:
   stage_repeats: [2, 3, 4]
   model_cfg:
     stage_channels: [32, 64, 128, 256]
+    enable_coord_attn: True
   attn_cfg:
     enable: true
     pos_enc: "relative"
