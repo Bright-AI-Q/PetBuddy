@@ -4,7 +4,7 @@ model:
     stage_channels: [32, 64, 128, 256]
     enable_coord_attn: True
   attn_cfg:
-    enable: true
+    enable: false
     pos_enc: "relative"
     eca_kernel: 3
   selfkd_cfg:
@@ -14,7 +14,7 @@ model:
     alpha: 0.999
 
 train:
-  batch_size: 16    # Batch size for training aad batch szie when you have gpu resources
+  batch_size: 64    # Batch size for training aad batch szie when you have gpu resources
   learning_rate: 0.003
   num_epochs: 120
   optimizer: "adamw"
@@ -24,6 +24,14 @@ train:
   min_delta: 0.1   # Minimum improvement threshold (percentage)
   label_smoothing: 0.1  # <-- ADD THIS LINE
   gradient_accumulation_steps: 1 # accumulate gradients over these number of steps, minor optimization
+  augmentation:
+    enable: true
+    mixup: 0.2
+    cutmix: 1.0
+    mixup_prob: 1.0
+    switch_prob: 0.0
+    mixup_mode: "batch"
+    label_smoothing: 0.1
 
 data:
   dataset: "pet_cls_training"

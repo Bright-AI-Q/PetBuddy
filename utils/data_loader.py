@@ -251,7 +251,7 @@ def collate_fn(batch):
     }
 
 def build_dataloader(root_dir, batch_size=32, shuffle=True,
-                           num_workers=4, split="train", sampler=None, **kwargs):
+                           num_workers=4, split="train", sampler=None, drop_last=False, **kwargs):
     """
     Build pet classification data loader
 
@@ -275,7 +275,8 @@ def build_dataloader(root_dir, batch_size=32, shuffle=True,
         sampler=sampler,
         collate_fn=collate_fn,
         pin_memory=torch.cuda.is_available(),  # Only enable pin_memory when CUDA is available
-        persistent_workers=num_workers > 0  # Avoid frequent creation/destruction of worker processes
+        persistent_workers=num_workers > 0,
+        drop_last=drop_last # Avoid frequent creation/destruction of worker processes
     )
 
 def build_datasampler(root_dir, shuffle=True, split="train", **kwargs):

@@ -13,6 +13,8 @@ import torch.optim as optim
 import yaml
 from optuna.trial import TrialState
 from torch.amp import GradScaler, autocast
+from timm.data.mixup import Mixup
+from timm.loss import SoftTargetCrossEntropy
 
 torch.set_float32_matmul_precision('high')
 
@@ -50,6 +52,15 @@ def objective(trial: optuna.trial.Trial):
     weight_decay = trial.suggest_float("weight_decay", tuner_config["weight_decay_low"], tuner_config["weight_decay_high"], log=True)
     optimizer_name = trial.suggest_categorical("optimizer", ["AdamW", "SGD"])
 
+    augment_cfg = train_config['augmentation']
+    if augment_cfg['enable']:
+        # Mixup Parameter optimization
+        mixup_alpha  = trial.suggest_float("mixup_alpha", 0.0, 0.4)
+        cutmix_alpha = trial.suggest_float("cutmix_alpha", 0.0, 1.0)
+        mixup_prob   = trial.suggest_float("mixup_prob", 0.5, 1.0)
+        switch_prob  = trial.suggest_float("switch_prob", 0.0, 0.5)
+        label_smoothing = trial.suggest_float("label_smoothing", 0.0, 0.2)
+
     # --- Load base configuration ---
     petnet_config = load_config("configs/petnet_base.yaml")
 
@@ -59,13 +70,13 @@ def objective(trial: optuna.trial.Trial):
     petnet_config['train']['optimizer'] = optimizer_name.lower()
 
     device = torch.device("cuda" if torch.cuda.is_available() else ("mps" if torch.backends.mps.is_available() else "cpu"))
-    print(f"🚀 Starting trial {trial.number}: lr={lr:.2e}, wd={weight_decay:.2e}, opt={optimizer_name}")
+    print(f"🚀 Starting trial {trial.number}: lr={lr:.2e}, wd={weight_decay:.2e}, opt={optimizer_name}, mixup_alpha={mixup_alpha:.2e}, cutmix_alpha={cutmix_alpha:.2e}, mixup_prob={mixup_prob:.2e}, switch_prob:{switch_prob:.2e}, label_smoothing:{label_smoothing:.2e} ")
 
     # Get parameters from petnet_config
     model_config = petnet_config['model']
     train_config = petnet_config['train']
     data_config = petnet_config['data']
-
+    
     # Check dataset
     dataset_to_use = "pet_cls_training" if (Path('data') / 'pet_cls_training').exists() else "merged_cls_dataset"
     actual_num_classes = get_actual_num_classes(dataset_to_use)
@@ -76,7 +87,8 @@ def objective(trial: optuna.trial.Trial):
         model_cfg =model_config['model_cfg'],
         num_classes=actual_num_classes,
         attn_cfg=model_config['attn_cfg'],
-        selfkd_cfg=model_config['selfkd_cfg']
+        selfkd_cfg=model_config['selfkd_cfg'],
+        augment_cfg=train_config['augmentation']
     )
     model.to(device)
 
@@ -104,7 +116,8 @@ def objective(trial: optuna.trial.Trial):
         num_workers=num_workers,
         transform_type="yolo_to_cls",
         split="train",
-        ldre_cfg=data_config.get('ldre_cfg')
+        ldre_cfg=data_config.get('ldre_cfg'),
+        drop_last=True
     )
     val_loader = build_dataloader(
         root_dir=root_dir,
@@ -113,7 +126,8 @@ def objective(trial: optuna.trial.Trial):
         num_workers=num_workers,
         transform_type="yolo_to_cls",
         split="val",
-        ldre_cfg=data_config.get('ldre_cfg')
+        ldre_cfg=data_config.get('ldre_cfg'),
+        drop_last=True
     )
 
     # Training parameters
@@ -121,6 +135,18 @@ def objective(trial: optuna.trial.Trial):
     accumulation_steps = train_config['gradient_accumulation_steps']  # Gradient accumulation steps
 
     scaler = GradScaler(enabled=(device.type == "cuda"))
+    
+    # Setup MixUp
+    if augment_cfg['enable']:
+        mixup_fn = Mixup(
+            mixup_alpha=mixup_alpha,
+            cutmix_alpha=cutmix_alpha,
+            prob=mixup_prob,
+            switch_prob=switch_prob,
+            mode=augment_cfg.get("mixup_mode", "batch"),
+            label_smoothing=label_smoothing,
+            num_classes=actual_num_classes
+        )
 
     # Training loop
     best_acc = 0.0
@@ -133,6 +159,10 @@ def objective(trial: optuna.trial.Trial):
 
         for i, batch_data in enumerate(train_loader):
             inputs, labels = batch_data['images'], batch_data['labels']
+            
+            # Do mix-up for if augmentation is enabled    
+            if augment_cfg['enable']:
+                inputs, labels = mixup_fn(inputs, labels)
             inputs, labels = inputs.to(device), labels.to(device)
 
             with autocast(device_type=device.type, enabled=(device.type == "cuda")):
@@ -147,9 +177,15 @@ def objective(trial: optuna.trial.Trial):
                     logits = outputs
 
                 # Calculate loss
-                loss = F.cross_entropy(logits, labels,
+                if augment_cfg['enable']:
+                    loss_fn = SoftTargetCrossEntropy()
+                    loss = loss_fn(logits, labels)
+                    hard_labels = labels.argmax(dim=1) # get hard labels
+                else: 
+                    loss = F.cross_entropy(logits, labels,
                                       label_smoothing=train_config.get('label_smoothing', 0.0))
-
+                
+                
                 # Gradient accumulation
                 loss = loss / accumulation_steps
             scaler.scale(loss).backward()
@@ -164,6 +200,8 @@ def objective(trial: optuna.trial.Trial):
             running_loss += loss.item() * accumulation_steps
             _, predicted = logits.max(1)
             total += labels.size(0)
+            if augment_cfg['enable']:
+                labels = hard_labels # use hard labels
             correct += predicted.eq(labels).sum().item()
 
         train_acc = 100. * correct / total
@@ -230,7 +268,7 @@ def main():
         study_name="petnet_optimization_phase1",
         direction="maximize",
         pruner=pruner,
-        storage="sqlite:///petnet_study.db",
+        storage="sqlite:///petnet_augment_study.db",
         load_if_exists=True
     )
 
@@ -265,6 +303,12 @@ def main():
     best_config['train']['learning_rate'] = best_trial.params['lr']
     best_config['train']['weight_decay'] = best_trial.params['weight_decay']
     best_config['train']['optimizer'] = best_trial.params['optimizer'].lower()
+    if train_config['augmentation']:
+        best_config['train']['augmentation']['mixup'] = best_trial.params['mixup_alpha']
+        best_config['train']['augmentation']['cutmix'] = best_trial.params['cutmix_alpha']
+        best_config['train']['augmentation']['mixup_prob'] = best_trial.params['mixup_prob']
+        best_config['train']['augmentation']['switch_prob'] = best_trial.params['switch_prob']
+        best_config['train']['augmentation']['label_smoothing'] = best_trial.params['label_smoothing']
 
     best_config_path = "configs/petnet_optimized_phase1.yaml"
     with open(best_config_path, 'w') as f:
