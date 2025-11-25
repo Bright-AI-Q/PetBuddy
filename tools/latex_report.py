@@ -142,7 +142,7 @@ if __name__ == '__main__':
     doc = create_paper_template()
 
     # Generate .tex file
-    filename = '../report/motion_prediction_report'
+    filename = '../report/petnet_report'
     doc.generate_tex(filename)
     print(f"Successfully generated {filename}.tex")
 
