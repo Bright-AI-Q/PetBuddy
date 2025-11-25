@@ -11,8 +11,8 @@ os.makedirs("dog_database", exist_ok=True)
 # To populate more websites to scrape here
 urls = ["https://www.dog-breeds.net/affenpinscher/", 
         "https://www.dog-breeds.net/afghan-hound/",
-        "https://www.dog-breeds.net/airedale/",
-        "https://www.dog-breeds.net/american-staffordshire-terrier/]
+        "https://www.dog-breeds.net/airedale-terrier/",
+        ]
 headers = {"User-Agent": "Mozilla/5.0"}
 
 def scrape_dog_breed(url):
