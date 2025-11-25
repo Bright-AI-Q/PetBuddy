@@ -4,7 +4,7 @@ model:
     stage_channels: [32, 64, 128, 256]
     enable_coord_attn: True
   attn_cfg:
-    enable: false
+    enable: true
     pos_enc: "relative"
     eca_kernel: 3
   selfkd_cfg:

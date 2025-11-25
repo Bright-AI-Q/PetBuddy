@@ -7,7 +7,8 @@ import torch.optim as optim
 from pathlib import Path
 import sys
 import yaml
-
+from timm.data.mixup import Mixup
+from timm.loss import SoftTargetCrossEntropy
 
 sys.path.append(str(Path(__file__).parent.parent))
 
@@ -84,7 +85,13 @@ def train_with_config(config_path: str = "configs/petnet_base.yaml"):
     print(f"🛠️ Using Label Smoothing with epsilon = {label_smoothing}")
 
     # Setup loss function and optimizer
-    criterion = nn.CrossEntropyLoss(label_smoothing=label_smoothing)
+    if augment_cfg['enable']:
+        # Mixup / CutMix → labels are soft
+        criterion = SoftTargetCrossEntropy()
+    else:
+        # Normal hard labels
+        label_smoothing = train_config.get("label_smoothing", 0.0)
+        criterion = nn.CrossEntropyLoss(label_smoothing=label_smoothing)
 
     if train_config['optimizer'] == "adam":
         optimizer = optim.Adam(model.parameters(),
@@ -135,6 +142,19 @@ def train_with_config(config_path: str = "configs/petnet_base.yaml"):
     best_epoch = 0
     early_stop = False
 
+    # Mixup augmentation
+    augment_cfg = train_config['augmentation']
+    if augment_cfg["enable"]:
+        mixup_fn = Mixup(
+            mixup_alpha=augment_cfg['mixup'],
+            cutmix_alpha=augment_cfg['cutmix'],
+            prob=augment_cfg['mixup_prob'],
+            switch_prob=augment_cfg['switch_prob'],
+            mode=augment_cfg['mixup_mode'],
+            label_smoothing=augment_cfg['label_smoothing'],
+            num_classes=actual_num_classes,
+        )
+
     for epoch in range(num_epochs):
         if early_stop:
             print(f"Early stopping triggered at epoch {epoch + 1}")
@@ -150,6 +170,10 @@ def train_with_config(config_path: str = "configs/petnet_base.yaml"):
 
         for i, batch_data in enumerate(train_loader):
             inputs, labels = batch_data['images'], batch_data['labels']
+            # Do mix-up for if augmentation is enabled    
+            if augment_cfg['enable']:
+                inputs, labels = mixup_fn(inputs, labels)
+                
             inputs, labels = inputs.to(device), labels.to(device)
 
             outputs = model(inputs)

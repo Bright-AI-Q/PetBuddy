@@ -1,7 +1,9 @@
 """
-Optuna hyperparameter optimization training script
+Optuna hyperparameter optimization training script for core and mixup parameters.
+To optimize for only the mixup while core is frozen, use optuna_train_mixup.py script
 Modified from tools/train.py with Optuna integration
 """
+
 import os
 import sys
 from pathlib import Path
@@ -16,7 +18,7 @@ from torch.amp import GradScaler, autocast
 from timm.data.mixup import Mixup
 from timm.loss import SoftTargetCrossEntropy
 
-torch.set_float32_matmul_precision('high')
+torch.set_float32_matmul_precision("high")
 
 # Add project root directory to Python path
 sys.path.append(str(Path(__file__).parent.parent.parent))
@@ -24,23 +26,29 @@ sys.path.append(str(Path(__file__).parent.parent.parent))
 from models.petnet import PetNet
 from utils.data_loader import build_dataloader, build_datasampler
 
+
 def load_config(config_path: str) -> dict:
     """Load configuration from YAML file"""
     config_path = Path(config_path)
     if not config_path.exists():
         raise FileNotFoundError(f"Config file not found: {config_path}")
 
-    with open(config_path, 'r') as f:
+    with open(config_path, "r") as f:
         config = yaml.safe_load(f)
 
     return config
 
+
 def get_actual_num_classes(dataset_name):
     """Get the actual number of classes in the dataset reliably"""
     from utils.data_utils import get_num_classes
+
     actual_num_classes = get_num_classes(dataset_name)
-    print(f"📊 Actual number of classes in dataset '{dataset_name}': {actual_num_classes}")
+    print(
+        f"📊 Actual number of classes in dataset '{dataset_name}': {actual_num_classes}"
+    )
     return actual_num_classes
+
 
 def objective(trial: optuna.trial.Trial):
     """Optuna objective function for hyperparameter optimization"""
@@ -48,48 +56,66 @@ def objective(trial: optuna.trial.Trial):
     tuner_config = optuna_config["tuner"]
 
     # --- Phase 1: Core parameter optimization ---
-    lr = trial.suggest_float("lr", tuner_config["lr_low"], tuner_config["lr_high"], log=True)
-    weight_decay = trial.suggest_float("weight_decay", tuner_config["weight_decay_low"], tuner_config["weight_decay_high"], log=True)
+    lr = trial.suggest_float(
+        "lr", tuner_config["lr_low"], tuner_config["lr_high"], log=True
+    )
+    weight_decay = trial.suggest_float(
+        "weight_decay",
+        tuner_config["weight_decay_low"],
+        tuner_config["weight_decay_high"],
+        log=True,
+    )
     optimizer_name = trial.suggest_categorical("optimizer", ["AdamW", "SGD"])
 
     # --- Load base configuration ---
     petnet_config = load_config("configs/petnet_base.yaml")
 
     # Override configuration values with Optuna suggested parameters
-    petnet_config['train']['learning_rate'] = lr
-    petnet_config['train']['weight_decay'] = weight_decay
-    petnet_config['train']['optimizer'] = optimizer_name.lower()
+    petnet_config["train"]["learning_rate"] = lr
+    petnet_config["train"]["weight_decay"] = weight_decay
+    petnet_config["train"]["optimizer"] = optimizer_name.lower()
 
-    device = torch.device("cuda" if torch.cuda.is_available() else ("mps" if torch.backends.mps.is_available() else "cpu"))
+    device = torch.device(
+        "cuda"
+        if torch.cuda.is_available()
+        else ("mps" if torch.backends.mps.is_available() else "cpu")
+    )
 
     # Get parameters from petnet_config
-    model_config = petnet_config['model']
-    train_config = petnet_config['train']
-    data_config = petnet_config['data']
+    model_config = petnet_config["model"]
+    train_config = petnet_config["train"]
+    data_config = petnet_config["data"]
 
-    augment_cfg = train_config['augmentation']
-    if augment_cfg['enable']:
+    augment_cfg = train_config["augmentation"]
+    if augment_cfg["enable"]:
         # Mixup Parameter optimization
-        mixup_alpha  = trial.suggest_float("mixup_alpha", 0.0, 0.4)
+        mixup_alpha = trial.suggest_float("mixup_alpha", 0.0, 0.4)
         cutmix_alpha = trial.suggest_float("cutmix_alpha", 0.0, 1.0)
-        mixup_prob   = trial.suggest_float("mixup_prob", 0.5, 1.0)
-        switch_prob  = trial.suggest_float("switch_prob", 0.0, 0.5)
+        mixup_prob = trial.suggest_float("mixup_prob", 0.5, 1.0)
+        switch_prob = trial.suggest_float("switch_prob", 0.0, 0.5)
         label_smoothing = trial.suggest_float("label_smoothing", 0.0, 0.2)
+    else:
+        print(f"🚨 WARNING: Mixup augmentation is not enabled from config file!")
 
-    print(f"🚀 Starting trial {trial.number}: lr={lr:.2e}, wd={weight_decay:.2e}, opt={optimizer_name}, mixup_alpha={mixup_alpha:.2e}, cutmix_alpha={cutmix_alpha:.2e}, mixup_prob={mixup_prob:.2e}, switch_prob:{switch_prob:.2e}, label_smoothing:{label_smoothing:.2e} ")
-
+    print(
+        f"🚀 Starting trial {trial.number}: lr={lr:.2e}, wd={weight_decay:.2e}, opt={optimizer_name}, mixup_alpha={mixup_alpha:.2e}, cutmix_alpha={cutmix_alpha:.2e}, mixup_prob={mixup_prob:.2e}, switch_prob:{switch_prob:.2e}, label_smoothing:{label_smoothing:.2e} "
+    )
 
     # Check dataset
-    dataset_to_use = "pet_cls_training" if (Path('data') / 'pet_cls_training').exists() else "merged_cls_dataset"
+    dataset_to_use = (
+        "pet_cls_training"
+        if (Path("data") / "pet_cls_training").exists()
+        else "merged_cls_dataset"
+    )
     actual_num_classes = get_actual_num_classes(dataset_to_use)
 
     # Create model
     model = PetNet(
-        stage_repeats=model_config['stage_repeats'],
-        model_cfg =model_config['model_cfg'],
+        stage_repeats=model_config["stage_repeats"],
+        model_cfg=model_config["model_cfg"],
         num_classes=actual_num_classes,
-        attn_cfg=model_config['attn_cfg'],
-        selfkd_cfg=model_config['selfkd_cfg']
+        attn_cfg=model_config["attn_cfg"],
+        selfkd_cfg=model_config["selfkd_cfg"],
     )
     model.to(device)
 
@@ -97,13 +123,13 @@ def objective(trial: optuna.trial.Trial):
     if optimizer_name == "AdamW":
         optimizer = optim.AdamW(model.parameters(), lr=lr, weight_decay=weight_decay)
     else:  # SGD
-        optimizer = optim.SGD(model.parameters(), lr=lr, weight_decay=weight_decay, momentum=0.9)
+        optimizer = optim.SGD(
+            model.parameters(), lr=lr, weight_decay=weight_decay, momentum=0.9
+        )
 
     # Create learning rate scheduler
     scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(
-        optimizer,
-        T_max=train_config['num_epochs'],
-        eta_min=1e-6
+        optimizer, T_max=train_config["num_epochs"], eta_min=1e-6
     )
 
     # Create data loaders - use correct parameters
@@ -112,33 +138,35 @@ def objective(trial: optuna.trial.Trial):
     num_workers = data_config["num_workers"]
     train_loader = build_dataloader(
         root_dir=root_dir,
-        batch_size=train_config['batch_size'],
+        batch_size=train_config["batch_size"],
         shuffle=True,
         num_workers=num_workers,
         transform_type="yolo_to_cls",
         split="train",
-        ldre_cfg=data_config.get('ldre_cfg'),
-        drop_last=True
+        ldre_cfg=data_config.get("ldre_cfg"),
+        drop_last=True,
     )
     val_loader = build_dataloader(
         root_dir=root_dir,
-        batch_size=train_config['batch_size'],
+        batch_size=train_config["batch_size"],
         shuffle=False,
         num_workers=num_workers,
         transform_type="yolo_to_cls",
         split="val",
-        ldre_cfg=data_config.get('ldre_cfg'),
-        drop_last=True
+        ldre_cfg=data_config.get("ldre_cfg"),
+        drop_last=True,
     )
 
     # Training parameters
-    num_epochs = train_config['num_epochs']
-    accumulation_steps = train_config['gradient_accumulation_steps']  # Gradient accumulation steps
+    num_epochs = train_config["num_epochs"]
+    accumulation_steps = train_config[
+        "gradient_accumulation_steps"
+    ]  # Gradient accumulation steps
 
     scaler = GradScaler(enabled=(device.type == "cuda"))
-    
+
     # Setup MixUp
-    if augment_cfg['enable']:
+    if augment_cfg["enable"]:
         mixup_fn = Mixup(
             mixup_alpha=mixup_alpha,
             cutmix_alpha=cutmix_alpha,
@@ -146,7 +174,7 @@ def objective(trial: optuna.trial.Trial):
             switch_prob=switch_prob,
             mode=augment_cfg.get("mixup_mode", "batch"),
             label_smoothing=label_smoothing,
-            num_classes=actual_num_classes
+            num_classes=actual_num_classes,
         )
 
     # Training loop
@@ -159,10 +187,10 @@ def objective(trial: optuna.trial.Trial):
         total = 0
 
         for i, batch_data in enumerate(train_loader):
-            inputs, labels = batch_data['images'], batch_data['labels']
-            
-            # Do mix-up for if augmentation is enabled    
-            if augment_cfg['enable']:
+            inputs, labels = batch_data["images"], batch_data["labels"]
+
+            # Do mix-up for if augmentation is enabled
+            if augment_cfg["enable"]:
                 inputs, labels = mixup_fn(inputs, labels)
             inputs, labels = inputs.to(device), labels.to(device)
 
@@ -178,15 +206,17 @@ def objective(trial: optuna.trial.Trial):
                     logits = outputs
 
                 # Calculate loss
-                if augment_cfg['enable']:
+                if augment_cfg["enable"]:
                     loss_fn = SoftTargetCrossEntropy()
                     loss = loss_fn(logits, labels)
-                    hard_labels = labels.argmax(dim=1) # get hard labels
-                else: 
-                    loss = F.cross_entropy(logits, labels,
-                                      label_smoothing=train_config.get('label_smoothing', 0.0))
-                
-                
+                    hard_labels = labels.argmax(dim=1)  # get hard labels
+                else:
+                    loss = F.cross_entropy(
+                        logits,
+                        labels,
+                        label_smoothing=train_config.get("label_smoothing", 0.0),
+                    )
+
                 # Gradient accumulation
                 loss = loss / accumulation_steps
             scaler.scale(loss).backward()
@@ -201,11 +231,11 @@ def objective(trial: optuna.trial.Trial):
             running_loss += loss.item() * accumulation_steps
             _, predicted = logits.max(1)
             total += labels.size(0)
-            if augment_cfg['enable']:
-                labels = hard_labels # use hard labels
+            if augment_cfg["enable"]:
+                labels = hard_labels  # use hard labels
             correct += predicted.eq(labels).sum().item()
 
-        train_acc = 100. * correct / total
+        train_acc = 100.0 * correct / total
 
         # Validation phase
         model.eval()
@@ -214,7 +244,7 @@ def objective(trial: optuna.trial.Trial):
 
         with torch.no_grad():
             for batch_data in val_loader:
-                inputs, labels = batch_data['images'], batch_data['labels']
+                inputs, labels = batch_data["images"], batch_data["labels"]
                 inputs, labels = inputs.to(device), labels.to(device)
 
                 with autocast(device_type=str(device), enabled=(str(device) == "cuda")):
@@ -229,7 +259,7 @@ def objective(trial: optuna.trial.Trial):
                 val_total += labels.size(0)
                 val_correct += predicted.eq(labels).sum().item()
 
-        val_acc = 100. * val_correct / val_total
+        val_acc = 100.0 * val_correct / val_total
         best_acc = max(best_acc, val_acc)
 
         # Learning rate scheduling
@@ -240,9 +270,12 @@ def objective(trial: optuna.trial.Trial):
         if trial.should_prune():
             raise optuna.exceptions.TrialPruned()
 
-        print(f"Epoch {epoch+1}/{num_epochs} - Train Acc: {train_acc:.2f}%, Val Acc: {val_acc:.2f}%, Best: {best_acc:.2f}%")
+        print(
+            f"Epoch {epoch+1}/{num_epochs} - Train Acc: {train_acc:.2f}%, Val Acc: {val_acc:.2f}%, Best: {best_acc:.2f}%"
+        )
 
     return best_acc
+
 
 def main():
     """Main function to run Optuna optimization"""
@@ -269,12 +302,12 @@ def main():
         study_name="petnet_optimization_phase1",
         direction="maximize",
         pruner=pruner,
-        storage="sqlite:///petnet_study.db",
-        load_if_exists=True
+        storage="sqlite:///petnet_augment_core_study.db",
+        load_if_exists=True,
     )
 
-    print("🔬 Starting Optuna hyperparameter optimization (Phase 1: Core parameters)")
-    print("📊 Optimizing: Learning rate, weight decay, optimizer type")
+    print("🔬 Starting Optuna hyperparameter optimization (Phase 1: Core parameters and Phase 2: Mixup parameters")
+    print("📊 Optimizing: Learning rate, weight decay, optimizer type, mixup alpha, cutmix alpha, mixup prob, switch prob, label smoothing")
     print("📈 Objective: Maximize validation accuracy")
 
     # Start optimization
@@ -301,18 +334,26 @@ def main():
 
     # Save best configuration
     best_config = load_config("configs/petnet_base.yaml")
-    best_config['train']['learning_rate'] = best_trial.params['lr']
-    best_config['train']['weight_decay'] = best_trial.params['weight_decay']
-    best_config['train']['optimizer'] = best_trial.params['optimizer'].lower()
-    if train_config['augmentation']:
-        best_config['train']['augmentation']['mixup'] = best_trial.params['mixup_alpha']
-        best_config['train']['augmentation']['cutmix'] = best_trial.params['cutmix_alpha']
-        best_config['train']['augmentation']['mixup_prob'] = best_trial.params['mixup_prob']
-        best_config['train']['augmentation']['switch_prob'] = best_trial.params['switch_prob']
-        best_config['train']['augmentation']['label_smoothing'] = best_trial.params['label_smoothing']
+    best_config["train"]["learning_rate"] = best_trial.params["lr"]
+    best_config["train"]["weight_decay"] = best_trial.params["weight_decay"]
+    best_config["train"]["optimizer"] = best_trial.params["optimizer"].lower()
+    if train_config["augmentation"]:
+        best_config["train"]["augmentation"]["mixup"] = best_trial.params["mixup_alpha"]
+        best_config["train"]["augmentation"]["cutmix"] = best_trial.params[
+            "cutmix_alpha"
+        ]
+        best_config["train"]["augmentation"]["mixup_prob"] = best_trial.params[
+            "mixup_prob"
+        ]
+        best_config["train"]["augmentation"]["switch_prob"] = best_trial.params[
+            "switch_prob"
+        ]
+        best_config["train"]["augmentation"]["label_smoothing"] = best_trial.params[
+            "label_smoothing"
+        ]
 
     best_config_path = "configs/petnet_optimized_phase1.yaml"
-    with open(best_config_path, 'w') as f:
+    with open(best_config_path, "w") as f:
         yaml.dump(best_config, f, default_flow_style=False)
 
     print(f"\n💾 Best configuration saved to: {best_config_path}")
@@ -325,7 +366,9 @@ def main():
         fig_history = optuna.visualization.plot_optimization_history(study)
         fig_history.write_image("optuna_optimization_history.png")
         fig_history.write_image("optuna_optimization_history.svg")
-        print("✅ Optimization history plot saved: optuna_optimization_history.png, optuna_optimization_history.svg")
+        print(
+            "✅ Optimization history plot saved: optuna_optimization_history.png, optuna_optimization_history.svg"
+        )
 
         # 2. Parameter importance plot
         print("📊 Generating parameter importance plot...")
@@ -361,7 +404,9 @@ def main():
         if trial.state == TrialState.COMPLETE:
             acc = trial.value
             params = trial.params
-            print(f"{i:5d} | {acc:8.2f} | {params.get('lr', 'N/A'):.2e} | {params.get('weight_decay', 'N/A'):.2e} | {params.get('optimizer', 'N/A')}")
+            print(
+                f"{i:5d} | {acc:8.2f} | {params.get('lr', 'N/A'):.2e} | {params.get('weight_decay', 'N/A'):.2e} | {params.get('optimizer', 'N/A')}"
+            )
 
     # Create parameter table for paper
     print("\n📄 Paper parameter table:")
@@ -370,6 +415,11 @@ def main():
     print(f"| Optimizer | {best_trial.params['optimizer']} |")
     print(f"| Learning Rate | {best_trial.params['lr']:.2e} |")
     print(f"| Weight Decay | {best_trial.params['weight_decay']:.2e} |")
+    print(f"| Mixup Alpha | {best_trial.params['mixup_alpha']:.2e} |")
+    print(f"| Cutmix Alpha | {best_trial.params['cutmix_alpha']:.2e} |")
+    print(f"| Mixup Prob | {best_trial.params['mixup_prob']:.2e} |")
+    print(f"| Switch Prob | {best_trial.params['switch_prob']:.2e} |")
+    print(f"| Label Smoothing | {best_trial.params['label_smoothing']:.2e} |")
 
 
 if __name__ == "__main__":
