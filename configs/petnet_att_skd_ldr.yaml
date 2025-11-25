@@ -1,0 +1,60 @@
+model:
+  pretrained_weights_path: "mobilenet_v2-7ebf99e0.pth"
+  stage_repeats: [3, 4, 6]
+  attn_cfg:
+    enable: true
+    eca_kernel: 5
+  selfkd_cfg:
+    enable: true
+    T: 4
+    w: [0.2, 0.5, 0.0]
+
+
+train:
+  #resume_from_checkpoint: "runs/petnet_base/best.pt"
+  seed: 46  # Set random seed to ensure experiment reproducibility
+  batch_size: 16    # Batch size for training aad batch szie when you have gpu resources
+  learning_rate: 0.001
+  num_epochs: 120
+  optimizer: "adamw"
+  weight_decay: 0.05
+  warmup_epochs: 10
+  patience: 15     # Early stopping patience (number of epochs without improvement)
+  min_delta: 0.1   # Minimum improvement threshold (percentage)
+  label_smoothing: 0.1  # <-- ADD THIS LINE
+
+# --- Key additions: MixUp and CutMix configuration ---
+  mixup_args:
+    mixup_alpha: 0.0    # MixUp strength (set to 0 to disable)
+    cutmix_alpha: 0.0   # CutMix strength (set to 0 to disable)
+    prob: 0.0           # Probability of applying augmentation per batch
+    switch_prob: 0.5    # 50% probability MixUp, 50% probability CutMix
+    mode: 'batch'
+    # num_classes Will be automatically filled by code
+
+
+data:
+  dataset: "pet_cls_training"
+  root_dir: "data/pet_cls_training"
+  num_workers: 8    # data loader workers
+  input_size: [224, 224]
+  train_split: 0.8
+  val_split: 0.1
+  test_split: 0.1
+  ldre_cfg:
+    enable: true
+    prob: 0.5
+    grid_size: 16
+    drop_count: 2
+    enhanced_mode: false  # Enhanced mode switch
+    top_k_ratio: 0.3
+
+evaluation:
+  metrics: ["accuracy", "precision", "recall", "f1"]
+  save_confusion_matrix: true
+
+logging:
+  log_dir:
+  save_checkpoints: true
+  checkpoint_freq: 10
+  tensorboard: true
