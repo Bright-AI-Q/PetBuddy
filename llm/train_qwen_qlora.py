@@ -1,77 +1,86 @@
-from transformers import AutoModelForCausalLM, AutoTokenizer, BitsAndBytesConfig
+from transformers import AutoModelForCausalLM, AutoTokenizer, BitsAndBytesConfig, TrainingArguments
 from datasets import load_dataset
 from peft import LoraConfig
 from trl import SFTTrainer
+import torch
 
-# -------------------------
-# 1️⃣ Model & Tokenizer
-# -------------------------
 model_name = "Qwen/Qwen2.5-1.5B-Instruct"
 
+# More aggressive quantization config
 bnb_config = BitsAndBytesConfig(
     load_in_4bit=True,
     bnb_4bit_quant_type="nf4",
-    bnb_4bit_compute_dtype="float16",  # safer for 8GB GPU
+    bnb_4bit_compute_dtype=torch.float16,  # Changed from bfloat16
     bnb_4bit_use_double_quant=True,
 )
 
 model = AutoModelForCausalLM.from_pretrained(
     model_name,
     quantization_config=bnb_config,
-    device_map="auto",  # automatically place layers on GPU/CPU
-    offload_folder="offload",  # moves unused layers to CPU to save VRAM
+    device_map="auto",
+    torch_dtype=torch.float16,
 )
 
-tokenizer = AutoTokenizer.from_pretrained(
-    model_name,
-    use_fast=False,
-    padding_side="right"
-)
+tokenizer = AutoTokenizer.from_pretrained(model_name, use_fast=False)
 tokenizer.pad_token = tokenizer.eos_token
+tokenizer.padding_side = "right"
 
-# -------------------------
-# 2️⃣ Dataset
-# -------------------------
-dataset = load_dataset("json", data_files={"train": "pet_knowledge/dataset_train.jsonl", "validation": "pet_knowledge/dataset_val.jsonl"})
+# Load dataset
+dataset = load_dataset("json", data_files={
+    "train": "pet_knowlege/dataset_train.jsonl",
+    "validation": "pet_knowlege/dataset_val.jsonl"
+})
 
-# -------------------------
-# 3️⃣ LoRA Config
-# -------------------------
+# Formatting function with length limit
+def formatting_func(example):
+    inputs = example["input"]
+    outputs = example["output"]
+    text = f"{inputs}\n{outputs}" if inputs else outputs
+    # Truncate if needed
+    tokens = tokenizer(text, truncation=True, max_length=1024) # to prevent memory overflow
+    return tokenizer.decode(tokens['input_ids'])
+
+# Smaller LoRA config
 peft_config = LoraConfig(
-    r=64,
+    r=32,  #Reduced from 64
     lora_alpha=32,
     target_modules=[
-        "q_proj", "k_proj", "v_proj", "o_proj",
-        "gate_proj", "down_proj", "up_proj"
+        "q_proj", "k_proj", "v_proj", "o_proj", "gate_proj", "up_proj"
+        # Removed MLP layers to save memory
     ],
     lora_dropout=0.05,
     task_type="CAUSAL_LM"
 )
 
-# -------------------------
-# 4️⃣ Trainer
-# -------------------------
-trainer = SFTTrainer(
-    model=model,
-    tokenizer=tokenizer,
-    train_dataset=dataset["train"],
-    eval_dataset=dataset["validation"],
-    dataset_text_field="messages",  # adjust if your field is "output"
-    max_seq_length=1024,            # smaller seq length saves memory
-    peft_config=peft_config,
+training_args = TrainingArguments(
     output_dir="qwen-petnet",
-    per_device_train_batch_size=1,
-    gradient_accumulation_steps=16,  # simulate larger batch
+    per_device_train_batch_size=2,
+    gradient_accumulation_steps=16,  # Increased from 16
+    gradient_checkpointing=True,  # Important for memory
     learning_rate=2e-4,
-    num_train_epochs=2,
-    logging_steps=10,
-    save_steps=200,
+    lr_scheduler_type="cosine",
+    num_train_epochs=3,
+    logging_steps=5,
+    save_steps=100,
+    save_total_limit=1,  # Reduced from 2
+    fp16=True,
+    eval_strategy="steps",
+    eval_steps=100,
+    optim="paged_adamw_8bit",  # Memory-efficient optimizer
+    max_grad_norm=0.3,
+    warmup_ratio=0.03,
+    group_by_length=True,  # Groups similar lengths together
 )
 
-# -------------------------
-# 5️⃣ Train & Save
-# -------------------------
+trainer = SFTTrainer(
+    model=model,
+    args=training_args,
+    train_dataset=dataset["train"],
+    eval_dataset=dataset["validation"],
+    peft_config=peft_config,
+    formatting_func=formatting_func,
+)
+
 trainer.train()
 trainer.save_model("qwen-petnet")
 print("🎉 Training complete!")
-
