@@ -24,7 +24,7 @@ import torch.nn.functional as F
 
 
 class SelfKD(nn.Module):
-    def __init__(self, channels_list, T=4, alpha=0.999):
+    def __init__(self, in_channels: int, num_classes: int, T: float = 4.0):
         """
         Self Knowledge Distillation module for stage features
 
@@ -33,44 +33,30 @@ class SelfKD(nn.Module):
             T: Temperature parameter for KL divergence
             alpha: EMA update coefficient for teacher features
         """
+
         super().__init__()
         self.T = T
-        self.alpha = alpha
-        # Create adaptive average pooling for each stage
-        self.pools = nn.ModuleList([nn.AdaptiveAvgPool2d(1) for _ in channels_list])
-        self.teacher_features = None  # Store teacher model features
 
-    def forward(self, student_features, stage_idx):
-        """
-        Forward pass for self knowledge distillation
+        # This is a small auxiliary classifier
+        self.aux_head = nn.Sequential(
+            nn.AdaptiveAvgPool2d(1),
+            nn.Flatten(),
+            nn.Dropout(0.1),  # Add a little Dropout to prevent overfitting
+            nn.Linear(in_channels, num_classes)
+        )
+    def forward(self, student_features, teacher_logits):
+        # 1. Student (middle layer) attempts to predict classification
+        student_logits = self.aux_head(student_features)
 
-        Args:
-            student_features: Feature maps from student model (B, C, H, W)
-            stage_idx: Index of the current stage (0, 1, 2)
+        # 2. Teacher (final layer) provides soft labels
+        # Note: Teacher's logits need to be detached, we don't backprop through teacher, only update student
+        teacher_probs = F.softmax(teacher_logits.detach() / self.T, dim=1)
+        student_log_probs = F.log_softmax(student_logits / self.T, dim=1)
 
-        Returns:
-            KL divergence loss for the given stage
-        """
-        # Global average pooling for student features
-        student_pooled = self.pools[0](student_features)  # (B, C, 1, 1)
-        student_logits = student_pooled.squeeze(-1).squeeze(-1)  # (B, C)
-
-        if self.teacher_features is None:
-            # Initialize teacher features
-            self.teacher_features = student_logits.detach().clone()
-        else:
-            # Check batch size consistency
-            if self.teacher_features.size(0) != student_logits.size(0):
-                self.teacher_features = student_logits.detach().clone()
-            else:
-                # EMA update for teacher features
-                self.teacher_features = (self.alpha * self.teacher_features +
-                                       (1 - self.alpha) * student_logits.detach())
-
-        # Calculate KL divergence loss
+        # 3. Calculate KL divergence
         kl_loss = F.kl_div(
-            F.log_softmax(student_logits / self.T, dim=1),
-            F.softmax(self.teacher_features / self.T, dim=1),
+            student_log_probs,
+            teacher_probs,
             reduction='batchmean'
         ) * (self.T ** 2)
 
