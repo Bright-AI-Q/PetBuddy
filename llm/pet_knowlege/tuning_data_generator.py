@@ -8,12 +8,6 @@ import os
 # Data is outputed to dog_databse directory
 os.makedirs("dog_database", exist_ok=True)
 
-
-# To populate more websites to scrape here
-urls = ["https://www.dog-breeds.net/affenpinscher/", 
-        "https://www.dog-breeds.net/afghan-hound/",
-        "https://www.dog-breeds.net/airedale-terrier/",
-        ]
 breed_url = {
     'Affenpinscher':"https://www.dog-breeds.net/affenpinscher/",
     'Afghan hound': "https://www.dog-breeds.net/afghan-hound/",
@@ -147,29 +141,57 @@ def scrape_dog_breed(url):
     title_tag = soup.select_one("title")
     if title_tag:
         title_text = title_tag.get_text(strip=True)
-        # clean up extra words like "Dog Breed Information"
         breed = title_text.split("Dog")[0].strip()
     else:
-        # 2️⃣ Fallback: extract from URL (affenpinscher)
         breed = urlparse(url).path.strip("/").split("/")[-1].replace("-", " ").title()
 
     # --- Extract all text content sections ---
     sections = []
-    current_section = {"section": "General", "content": ""}
+    # find headings we consider as section starts
+    heading_tags = soup.find_all(re.compile(r"^h[2-4]$"))
 
-    for tag in soup.select("h2, h3, p, li"):
-        if tag.name in ["h2", "h3"]:
-            # start a new section
-            if current_section["content"]:
-                sections.append(current_section)
-            current_section = {"section": tag.get_text(strip=True), "content": ""}
-        else:
-            text = tag.get_text(" ", strip=True)
-            if text:
-                current_section["content"] += text + " "
+    for heading in heading_tags:
+        sec_title = heading.get_text(" ", strip=True)
+        if not sec_title:
+            continue
 
-    if current_section["content"]:
-        sections.append(current_section)
+        # optional: clean emojis/prefix punctuation from heading
+        clean_title = re.sub(r"^[^\w\s]+", "", sec_title).strip()
+        if not clean_title:
+            clean_title = sec_title
+
+        # gather content until the next heading (h2-h4) or <hr>
+        content_parts = []
+        for sib in heading.next_siblings:
+            # if sibling is another heading tag -> stop collecting
+            if getattr(sib, "name", None) and re.match(r"^h[2-4]$", sib.name):
+                break
+            # stop at hr (footer divider)
+            if getattr(sib, "name", None) and sib.name == "hr":
+                break
+            # if it's a Tag, extract its text (covers div, p, ul, etc.)
+            if hasattr(sib, "get_text"):
+                txt = sib.get_text(" ", strip=True)
+                if txt:
+                    content_parts.append(txt)
+            # if it's a NavigableString, include text as well
+            else:
+                txt = str(sib).strip()
+                if txt:
+                    content_parts.append(txt)
+
+        content = " ".join(content_parts).strip()
+
+        # debug: if content empty, print small context (helps diagnosing why)
+        if not content:
+            # show what the heading's next element HTML looks like (first 200 chars)
+            nxt = heading.find_next()
+            snippet = ""
+            if nxt is not None:
+                snippet = str(nxt)[:200]
+            print(f"⚠️ Empty section captured for heading: '{clean_title}'\n  next HTML snippet: {snippet}\n")
+
+        sections.append({"section": clean_title, "content": content})
 
     # --- Clean unused sections ---
     cleaned_sections = [s for s in sections if s["section"].lower() != "general"]
