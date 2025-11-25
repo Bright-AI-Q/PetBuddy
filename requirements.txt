@@ -1,4 +1,3 @@
-timm
 requests>=2.31.0
 tqdm>=4.66.0
 huggingface_hub>=0.20.0
@@ -14,4 +13,8 @@ plotly>=5.0.0
 kaleido>=0.2.0
 pylatex>=1.4.1
 seaborn>=0.13.0
-gdown>=5.2.0
+opencv-python-headless==4.12.0.88  # 使用headless版本，避免GUI依赖问题
+timm>=0.6.12
+tensorboard>=2.15.0
+pandas>=2.0.0
+grad-cam>=1.4.7
