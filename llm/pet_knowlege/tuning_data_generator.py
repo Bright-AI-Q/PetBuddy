@@ -221,13 +221,17 @@ def safe_filename(name):
     return name
 
 # --- Run scraper ---
-for breed, url in breed_url: 
+for breed, url in breed_url.items(): 
+    if not url:
+        print(f"Skipping {breed}: no URL provided.")
+        continue
+    
     data = scrape_dog_breed(url)
     data["breed"] = breed
     print(f"🐶 {breed}")
     for sec in data["sections"][:3]:
         print(f"\n🦴 {sec['section']}")
-        print(sec["content"][:300] + "...")
+        print(sec["content"][:50] + "...")
 
     # --- Save to file ---
     filename = safe_filename(breed) + ".json"
