@@ -57,8 +57,14 @@ Georgia Institute of Technology\\
 \section{Introduction/Background/Motivation}
 
 (5 points) What did you try to do? What problem did you try to solve? Articulate your objectives using absolutely no jargon.
+The main problem we are trying to solve is multiclass pet breed classification on resource constrained environments such as mobile phones. Multiclass breed classification is a challenging problem because there are many similarities between breeds. The differences between breeds are very subtle, often relying on differences such as ear position or snout shape. Oftentimes, the appearance of the same breed could appear wildly different due to fur pattern and color, as well as the grooming of the pet. However, current literature on the approaches to this problem focused on larger neural network architectures. Inference time and hardware requirements make these approaches infeasible for local inference in mobile devices.
 
 (5 points) How is it done today, and what are the limits of current practice?
+The problem of classifying pet breeds using a model has been attempted multiple times by different researchers. In 2012, Parkhi et al. approached dog and cat breed classification using Support Vector Machines (SVM) and Gaussian Mixture Models (GMM) among other models and provided a comparison between them\cite{6248092}. The authors provided comprehensive reports on the performance of different models in this paper.
+
+Similarly, in 2012, Jiongxin et al. introduced a method called parts localization in dog breeds\cite{10.1007/978-3-642-33718-5_13}. The authors built examplar-based geometric and appearance models of dog breeds and their face parts along with localizing different parts of a dog such as ears or faces in order to improve classification of the model.
+
+Subsequently, deep learning methods became popular, and there were multiple attempts to apply deep learning methods for the classification of pet breeds. In 2019,
 
 (5 points) Who cares? If you are successful, what difference will it make? 
 
