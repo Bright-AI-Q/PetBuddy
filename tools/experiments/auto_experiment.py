@@ -157,7 +157,7 @@ def run_training(force_rerun=False):
     print(f"🔍 Detected {num_gpus} GPUs")
 
     if num_gpus > 1:
-        train_script = PROJECT_ROOT / "tools" / "train.py"  # Note：新版 train.py 已集成 DDP
+        train_script = PROJECT_ROOT / "tools" / "train_ddp.py"
         print("✅ Using multi-GPU distributed training (torchrun)")
     else:
         train_script = PROJECT_ROOT / "tools" / "train.py"
