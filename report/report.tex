@@ -50,7 +50,7 @@ Georgia Institute of Technology\\
 
 %%%%%%%%% ABSTRACT
 \begin{abstract}
-   There are approximately 200 - 350 breeds of dogs and 45 - 70 breeds of cats. Different types of breeds can have different care instructions. Thus, it can be difficult for pet owners to keep track of the best ways to care for their pets. This project aims to create a product that will generate personalized pet care instructions based on an image of the pet. We introduce our own multiclass pet breed classifier called PetNet, which is based on MobileNetV2's architecture~\cite{sandler2018mobilenetv2}. We aim for this to be a lightweight network that could be used in mobile devices. Together with Qwen~\cite{bai2023qwen} as the LLM component to generate pet care instructions.
+   There are approximately 200 - 350 breeds of dogs and 45 - 70 breeds of cats. Different types of breeds can have different care instructions. Thus, it can be difficult for pet owners to keep track of the best ways to care for their pets. This project aims to create a product that will generate personalized pet care instructions based on an image of the pet. We introduce our own multiclass pet breed classifier called PetNet, which is based on MobileNetV2's architecture~\cite{sandler2018mobilenetv2}. We aim for this to be a lightweight network that could be used in resource constrained environments such as mobile devices. Together with Qwen~\cite{bai2023qwen} as the LLM component to generate pet care instructions.
 \end{abstract}
 
 %%%%%%%%% BODY TEXT
@@ -68,11 +68,21 @@ Subsequently, deep learning methods became popular, and there were multiple atte
 
 In 2021, the same group of authors attempted the problem again\cite{borwarnginn2021knowing}, but they worked on the entire Columbia dogs with parts dataset\cite{10.1007/978-3-642-33718-5_13} instead of a subset of it. This time, the authors evaluated the performance of 3 different pretrained CNNs with various data augmentation settings. The 3 CNN architectures used are NASNet\cite{qin2019nasnet}, InceptionV3\cite{szegedy2016rethinking}, and MobileNetV2\cite{sandler2018mobilenetv2}. The authors were able to achieve the highest accuracy of 89.92\% using the NASNet architecture. In our paper, we attempt to build on top of the MobileNetV2 architecture since our goal is to run local inference on resource constrained devices such as mobile phones.
 
+The limits of the current practice are that the current work focuses on larger neural network architectures which are infeasible to run in a mobile device. We aim to create a model that can run local inference in a reasonable amount of time.
+
 (5 points) Who cares? If you are successful, what difference will it make?
+
+In 2011, Khosla et al. introduced a novel dataset for fine-grained image categorization which they named Stanford dogs\cite{khosla2011novel}. In the introduction, the authors explained why this problem of breed classification is challenging. First, since it is a fine-grained categorization problem, there is little inter-class variation. For example, the basset hound and bloodhound share very similar facial characteristics but differ significantly in their color, while the Japanese spaniel and papillion share very similar color but greatly differ in their facial characteristics. Second, there is very large intra-class variation. The images show that dogs within a class could have different ages (e.g. beagle), poses (e.g. blenheim spaniel), occlusion/self-occlusion and even color (e.g. Shih-tzu).
+
+Pet owners which care about breed specific pet care instruction would care about this problem. Some pet breeds are harder to care for and might need different environments to thrive. Before owning a pet, potential pet owners could take a photo of the pet they are interested in, then our program would generate detailed pet care instructions for the specific breed. The potential pet owners would have more information on whether they could properly care for their pet, and decide whether they are up to task of taking good care of it.
+
+If we are successful,
 
 (5 points) What data did you use? Provide details about your data, specifically choose the most important aspects of your data mentioned \href{https://arxiv.org/abs/1803.09010}{here}. You don’t have to choose all of them, just the most relevant.
 
-We use a combination of the Stanford dogs dataset\cite{khosla2011novel} and the Oxford pets dataset\cite{6248092}.
+We use a combination of the Stanford dogs dataset\cite{khosla2011novel} and the Oxford pets dataset\cite{6248092}. The Stanford dogs dataset includes 20,580 annotated images of dogs belonging to 120 breeds. Each image is annotated with a bounding box and object class label. Each breed contains 150-200 images. The Oxford pets dataset on the other hand includes 7390 images of cats and dogs of 37 different breeds. 25 are dogs and 12 are cats. The Oxford dogs dataset contains about 200 images for each breed.
+
+Our combined dataset contains 27,970 annotated images of cats and dogs belonging to 144 breeds. Of those, 136 are dogs and 12 are cats. The number of cat breeds are much less than dogs, but each cat breed contains 150-200 images so it is still sufficient for our vision model to learn a good representation for cats.
 
 %-------------------------------------------------------------------------
 %------------------------------------------------------------------------
