@@ -24,5 +24,7 @@ accelerate
 peft
 bitsandbytes
 datasets
-trl
+trl>=0.7.0
 jsonlines
+sentence_transformers
+bert_score

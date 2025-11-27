@@ -1,0 +1,8 @@
+train: 
+  learning_rate: 0.0002988926680682992
+  lora_r: 16
+  lora_alpha: 32
+  lora_dropout: 0.03429921376462535
+  gradient_accumulation_steps: 32
+  warmup_ratio: 0.06732610302247408
+  max_length: 640
