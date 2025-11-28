@@ -82,7 +82,7 @@ If we are successful, we would be able to help pet owners to take better care of
 
 We use a combination of the Stanford dogs dataset\cite{khosla2011novel} and the Oxford pets dataset\cite{6248092}. The Stanford dogs dataset includes 20,580 annotated images of dogs belonging to 120 breeds. Each image is annotated with a bounding box and object class label. Each breed contains 150-200 images. The Oxford pets dataset on the other hand includes 7390 images of cats and dogs of 37 different breeds. 25 are dogs and 12 are cats. The Oxford dogs dataset contains about 200 images for each breed.
 
-Our combined dataset contains 27,970 annotated images of cats and dogs belonging to 144 breeds. Of those, 136 are dogs and 12 are cats. The number of cat breeds are much less than dogs, but each cat breed contains 150-200 images so it is still sufficient for our vision model to learn a good representation for cats.
+Our combined dataset contains 27,970 annotated images of cats and dogs belonging to 144 breeds. Of those, 136 are dogs and 12 are cats. The number of cat breeds are much less than dogs, but each cat breed contains 150-200 images so it is still sufficient for our vision model to learn a good representation for cats. We then split the images into training, validation, and test set in a 8:1:1 ratio.
 
 %-------------------------------------------------------------------------
 %------------------------------------------------------------------------
@@ -90,9 +90,35 @@ Our combined dataset contains 27,970 annotated images of cats and dogs belonging
 
 (10 points) What did you do exactly? How did you solve the problem? Why did you think it would be successful? Is anything new in your approach?
 
+We separate our project into 2 parts. First is the vision model, where we perform multi-class classification and assign one label to the image. We did not do multi-label classification since the majority of our training data contains only 1 pet breed per image. Second is the language model, where we generate pet care instructions based on the specific breed of the pet.
 
+\subsection{Data Augmentation}
+\subsubsection{Local Dropout Random Erasing (LDRE)}
+This is a novel method we invented which (Fill in the blanks)
 
-(5 points) What problems did you anticipate? What problems did you encounter? Did the very first thing you tried work? 
+\subsubsection{CutMix + FixMatch}
+We randomly apply one of CutMix\cite{yun2019cutmix} or FixMatch\cite{sohn2020fixmatch} to each image in training data to help the model generalize better and increase regularization of the model. (Provide evidence)
+
+\subsection{Vision model}
+We use MobileNetV2\cite{sandler2018mobilenetv2} as the backbone architecture with pretrained weights as our starting network. We then added several modifications to the architecture in an attempt to improve it.
+
+\subsubsection{Dual attention mechanism}
+We implemented the dual attention mechanism\cite{fu2019dual} introduced by Fu et al. as one of our modules in PetNet. We found that adding dual attention increased validation accuracy of our model. (Provide evidence)
+
+\subsubsection{Inverted Residual Block (IRB)}
+We used the IRB\cite{sandler2018mobilenetv2} introduced in MobileNetV2 by directly using the torchvision library\cite{marcel2010torchvision}. Adding IRBs increased validation accuracy of our model. (Provide evidence)
+
+\subsubsection{Self Knowledge Distillation (KD)}
+We used self KD introduced by Yun et al.\cite{Yun_2020_CVPR}. We find that adding self KD helped the model generalize better and increase regularization of the model. (Provide evidence)
+
+\subsection{Language model}
+
+We use Qwen\cite{bai2023qwen} as our LLM and finetune using the QLoRA\cite{dettmers2023qlora} approach.
+
+(5 points) What problems did you anticipate? What problems did you encounter? Did the very first thing you tried work?
+
+\subsection{Problems}
+
 
 \textbf{Important: Mention any code repositories (with citations) or other sources that you used, and specifically what changes you made to them for your project. }
 
