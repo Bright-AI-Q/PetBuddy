@@ -27,7 +27,7 @@ output_val = os.path.join(script_dir, "dataset_cat_val.jsonl")
 api_key = "your_api_key_here"
 
 client = openai.OpenAI(
-    base_url = "https://api.deepseek.com/v1",
+    base_url = "https://generativelanguage.googleapis.com/v1beta/openai/",
     api_key = api_key
 )
 
@@ -38,27 +38,91 @@ cat_breeds = [
     'Siamese', 'Sphynx'
 ]
 
-prompt_templates = [
-    "Generate a JSON entry for {breed} about introduction: {{'instruction': 'User question', 'input': 'Detected breed: {breed}', 'output': 'Expert answer'}}. User question must include 'Introduce this cat breed' or 'What is this cat?'. Expert answer (≤200 words): Covers personality, size, and common health issues—friendly and professional.",
-    "Generate a JSON entry for {breed} about feeding: {{'instruction': 'User question', 'input': 'Detected breed: {breed}', 'output': 'Expert answer'}}. User question example: 'How often to feed a {breed} kitten?' or 'What food is best for {breed} with sensitive stomachs?'. Expert answer: Actionable advice tailored to the breed's dietary needs (e.g., portion sizes, food types to avoid).",
-    "Generate a JSON entry for {breed} about health: {{'instruction': 'User question', 'input': 'Detected breed: {breed}', 'output': 'Expert answer'}}. User question example: 'Why is my {breed} over-grooming?' or 'How to calm a hyper {breed}?'. Expert answer: Safe, breed-specific advice + a note to consult a vet for severe cases.",
-]
+# Base instruction templates from generate_dataset.py
+INSTRUCTION_TEMPLATES = {
+    "care": ["Give care instructions for a {breed}.", 
+             "How should a {breed} be cared for?", 
+             "What are the care requirements of a {breed}?"],
+    "grooming": ["What grooming does a {breed} need?", 
+                 "How do you groom a {breed}?", 
+                 "Grooming instructions for a {breed}."],
+    "exercise": ["How much exercise does a {breed} need?", 
+                 "Exercise requirements for a {breed}.", 
+                 "What activities should a {breed} do?"],
+    "health": ["What health problems commonly affect the {breed}?", 
+               "Health concerns for a {breed}.", 
+               "List common diseases of a {breed}."],
+    "temperament": ["Describe the temperament of a {breed}.", 
+                    "Personality traits of a {breed}."],
+    "family": ["Is the {breed} a good family cat?", 
+               "How suitable is a {breed} for families?"],
+    "overview": ["Give a general overview of the {breed}.", 
+                 "Provide a summary of the {breed}."],
+    "training": ["Provide training tips for a {breed}.", 
+                 "How should you train a {breed}?", 
+                 "Training recommendations for a {breed}."]
+}
+
+def generate_prompt_examples():
+    prompt_templates = []
+    for aspect, sample_templates in INSTRUCTION_TEMPLATES.items():
+        prompt_templates.append("Generate a JSON entry for {breed} cats about " + aspect + ": {{'instruction': 'User question', 'input': 'Detected breed: {breed}', 'output': 'Expert answer'}}. User question examples: " + ", ".join([f"'{t}'" for t in sample_templates]))
+    return prompt_templates
 
 def main():
     dataset = []
     for breed in cat_breeds:
         print("Generating data for breed:", breed)
-        for prompt_template in prompt_templates:
+        for prompt_template in generate_prompt_examples():
             prompt = prompt_template.format(breed=breed)
             response = client.chat.completions.create(
-                model="deepseek-chat",
-                messages=[
-                    {"role": "system", "content": "You are a helpful assistant that provides expert pet care advice."},
-                    {"role": "user", "content": prompt}
+                model="gemini-2.5-flash",
+                messages = [
+                    {
+                        "role": "system",
+                        "content": (
+                            "You are a helpful assistant that provides expert pet care advice. "
+                            "Your output must be breed-specific, concise (≤200 words), factual, "
+                            "and written in a friendly professional tone."
+                        )
+                    },
+                    {
+                        "role": "user",
+                        "content": prompt
+                    },
+                    {
+                        "role": "user",
+                        "content": (
+                            "You must output a **single JSON object** with exactly these 3 fields: "
+                            "'instruction', 'input', and 'output'. "
+                            "Do NOT include additional fields."
+                        )
+                    },
+                    {
+                        "role": "user",
+                        "content": (
+                            "Never use placeholder phrases like 'User question'. "
+                            "The 'instruction' field must contain the actual user question."
+                        )
+                    },
+                    {
+                        "role": "user",
+                        "content": (
+                            "The JSON must be strictly valid (no trailing commas, no control characters, no comments)."
+                        )
+                    }
                 ]
             )
             json_response = re.sub(r"```json|```", "", response.choices[0].message.content).strip()
-            dataset.append(json.loads(json_response))
+            try:
+                # Remove control characters that may cause JSON decoding issues
+                mapping = dict.fromkeys(range(32))
+                json_response = json_response.translate(mapping)
+
+                dataset.append(json.loads(json_response))
+            except json.JSONDecodeError as e:
+                print(f"JSON decoding error for breed {breed} with prompt '{prompt}': {e}. Response: {json_response}")
+                continue
 
     # Split into training (80%) and validation (20%)
     train_examples, val_examples = train_test_split(dataset, test_size=0.2, random_state=42)
