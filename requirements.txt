@@ -28,3 +28,4 @@ trl>=0.7.0
 jsonlines
 sentence_transformers
 bert_score
+openai
