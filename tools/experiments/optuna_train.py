@@ -41,7 +41,7 @@ from timm.loss import SoftTargetCrossEntropy
 torch.set_float32_matmul_precision('high')
 
 # Add project root directory to Python path
-sys.path.append(str(Path(__file__).parent.parent))  # Fixed path level
+sys.path.append(str(Path(__file__).parent.parent.parent))  # Add project root to path
 
 from models.petnet import PetNet
 from utils.data_loader import build_dataloader, build_datasampler
