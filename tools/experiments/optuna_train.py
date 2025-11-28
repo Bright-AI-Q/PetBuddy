@@ -119,6 +119,11 @@ def objective(trial: optuna.trial.Trial, base_config_path: str, distributed=Fals
 
     # Prepare data loaders
     root_dir = data_config.get("root_dir", "data/pet_cls_training")
+    # Convert to absolute path to avoid path doubling in data_loader
+    root_dir_path = Path(root_dir)
+    if not root_dir_path.is_absolute():
+        project_root = Path(__file__).parent.parent.parent
+        root_dir = str(project_root / root_dir)
     dataset_to_use = root_dir  # For simplicity, use path directly
 
     # Distributed Sampler
