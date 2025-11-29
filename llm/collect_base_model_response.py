@@ -4,7 +4,6 @@ This module uses LLMs to judge the quality of generated data samples.
 
 import json
 import os
-import openai
 import torch
 from transformers import AutoModelForCausalLM, AutoTokenizer
 
