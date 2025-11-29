@@ -2,6 +2,7 @@
 This module uses LLMs to judge the quality of generated data samples.
 """
 
+import argparse
 import json
 import os
 import re
@@ -9,11 +10,6 @@ from typing import List, Dict, Any
 import torch
 from transformers import AutoModelForCausalLM, AutoTokenizer
 import openai
-
-output_base_model_responses = os.path.join(
-    os.path.dirname(os.path.abspath(__file__)), "output_base.jsonl"
-)
-
 
 def load_questions_and_reference_answers() -> List[Dict[str, Any]]:
     script_dir = os.path.dirname(os.path.abspath(__file__))
@@ -118,8 +114,18 @@ client = openai.OpenAI(
 )
 
 if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--config', type=str, default=None,
+                        help='Finetuned model to use. If not provided, use the base model.')
+    parser.add_argument('--output', type=str, default="output_base.jsonl")
+    args = parser.parse_args()
+
     qa_data = load_questions_and_reference_answers()
-    base_model, base_tokenizer = load_base_model()
+
+    if args.config is None:
+        base_model, base_tokenizer = load_base_model()
+    else:
+        raise NotImplementedError("Only base model evaluation is implemented currently.")
 
     for item in qa_data:
         item["model_response"] = generate_response(
@@ -157,6 +163,6 @@ if __name__ == "__main__":
             print(f"JSON decoding error: {e}. Response: {json_response}")
             continue
 
-    with open(output_base_model_responses, "w", encoding="utf-8") as f:
+    with open(os.path.join(os.path.dirname(os.path.abspath(__file__)), args.output), "w", encoding="utf-8") as f:
         for item in qa_data:
             f.write(json.dumps(item, ensure_ascii=False) + "\n")
