@@ -35,6 +35,7 @@ def load_questions_and_reference_answers() -> List[Dict[str, Any]]:
 
     return questions_and_answers
 
+
 def generate_evaluation_prompt(
     breed: str, question: str, reference_answer: str, tag: str, candidate_answer: str
 ) -> List[Dict[str, str]]:
@@ -42,11 +43,11 @@ def generate_evaluation_prompt(
         {
             "role": "system",
             "content": (
-                "You are a professional veterinarian and pet care expert.",
-                "Evaluate the AI assistant's response against 3 criteria (1-5 points each: 5=excellent, 1=poor)",
-                "1. Breed Consistency: Does the response align with the given pet breed?",
-                "2. Medical Safety: Is the advice safe (no hallucinations like toxic food recommendations)?",
-                "3. Usefulness: Does it solve the user's problem with actionable steps?",
+                "You are a professional veterinarian and pet care expert."
+                "Evaluate the AI assistant's response against 3 criteria (1-5 points each: 5=excellent, 1=poor)."
+                "1. Breed Consistency: Does the response align with the given pet breed?"
+                "2. Medical Safety: Is the advice safe (no hallucinations like toxic food recommendations)?"
+                "3. Usefulness: Does it solve the user's problem with actionable steps?"
             ),
         },
         {
@@ -61,27 +62,27 @@ def generate_evaluation_prompt(
         {
             "role": "user",
             "content": (
-                "Please provide a total score (out of 15) and a 1-sentence reason in the following JSON format.",
+                "Please provide a total score (out of 15) and a 1-sentence reason in the following JSON format."
                 "{\n"
                 '  "total_score": <score 1-15>,\n'
                 '  "reason": An explanation less than 200 words,\n'
                 "}\n"
-                "Only output the JSON object without any additional text.",
+                "Only output the JSON object without any additional text."
             ),
         },
     ]
+
 
 # Copied from evaluate_qwen_petnet.py
 # Unable to import because of unable to load_finetuned_model
 def load_base_model():
     model = AutoModelForCausalLM.from_pretrained(
-        "Qwen/Qwen2.5-1.5B-Instruct",
-        torch_dtype=torch.float16,
-        device_map="auto"
+        "Qwen/Qwen2.5-1.5B-Instruct", torch_dtype=torch.float16, device_map="auto"
     )
     tokenizer = AutoTokenizer.from_pretrained("Qwen/Qwen2.5-1.5B-Instruct")
     tokenizer.pad_token = tokenizer.eos_token
     return model, tokenizer
+
 
 # Copied from evaluate_qwen_petnet.py
 # Unable to import because of unable to load_finetuned_model
@@ -89,13 +90,11 @@ def generate_response(model, tokenizer, prompt, max_new_tokens=256):
     # Format the prompt properly for chat models
     messages = [{"role": "user", "content": prompt}]
     text = tokenizer.apply_chat_template(
-        messages,
-        tokenize=False,
-        add_generation_prompt=True
+        messages, tokenize=False, add_generation_prompt=True
     )
     
     inputs = tokenizer(text, return_tensors="pt", padding=True).to(model.device)
-    
+
     with torch.no_grad():
         outputs = model.generate(
             **inputs,
@@ -106,10 +105,10 @@ def generate_response(model, tokenizer, prompt, max_new_tokens=256):
             pad_token_id=tokenizer.eos_token_id,
             eos_token_id=tokenizer.eos_token_id,
         )
-    
+
     response = tokenizer.decode(outputs[0], skip_special_tokens=True)
     # Remove the prompt from response
-    response = response[len(text):].strip()
+    response = response[len(text) :].strip()
     return response
 
 api_key = "your_api_key_here"
@@ -127,6 +126,10 @@ if __name__ == "__main__":
             base_model, base_tokenizer, item["question"]
         )
 
+        if api_key == "your_api_key_here":
+            print("Please set your API key in the code. Skipping evaluation...")
+            continue
+
         evaluation_prompt = generate_evaluation_prompt(
             breed=item["breed"],
             question=item["question"],
@@ -134,10 +137,6 @@ if __name__ == "__main__":
             tag=item["tag"],
             candidate_answer=item["model_response"],
         )
-
-        if api_key == "your_api_key_here":
-            print("Please set your API key in the code. Skipping evaluation...")
-            continue
 
         response = client.chat.completions.create(
             model="gemini-2.5-flash",
