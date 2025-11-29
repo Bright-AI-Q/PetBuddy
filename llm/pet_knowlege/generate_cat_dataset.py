@@ -18,7 +18,7 @@ import json
 import openai
 from sklearn.model_selection import train_test_split
 import re
-
+from google import genai
 import os
 script_dir = os.path.dirname(os.path.abspath(__file__))
 output_train = os.path.join(script_dir, "dataset_cat_train.jsonl")
@@ -26,10 +26,13 @@ output_val = os.path.join(script_dir, "dataset_cat_val.jsonl")
 
 api_key = "your_api_key_here"
 
-client = openai.OpenAI(
-    base_url = "https://generativelanguage.googleapis.com/v1beta/openai/",
-    api_key = api_key
-)
+# client = openai.OpenAI(
+#     base_url = "https://generativelanguage.googleapis.com/v1beta/openai/",
+#     api_key = api_key
+# )
+
+client = genai.Client(api_key=api_key)
+
 
 # Oxford-IIIT Pets dataset: 12 cat breeds
 cat_breeds = [
@@ -60,14 +63,42 @@ INSTRUCTION_TEMPLATES = {
                  "Provide a summary of the {breed}."],
     "training": ["Provide training tips for a {breed}.", 
                  "How should you train a {breed}?", 
-                 "Training recommendations for a {breed}."]
+                 "Training recommendations for a {breed}."],
+    "diet": ["What do {breed} eat?",
+             "What kind of food is best for a {breed}"
+             "{breed} dietary recommendation."]
 }
 
 def generate_prompt_examples():
     prompt_templates = []
     for aspect, sample_templates in INSTRUCTION_TEMPLATES.items():
-        prompt_templates.append("Generate a JSON entry for {breed} cats about " + aspect + ": {{'instruction': 'User question', 'input': 'Detected breed: {breed}', 'output': 'Expert answer'}}. User question examples: " + ", ".join([f"'{t}'" for t in sample_templates]))
+        prompt_templates.append(
+            "Generate a JSON entry for {breed} cats about "
+            + aspect +
+            ": {{{{'instruction': 'User question', 'input': 'Detected breed: {breed}', 'output': 'Expert answer'}}}}."
+            " User question examples: " +
+            ", ".join([f"'{t}'" for t in sample_templates])
+        )
     return prompt_templates
+
+
+def call_gemini(prompt):
+    """Gemini wrapper — returns the text output only."""
+    response = client.models.generate_content(
+        model="gemini-2.5-flash",
+        contents=[
+            "You are a helpful assistant that provides expert pet care advice. "
+            "Your output must be breed-specific, concise (≤200 words), factual, "
+            "and written in a friendly professional tone.",
+            prompt,
+            "You must output a single JSON object with exactly these 3 fields: "
+            "'instruction', 'input', and 'output'.",
+            "Never use placeholder phrases like 'User question'. The 'instruction' field must contain the real user question.",
+            "The JSON must be strictly valid. No trailing commas or comments."
+        ]
+    )
+
+    return response.text
 
 def main():
     dataset = []
@@ -75,53 +106,16 @@ def main():
         print("Generating data for breed:", breed)
         for prompt_template in generate_prompt_examples():
             prompt = prompt_template.format(breed=breed)
-            response = client.chat.completions.create(
-                model="gemini-2.5-flash",
-                messages = [
-                    {
-                        "role": "system",
-                        "content": (
-                            "You are a helpful assistant that provides expert pet care advice. "
-                            "Your output must be breed-specific, concise (≤200 words), factual, "
-                            "and written in a friendly professional tone."
-                        )
-                    },
-                    {
-                        "role": "user",
-                        "content": prompt
-                    },
-                    {
-                        "role": "user",
-                        "content": (
-                            "You must output a **single JSON object** with exactly these 3 fields: "
-                            "'instruction', 'input', and 'output'. "
-                            "Do NOT include additional fields."
-                        )
-                    },
-                    {
-                        "role": "user",
-                        "content": (
-                            "Never use placeholder phrases like 'User question'. "
-                            "The 'instruction' field must contain the actual user question."
-                        )
-                    },
-                    {
-                        "role": "user",
-                        "content": (
-                            "The JSON must be strictly valid (no trailing commas, no control characters, no comments)."
-                        )
-                    }
-                ]
-            )
-            json_response = re.sub(r"```json|```", "", response.choices[0].message.content).strip()
+            raw_output = call_gemini(prompt)
+            cleaned = re.sub(r"```json|```", "", raw_output).strip()
             try:
                 # Remove control characters that may cause JSON decoding issues
                 mapping = dict.fromkeys(range(32))
-                json_response = json_response.translate(mapping)
+                cleaned = cleaned.translate(mapping)
 
-                dataset.append(json.loads(json_response))
+                dataset.append(json.loads(cleaned))
             except json.JSONDecodeError as e:
-                print(f"JSON decoding error for breed {breed} with prompt '{prompt}': {e}. Response: {json_response}")
+                print(f"JSON decoding error for breed {breed} with prompt '{prompt}': {e}. Response: {cleaned}")
                 continue
 
     # Split into training (80%) and validation (20%)
