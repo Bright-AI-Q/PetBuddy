@@ -74,7 +74,7 @@ The limits of the current practice are that the current work focuses on larger n
 
 % In 2011, Khosla et al. introduced a novel dataset for fine-grained image categorization which they named Stanford dogs\cite{khosla2011novel}. In the introduction, the authors explained why this problem of breed classification is challenging. First, since it is a fine-grained categorization problem, there is little inter-class variation. For example, the basset hound and bloodhound share very similar facial characteristics but differ significantly in their color, while the Japanese spaniel and papillion share very similar color but greatly differ in their facial characteristics. Second, there is very large intra-class variation. The images show that dogs within a class could have different ages (e.g. beagle), poses (e.g. blenheim spaniel), occlusion/self-occlusion and even color (e.g. Shih-tzu).
 
-Pet owners that care about breed specific pet care instruction would care about this problem. Some pet breeds are harder to care for and might need different environments to thrive. Before owning a pet, potential pet owners could take a photo of the pet they are interested in, then our program would generate detailed pet care instructions for the specific breed. The potential pet owners would have more information on whether they could properly care for their pet, and decide whether they are up to task of taking good care of it.
+Pet owners that care about breed specific pet care instruction would care about this problem. Some pet breeds are harder to care for and might need different environments to thrive. Before owning a pet, potential pet owners could take a photo of the pet they are interested in, then our program would generate detailed pet care instructions for the specific breed. The potential pet owners would have more information on whether they could properly care for their pet, and decide whether they are up to the task of taking good care of it.
 
 If we are successful, we would be able to help pet owners to take better care of their pets. Similarly, we would be tackling the challenging problem of fine-grained image categorization as detailed in the original Stanford dogs paper\cite{khosla2011novel}. Solving this problem could let us understand the specific issues with fine-grained image classification in resource constrained environments.
 
@@ -94,7 +94,7 @@ We separate our project into 2 parts. First is the vision model, where we perfor
 
 \subsection{Data Augmentation}
 \subsubsection{Local Dropout Random Erasing (LDRE)}
-This is a novel method invented by Bright Wang which is built on top of the Random Erasing method introduced by Zhong et al.\cite{zhong2020random}. (Provide details here)
+This is a data augmentation technique devised by Bright Wang built on top of the Random Erasing method introduced by Zhong et al.\cite{zhong2020random}. The Grid-based dropping mechanism is inspired by GridMask\cite{chen2020gridmask}. The Enhanced LDRE part which uses keypoints to guide dropping is inspired by the "Hide-and-Seek" paper by Krishna and Yong\cite{kumar2017hide}. (Provide more details here)
 
 \subsubsection{CutMix + FixMatch}
 We randomly apply one of CutMix\cite{yun2019cutmix} or FixMatch\cite{sohn2020fixmatch} to each image in training data to help the model generalize better and increase regularization of the model. (Provide evidence)
@@ -118,13 +118,26 @@ We use Qwen\cite{bai2023qwen} as our LLM and finetune using the QLoRA\cite{dettm
 (5 points) What problems did you anticipate? What problems did you encounter? Did the very first thing you tried work?
 
 \subsection{Problems}
-We anticipate that
+We anticipate that there would mainly be problems with hardware resources, particularly GPU resources. In practice, this was the main problem that we faced too. We made use of the PACE ICE clusters for GPU resources. Each training run takes about 1-2 hours ranging from 120-200 training epochs.
+
+The first thing we tried, which is simply using MobileNetV2's pretrained backbone did work as it provided a good baseline for our model. We went on to try several different techniques in order to improve the existing MobileNetV2 backbone.
 
 \textbf{Important: Mention any code repositories (with citations) or other sources that you used, and specifically what changes you made to them for your project. }
 
 \section{Experiments and Results}
 
 (10 points) How did you measure success? What experiments were used? What were the results, both quantitative and qualitative? Did you succeed? Did you fail? Why? Justify your reasons with arguments supported by evidence and data.
+
+We measured success by the validation accuracy of our vision model (PetNet) along with the number of parameters of the model. We aim to have a high validation accuracy while keeping the number of parameters of our model small. (Add in more sections with how each module improves the model)
+
+\subsection{CutMix + FixMatch}
+\subsection{Dual attention mechanism}
+\subsection{Inverted Residual Block (IRB)}
+\subsection{Self Knowledge Distillation (KD)}
+
+\subsection{Hyperparameter tuning}
+We optimized our model by running hyperparameter tuning using Optuna created by Akiba et al\cite{akiba2019optuna}. We run the Optuna script with the following hyperparameters along with their ranges shown in the table below (TODO: add table). The Optuna script is ran on the PACE ICE cluster along with using local GPUs for training. The Optuna script is ran in a distributed manner with a SQLite file as the database with Write-ahead logging. A combination of V100, A100, and L40S is used as the GPU depending on their availability. The batch size is chosen such that it makes full use of the GPU's VRAM (as high as the VRAM allows).
+
 
 \textbf{Important: This section should be rigorous and thorough. Present detailed information about decision you made, why you made them, and any evidence/experimentation to back them up. This is especially true if you leveraged existing architectures, pre-trained models, and code (i.e. do not just show results of fine-tuning a pre-trained model without any analysis, claims/evidence, and conclusions, as that tends to not make a strong project). }
 
