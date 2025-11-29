@@ -12,13 +12,14 @@ output_val = "dataset_val.jsonl"
 # Keywords for extracting sections
 SECTION_KEYWORDS = {
     "care": ["care", "training", "exercise", "groom", "nutrition", "living", "health"],
-    "grooming": ["groom", "brushing", "trimming", "grooming"],
+    "grooming": ["groom", "brushing", "trimming", "grooming", "coat"],
     "exercise": ["exercise", "play", "activity"],
     "health": ["health concerns", "disease", "lifespan", "health issues"],
     "temperament": ["temperament", "personality", "traits"],
     "family": ["family", "children", "ideal", "not ideal"],
     "overview": ["overview", "introduction", "summary", "final"],
-    "training": ["training", "socialization", "commands", "tricks", "behaviors"]
+    "training": ["training", "socialization", "commands", "tricks", "behaviors"],
+    "diet": ["feeding", "nutritition", "food", "diet"]
 }
 
 OVERVIEW_KEYWORDS = ["overview", "introduction", "summary", "final"]
@@ -44,7 +45,10 @@ INSTRUCTION_TEMPLATES = {
                  "Provide a summary of the {breed}."],
     "training": ["Provide training tips for a {breed}.", 
                  "How should you train a {breed}?", 
-                 "Training recommendations for a {breed}."]
+                 "Training recommendations for a {breed}."],
+    "diet": ["What do {breed} eat?",
+             "What kind of food is best for a {breed}"
+             "{breed} dietary recommendation."]
 }
 
 def is_overview_section(section):
