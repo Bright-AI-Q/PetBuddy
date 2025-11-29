@@ -1,0 +1,16 @@
+{
+  "model_name": "Qwen/Qwen2.5-1.5B-Instruct",
+  "best_params": {
+    "learning_rate": 1.296291856022263e-05,
+    "lora_r": 24,
+    "lora_alpha": 16,
+    "lora_dropout": 0.08428549787146689,
+    "gradient_accumulation_steps": 16,
+    "warmup_ratio": 0.07609594282118139,
+    "max_length": 640
+  },
+  "num_train_samples": 1789,
+  "num_val_samples": 449,
+  "num_epochs": 3,
+  "output_dir": "qwen-petnet-final/final"
+}
