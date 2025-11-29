@@ -6,7 +6,8 @@ import json
 import os
 import re
 from typing import List, Dict, Any
-from evaluate_qwen_petnet import load_base_model, generate_response
+import torch
+from transformers import AutoModelForCausalLM, AutoTokenizer
 import openai
 
 output_base_model_responses = os.path.join(
@@ -33,7 +34,6 @@ def load_questions_and_reference_answers() -> List[Dict[str, Any]]:
             )
 
     return questions_and_answers
-
 
 def generate_evaluation_prompt(
     breed: str, question: str, reference_answer: str, tag: str, candidate_answer: str
@@ -71,6 +71,46 @@ def generate_evaluation_prompt(
         },
     ]
 
+# Copied from evaluate_qwen_petnet.py
+# Unable to import because of unable to load_finetuned_model
+def load_base_model():
+    model = AutoModelForCausalLM.from_pretrained(
+        "Qwen/Qwen2.5-1.5B-Instruct",
+        torch_dtype=torch.float16,
+        device_map="auto"
+    )
+    tokenizer = AutoTokenizer.from_pretrained("Qwen/Qwen2.5-1.5B-Instruct")
+    tokenizer.pad_token = tokenizer.eos_token
+    return model, tokenizer
+
+# Copied from evaluate_qwen_petnet.py
+# Unable to import because of unable to load_finetuned_model
+def generate_response(model, tokenizer, prompt, max_new_tokens=256):
+    # Format the prompt properly for chat models
+    messages = [{"role": "user", "content": prompt}]
+    text = tokenizer.apply_chat_template(
+        messages,
+        tokenize=False,
+        add_generation_prompt=True
+    )
+    
+    inputs = tokenizer(text, return_tensors="pt", padding=True).to(model.device)
+    
+    with torch.no_grad():
+        outputs = model.generate(
+            **inputs,
+            max_new_tokens=max_new_tokens,
+            temperature=0.7,
+            top_p=0.9,
+            do_sample=True,
+            pad_token_id=tokenizer.eos_token_id,
+            eos_token_id=tokenizer.eos_token_id,
+        )
+    
+    response = tokenizer.decode(outputs[0], skip_special_tokens=True)
+    # Remove the prompt from response
+    response = response[len(text):].strip()
+    return response
 
 api_key = "your_api_key_here"
 
