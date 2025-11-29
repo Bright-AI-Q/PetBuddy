@@ -1,7 +1,16 @@
+"""
+This prepares the test_samples.jsonl file.
+Each sample is a json line with fields:
+- breed
+- question
+- reference_answer
+- tag (dog or cat). This is for filtering / debugging purposes (since we have a lot more dog breeds).
+"""
 from bs4 import BeautifulSoup
 import json
 import re
 import requests
+import random
 
 import os
 script_dir = os.path.dirname(os.path.abspath(__file__))
@@ -145,6 +154,9 @@ cat_breed_url = {
     "Sphynx": "https://www.everypaw.com/cat-insurance/cat-breed-guides/sphynx-cat-insurance-care-and-health-advice",
 }
 
+num_classes_dogs = len(dog_breed_url)
+num_classes_cats = len(cat_breed_url)
+num_test_samples = 100
 
 def scrape_everypaw_qna(url):
     headers = {"User-Agent": "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Mobile Safari/537.36"}
@@ -246,7 +258,7 @@ def get_qna_data(breed_url, tag):
                 else:
                     print(f"Unsupported URL for breed {key}: {url}")
                     continue
-                qna_data = [{"breed": key, "question": item["question"], "answer": item["answer"], "tag": tag} for item in qna_data]
+                qna_data = [{"breed": key, "question": item["question"], "reference_answer": item["answer"], "tag": tag} for item in qna_data]
                 all_breed_qna_data.extend(qna_data)
             except Exception as e:
                 print(f"Error processing breed {key}: {e}") 
@@ -259,8 +271,20 @@ if __name__ == "__main__":
     cat_qna_data = get_qna_data(cat_breed_url, "cat")
     print("Cat data scraped:", len(cat_qna_data))
 
-    all_qna_data = dog_qna_data + cat_qna_data
+    num_cat_samples = int((num_classes_cats / (num_classes_dogs + num_classes_cats)) * num_test_samples)
+    num_dog_samples = num_test_samples - num_cat_samples
+    
+    random.seed(42)
+    random.shuffle(dog_qna_data)
+    random.shuffle(cat_qna_data)
+
+    cat_samples = cat_qna_data[:num_cat_samples]
+    dog_samples = dog_qna_data[:num_dog_samples]
+
+    all_samples = dog_samples + cat_samples
+
+    print(f"Total test samples: {len(all_samples)} (Dogs: {len(dog_samples)}, Cats: {len(cat_samples)})")
     with open(output_test_samples, "w", encoding="utf-8") as f:
-        for item in all_qna_data:
+        for item in all_samples:
             f.write(json.dumps(item, ensure_ascii=False) + "\n")
     
