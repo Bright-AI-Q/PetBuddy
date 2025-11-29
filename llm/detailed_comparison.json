@@ -1,0 +1,914 @@
+{
+  "base_avg": 9.7,
+  "final_avg": 10.18,
+  "base_std": 3.1128764832546763,
+  "final_std": 3.2074288768420103,
+  "improvement": 0.4800000000000004,
+  "improvement_pct": 4.948453608247427,
+  "wins": 50,
+  "losses": 42,
+  "ties": 8,
+  "total_samples": 100,
+  "comparisons": [
+    {
+      "breed": "Bernese mountain dog",
+      "question": "Are Bernese Mountain Dogs healthy?",
+      "base_score": 13,
+      "final_score": 11,
+      "improvement": -2,
+      "base_reason": "The AI assistant's response accurately addresses the health of Bernese Mountain Dogs, listing relevant common health issues and providing safe, actionable advice on prevention and care, such as regular vet check-ups and maintaining a healthy lifestyle. While it could have offered slightly more detail on the conditions, the core information is consistent with the breed and highly useful for an owner.",
+      "final_reason": "The AI correctly identifies several common Bernese Mountain Dog health concerns and provides safe, actionable general pet care advice. However, it overestimates the breed's average lifespan, omits several crucial breed-specific health risks like GDV and Degenerative Myelopathy, and includes some generic dog issues not particularly prominent for Berners."
+    },
+    {
+      "breed": "Bloodhound",
+      "question": "Are Bloodhounds easy to train?",
+      "base_score": 11,
+      "final_score": 15,
+      "improvement": 4,
+      "base_reason": "The AI accurately identifies Bloodhounds as intelligent and strong-willed but misses the critical breed-specific challenge of their strong scent drive distracting from training. While safe, the training advice provided is general and lacks the actionable, breed-tailored strategies found in the reference answer, making it less useful.",
+      "final_reason": "The AI assistant's response is excellent, providing accurate and consistent information about Bloodhound training challenges and effective techniques. It offers safe, actionable advice on positive reinforcement, early socialization, and the importance of patience, directly answering the user's question with comprehensive and useful details."
+    },
+    {
+      "breed": "Rhodesian ridgeback",
+      "question": "Are Rhodesian Ridgebacks easy to train?",
+      "base_score": 14,
+      "final_score": 11,
+      "improvement": -3,
+      "base_reason": "The AI assistant accurately captures the Rhodesian Ridgeback's intelligence and potential for stubbornness, aligning well with breed characteristics. The advice provided is entirely safe and offers highly useful, actionable steps for training using positive reinforcement, early socialization, and consistent leadership.",
+      "final_reason": "The AI's initial statement that Rhodesian Ridgebacks are 'relatively easy to train' is inconsistent with their known independent and strong-willed nature. While it provides generally safe and actionable training advice, it incorrectly links over-exercising to obesity."
+    },
+    {
+      "breed": "Lhasa",
+      "question": "What is the temperament of a Lhasa Apso like?",
+      "base_score": 9,
+      "final_score": 10,
+      "improvement": 1,
+      "base_reason": "The AI's description of Lhasa Apso temperament is inconsistent with key breed characteristics, inaccurately stating they have a high activity level, are not fearful of strangers, and thrive in busy households, which contradicts general breed knowledge and the provided reference. However, the advice is safe and includes useful general pet care tips like grooming.",
+      "final_reason": "The AI accurately identifies several key temperament traits of the Lhasa Apso, such as independence, alertness, and affection towards family, and includes actionable advice on socialization and consistent training. However, it contains significant factual errors regarding the breed's physical characteristics, incorrectly describing the coat as 'sleek' and the tail as 'carried low'. Some behavioral descriptions, like 'eager to please,' also contradict the breed's known stubbornness and independence, reducing consistency and overall usefulness."
+    },
+    {
+      "breed": "Norfolk terrier",
+      "question": "How much exercise does a Norfolk Terrier need?",
+      "base_score": 11,
+      "final_score": 13,
+      "improvement": 2,
+      "base_reason": "The AI assistant provides good, actionable exercise suggestions appropriate for a Norfolk Terrier, emphasizing individual variation and vet consultations. However, it completely omits critical guidance on age-appropriate exercise for puppies, which is a significant safety and developmental consideration for a professional veterinary response.",
+      "final_reason": "The AI response provides accurate and safe exercise recommendations consistent with a Norfolk Terrier's needs, offering actionable steps for daily walks and play. However, it lacks crucial information regarding puppy exercise needs and the importance of monitoring individual energy levels, making it slightly less comprehensive than the reference."
+    },
+    {
+      "breed": "Sealyham terrier",
+      "question": "What Do Sealyham Terriers Eat?",
+      "base_score": 12,
+      "final_score": 5,
+      "improvement": -7,
+      "base_reason": "The AI response provides medically safe and generally consistent advice for a small breed like the Sealyham Terrier, emphasizing vet consultation. However, it lacks the specific actionable guidance for different life stages (e.g., puppy feeding frequency, transition age) and breed-specific considerations (e.g., weight gain exacerbating joint issues) found in the reference answer, making it less useful than it could be.",
+      "final_reason": "The AI completely failed to answer the user's question about what Sealyham Terriers eat, instead providing irrelevant and largely inaccurate general information about the breed's physical characteristics and history. The height and 'Working Group' classification are incorrect for Sealyham Terriers, and no dietary advice was offered, making it unhelpful and inconsistent with the breed."
+    },
+    {
+      "breed": "Weimaraner",
+      "question": "What do Weimaraners eat?",
+      "base_score": 10,
+      "final_score": 7,
+      "improvement": -3,
+      "base_reason": "The AI's response is medically safe, recommending appropriate food types for puppies and adults and advising vet consultation. However, it lacks specific details relevant to Weimaraners or large, active breeds like feeding frequency, transition age from puppy to adult food, or weight management advice. The initial sentence fragment also detracts from breed consistency.",
+      "final_reason": "The AI assistant correctly identifies the Weimaraner's active nature and need for protein but provides misleading information regarding portion sizes ('Small to Medium Portion Sizes' is incorrect for a large, active breed) and offers confusing 'treat' recommendations (listing main dog food as a treat). The advice on 'variety' in diet is generally not recommended for most dogs, potentially causing digestive upset. While no toxic foods are recommended, the portion size advice could lead to underfeeding."
+    },
+    {
+      "breed": "American Staffordshire terrier",
+      "question": "Do Staffordshire Bull Terriers need a lot of grooming?",
+      "base_score": 10,
+      "final_score": 8,
+      "improvement": -2,
+      "base_reason": "The AI correctly identifies the short coat and low grooming needs for a Staffordshire Bull Terrier and provides safe dental advice. However, it significantly falters on breed consistency by discussing matting and professional grooming for 'very long hair,' which is entirely inapplicable to this short-coated breed, reducing its overall usefulness.",
+      "final_reason": "The AI correctly identifies the short coat but incorrectly states that Staffordshire Bull Terriers have 'droopy ears' and that their coat needs brushing to prevent 'matting or tangling,' which is not typical for this breed. The recommendation for ear cleaning with only a 'damp cloth' is also suboptimal for actual wax buildup. While actionable, the advice contains factual errors regarding the breed's physical characteristics."
+    },
+    {
+      "breed": "Clumber",
+      "question": "Are Clumber Spaniels easy to train?",
+      "base_score": 14,
+      "final_score": 13,
+      "improvement": -1,
+      "base_reason": "The AI's response accurately describes Clumber Spaniel temperament and training needs, emphasizing patience, consistency, and socialization. It offers safe and useful advice, although it could be slightly more detailed on specific positive reinforcement techniques like the reference answer.",
+      "final_reason": "The AI response accurately describes the Clumber Spaniel's temperament and trainability, emphasizing key characteristics like stubbornness and the need for patience. It's medically safe as it contains no harmful advice. However, its usefulness is slightly limited compared to the reference, as it provides general advice without offering specific actionable steps like early socialization or detailed positive reinforcement techniques for training."
+    },
+    {
+      "breed": "Dandie Dinmont",
+      "question": "Are Dandie Dinmont Terriers healthy?",
+      "base_score": 5,
+      "final_score": 10,
+      "improvement": 5,
+      "base_reason": "The AI assistant's response is severely inaccurate regarding the Dandie Dinmont Terrier's physical characteristics (height, weight, coat color) and significantly downplays or omits breed-specific health predispositions like IVDD, making it misleading and unhelpful for an owner asking about health. While its general advice is safe, the lack of breed-specific medical information and the factual errors make it a poor response.",
+      "final_reason": "The AI assistant provides safe, general pet care advice and acknowledges the breed's overall health. However, its list of specific health conditions for the Dandie Dinmont Terrier (e.g., Hip/Elbow Dysplasia) does not align well with common predispositions for the breed, which typically include IVDD, luxating patella, and glaucoma, as noted in the reference. This inaccuracy reduces its breed consistency and overall specific usefulness for the user's question."
+    },
+    {
+      "breed": "Flat-coated retriever",
+      "question": "Are Flat Coated Retrievers healthy?",
+      "base_score": 11,
+      "final_score": 10,
+      "improvement": -1,
+      "base_reason": "The AI assistant provides safe, general advice relevant to Flat-Coated Retrievers and correctly identifies some common issues like hip dysplasia and eye problems. However, it lacks the detailed breed-specific health concerns (e.g., specific cancers, elbow dysplasia, PRA, epilepsy) that a prospective or current owner would find most useful, making it less comprehensive than the reference.",
+      "final_reason": "The AI response provides safe, general pet care advice, earning full marks for medical safety. However, its breed consistency is weak, notably omitting cancer and epilepsy—major health concerns for Flat-Coated Retrievers—while including hypothyroidism and bloat as primary issues, which are less characteristic. This inaccuracy reduces its overall usefulness for a user specifically inquiring about this breed."
+    },
+    {
+      "breed": "Kelpie",
+      "question": "Are Australian Kelpies easy to train?",
+      "base_score": 9,
+      "final_score": 11,
+      "improvement": 2,
+      "base_reason": "The response is medically safe, recommending general positive training techniques and professional consultation. However, it lacks breed-specific depth regarding Kelpie trainability, omitting key aspects like their need for mental stimulation, strong work ethic, and natural herding instincts outlined in the reference. The opening is cut off, and some phrasing about their 'drive to please' making training 'challenging' is poorly worded and somewhat contradictory. It provides very general advice applicable to most dogs rather than specific insights for Kelpies.",
+      "final_reason": "The AI correctly identifies Kelpies as intelligent and trainable but significantly understates their high energy levels, suggesting they don't require 'constant exercise' which is misleading for this working breed. While it offers safe and general training techniques like positive reinforcement and socialization, it lacks specific actionable advice regarding the intensive mental and physical stimulation essential for Kelpies, such as job-oriented activities or professional trainer consultation, making it less useful than it could be for this specific breed."
+    },
+    {
+      "breed": "Great Dane",
+      "question": "Do Great Danes Need a Lot of Space?",
+      "base_score": 12,
+      "final_score": 14,
+      "improvement": 2,
+      "base_reason": "The response safely confirms Great Danes need ample space and exercise, which is correct. However, it includes some less accurate breed characterizations like a 'high metabolism' for a giant breed and an overgeneralization about them being 'territorial' towards smaller pets, which are not defining traits directly linked to their space requirements.",
+      "final_reason": "The AI's response accurately explains why Great Danes need space, detailing their size, energy, and living arrangement requirements with useful and safe advice. The only minor deviation is a slight overemphasis on constant 'high' energy levels for mature Danes and the inclusion of grooming, which is less relevant to space needs."
+    },
+    {
+      "breed": "Malamute",
+      "question": "What is the temperament of an Alaskan Malamute like?",
+      "base_score": 11,
+      "final_score": 14,
+      "improvement": 3,
+      "base_reason": "The AI assistant provides a generally accurate, safe overview of Malamute temperament but lacks the nuance and depth found in the reference. It mentions loyalty, friendliness, and energy, but misses important points like independence, potential separation anxiety, suitability with small children, and their 'chatty' nature. Including coat description distracts from the temperament question, and actionable advice is minimal.",
+      "final_reason": "The AI assistant provides an accurate and comprehensive overview of the Alaskan Malamute's temperament, physical characteristics, and training needs, aligning well with the breed's known traits. The advice is safe and directly addresses the user's question with actionable insights. The only minor point of contention is highlighting 'great swimming ability' which is not typically a defining or strong trait for the breed."
+    },
+    {
+      "breed": "Vizsla",
+      "question": "Are Hungarian Vizslas healthy?",
+      "base_score": 6,
+      "final_score": 8,
+      "improvement": 2,
+      "base_reason": "The AI's response contains a critical factual error regarding cancer prevalence in Vizslas, stating it's 'rare' when they are known to have a higher risk for certain types. It also inaccurately refers to Vizslas as 'small breed dogs' and omits key breed-specific concerns like Epilepsy. While general advice is safe, these significant inaccuracies severely impact breed consistency, usefulness, and indirectly, the medical safety of informed decision-making.",
+      "final_reason": "The AI response is safe and mentions the breed correctly, but it completely fails to answer the user's question about Vizsla health concerns. It provides generic breed characteristics and basic care advice (exercise, mental stimulation) rather than addressing specific health conditions, making it largely unhelpful for the user's inquiry."
+    },
+    {
+      "breed": "Golden retriever",
+      "question": "What's the Difference Between a Labrador and a Golden Retriever?",
+      "base_score": 8,
+      "final_score": 7,
+      "improvement": -1,
+      "base_reason": "The response contains major factual inaccuracies regarding the origin of both breeds and the range of coat colors for Labradors. While it attempts to compare key aspects, the errors and the abrupt cut-off in the temperament section significantly reduce its accuracy and usefulness.",
+      "final_reason": "The response contains significant factual inaccuracies regarding breed characteristics, such as claiming 'chocolate colored coat' for Golden Retrievers, incorrect physical distinctions (ears, size), and an erroneous 'close genetic relationship,' which severely undermines its usefulness in answering the user's question."
+    },
+    {
+      "breed": "Irish wolfhound",
+      "question": "Are Irish Wolfhounds easy to train?",
+      "base_score": 14,
+      "final_score": 13,
+      "improvement": -1,
+      "base_reason": "The AI assistant provides safe, actionable, and largely breed-consistent advice, emphasizing essential elements like patience, consistency, and positive reinforcement. It slightly understates the breed's independent streak which can make training challenging, but overall offers a very useful guide.",
+      "final_reason": "The AI assistant's response is consistent with the breed's temperament and trainability, emphasizing their affectionate nature, potential stubbornness, and responsiveness to positive reinforcement and early socialization. The advice provided is safe and offers useful, actionable steps for training an Irish Wolfhound, although it could offer slightly more nuance on the 'ease' of training compared to other breeds."
+    },
+    {
+      "breed": "Golden retriever",
+      "question": "What Age is a Golden Retriever Fully Grown?",
+      "base_score": 13,
+      "final_score": 12,
+      "improvement": -1,
+      "base_reason": "The response provides accurate age ranges for Golden Retriever growth and development, aligns with breed specifics, and offers safe, general veterinary advice. However, the initial sentence fragment 'years of age.' significantly detracts from its clarity and usefulness, preventing an excellent score for solving the user's problem cleanly.",
+      "final_reason": "The AI assistant correctly identifies the typical age range for a Golden Retriever to be fully grown and provides accurate adult size estimates, ensuring medical safety. However, the inclusion of 'coat thickness' as a factor for determining full physical growth is incorrect and reduces the overall usefulness and accuracy of the advice."
+    },
+    {
+      "breed": "Irish wolfhound",
+      "question": "Do Irish Wolfhounds need a lot of grooming?",
+      "base_score": 7,
+      "final_score": 12,
+      "improvement": 5,
+      "base_reason": "The AI assistant provides inaccurate information regarding the Irish Wolfhound's coat type (it's wiry, not 'extremely long,' and typically grey/brindle, not 'white') and recommended grooming frequency ('daily brushing' is excessive; weekly is usually sufficient). It also completely omits crucial dental care, which was highlighted in the reference answer, diminishing its usefulness and medical completeness.",
+      "final_reason": "The AI provides generally safe and comprehensive grooming advice, covering various aspects like brushing, bathing, and dental care. However, it misses the crucial 'wiry' characteristic of the Irish Wolfhound's coat, describing it more generically as a 'dense double coat,' which detracts from its breed-specific accuracy."
+    },
+    {
+      "breed": "Flat-coated retriever",
+      "question": "What do Flat Coated Retrievers eat?",
+      "base_score": 13,
+      "final_score": 10,
+      "improvement": -3,
+      "base_reason": "The AI assistant provides safe and generally useful advice, clearly outlining types of food and emphasizing veterinarian consultation. It scores high on medical safety. However, it misses specific guidance for puppies and feeding frequency, which would enhance its overall usefulness and comprehensive breed-specific application, as Flat-coated Retrievers are a large breed with specific puppy growth needs.",
+      "final_reason": "The AI response provides safe, general feeding advice with some actionable tips but lacks breed-specific details, particularly regarding the crucial 'large breed puppy' diet for Flat-coated Retrievers, making it less comprehensive than it could be."
+    },
+    {
+      "breed": "Welsh Highland white terrier",
+      "question": "Are Welsh Terriers easy to train?",
+      "base_score": 11,
+      "final_score": 6,
+      "improvement": -5,
+      "base_reason": "The AI correctly identifies Welsh Terriers as intelligent and independent, and recommends safe, positive reinforcement training methods and consistency. However, it initially overemphasizes 'eager to please' which can mislead about the actual difficulty due to their strong independence. It also misses crucial breed-specific training elements like the importance of early socialization and incorporating mental stimulation (beyond just rewards) to keep them engaged, which are vital for this breed.",
+      "final_reason": "The AI assistant completely misidentified the breed, providing information for a Welsh Corgi instead of a Welsh Terrier. While the advice given for a Corgi is generally safe, it directly fails to answer the user's question about the specified breed, rendering it unhelpful and inaccurate."
+    },
+    {
+      "breed": "Bernese mountain dog",
+      "question": "Do Bernese Mountain Dogs need a lot of grooming?",
+      "base_score": 12,
+      "final_score": 10,
+      "improvement": -2,
+      "base_reason": "The AI assistant provides safe and mostly useful grooming advice, detailing necessary steps for brushing, nails, teeth, ears, and bathing. However, it slightly understates the volume of hair for a Bernese Mountain Dog and its recommended 'weekly' brushing frequency is less specific and potentially less optimal than the '2-3 times a week, daily during shedding' typically required for this breed's dense double coat.",
+      "final_reason": "The AI correctly identifies the double coat and general grooming needs, ensuring medical safety. However, its 'Grooming Schedule' section contains inconsistencies for Bernese Mountain Dogs, incorrectly mentioning 'short-haired coats' and an insufficient 'monthly' schedule for older dogs, which reduces its breed consistency and overall usefulness for the specified breed."
+    },
+    {
+      "breed": "Golden retriever",
+      "question": "Do Golden Retrievers Shed?",
+      "base_score": 4,
+      "final_score": 15,
+      "improvement": 11,
+      "base_reason": "The AI assistant incorrectly states Golden Retrievers have 'low maintenance grooming needs' and dangerously claims some 'may be hypoallergenic' due to Labrador genetics, which is false and unsafe for allergy sufferers. While it offers some safe shedding management tips, these errors severely undermine breed consistency and medical safety, making the overall response misleading.",
+      "final_reason": "The AI assistant's response is excellent, accurately confirming that Golden Retrievers shed and explaining the reasons (undercoat, dense coat, seasonal changes, stress). It provides highly actionable and safe advice, including regular brushing, de-shedding shampoos, maintaining a clean environment, and ensuring adequate exercise and mental stimulation to manage shedding effectively."
+    },
+    {
+      "breed": "Cairn",
+      "question": "What do Wheaten Terriers eat?",
+      "base_score": 9,
+      "final_score": 7,
+      "improvement": -2,
+      "base_reason": "The AI completely missed the 'detected pet' (Cairn dog) and answered for the breed mentioned in the user's question (Wheaten Terrier), earning a low score for breed consistency. However, its advice was medically safe, providing general nutritional principles and appropriately recommending a vet consultation. Its usefulness was moderate, as the advice was very generic and lacked breed-specific details even for the Wheaten Terrier it chose to address.",
+      "final_reason": "The AI assistant completely failed breed consistency by ignoring the 'Detected pet = Cairn dog' and instead answering for 'Wheaten Terriers,' a different breed the user mistakenly asked about, while the reference answer correctly addressed the Cairn. The medical advice provided for Wheaten Terriers was safe, but its usefulness is low as it's not applicable to the actual pet in question (Cairn Terrier)."
+    },
+    {
+      "breed": "Basenji",
+      "question": "How much exercise does a Basenji need?",
+      "base_score": 13,
+      "final_score": 12,
+      "improvement": -1,
+      "base_reason": "The AI assistant provides accurate exercise duration and suitable activities for a Basenji, along with good general health advice. It acknowledges the breed's high energy and hunting instincts, contributing to safety. It could be slightly more specific regarding off-leash safety in unenclosed areas, like the reference.",
+      "final_reason": "The AI assistant's response is largely consistent with Basenji breed characteristics and offers safe, relevant advice. However, it lacks the specific duration for daily exercise ('how much') that would make it more actionable and useful, unlike the reference answer's 'about an hour'."
+    },
+    {
+      "breed": "Shetland sheepdog",
+      "question": "Do Shetland Sheepdogs need a lot of grooming?",
+      "base_score": 7,
+      "final_score": 3,
+      "improvement": -4,
+      "base_reason": "The AI assistant provides some generally safe grooming advice but makes a critical error regarding breed consistency by stating Shetland Sheepdogs have 'droopy ears,' which is incorrect. The brushing frequency recommendation (daily) is also stronger than typically needed, and the mention of dandruff as a specific Sheltie proneness is not widely accurate.",
+      "final_reason": "The AI's response is largely inconsistent with the grooming needs of a Shetland Sheepdog, recommending daily brushing and weekly/monthly bathing which is too frequent and potentially harmful to their double coat. The description of their coat as 'silky' is also inaccurate."
+    },
+    {
+      "breed": "Giant schnauzer",
+      "question": "What is the temperament of a Giant Schnauzer like?",
+      "base_score": 11,
+      "final_score": 10,
+      "improvement": -1,
+      "base_reason": "The AI response is safe and consistent with some aspects of the Giant Schnauzer's temperament, correctly identifying them as intelligent, protective, and requiring exercise. However, it lacks depth and misses critical details like their dominant personality, suitability for experienced owners, and the crucial need for early socialization and specific training to manage interactions with other dogs, which are vital for a comprehensive understanding of the breed's temperament.",
+      "final_reason": "The response provides largely accurate information regarding the Giant Schnauzer's temperament and care needs, making it safe and somewhat useful. However, it suffers from a significant breed inconsistency regarding weight (50-65 lbs is too low for a Giant Schnauzer) and an initial incomplete phrase 'ent personality.', which detracts from its overall quality and usefulness in fully describing the temperament compared to the reference."
+    },
+    {
+      "breed": "Flat-coated retriever",
+      "question": "Are Flat Coated Retrievers easy to train?",
+      "base_score": 11,
+      "final_score": 13,
+      "improvement": 2,
+      "base_reason": "The AI correctly identifies Flat-Coated Retrievers as intelligent and responsive to positive reinforcement, offering safe and actionable advice on consistency, socialization, and mental stimulation. However, it significantly errs by repeatedly attributing a 'herding instinct' to this gun dog breed, which is a major factual inaccuracy regarding breed characteristics and detracts from its breed-specific accuracy.",
+      "final_reason": "The AI assistant provides an accurate and safe assessment of Flat-coated Retrievers' trainability, aligning well with breed characteristics. It correctly identifies their intelligence and potential stubbornness, along with the need for exercise and mental stimulation. However, it offers slightly less detailed and actionable training methods compared to the reference, focusing more on general advice than specific techniques."
+    },
+    {
+      "breed": "Sussex spaniel",
+      "question": "How much exercise does a Sussex Spaniel need?",
+      "base_score": 8,
+      "final_score": 9,
+      "improvement": 1,
+      "base_reason": "The AI assistant's response is medically safe, offering general exercise guidelines without harmful suggestions. However, it completely fails on breed consistency, providing generic advice applicable to almost any dog rather than specific recommendations for a Sussex Spaniel. Consequently, its usefulness is significantly diminished as it doesn't directly answer the user's breed-specific question with actionable, tailored information.",
+      "final_reason": "The AI correctly identifies safe exercise types for a Sussex Spaniel but fails to provide a quantifiable answer to 'how much' exercise they need, which was the central part of the user's question. It also misses important breed-specific nuances like their moderate energy level and sensitivity to heat."
+    },
+    {
+      "breed": "Boston bull",
+      "question": "Do Boston Terriers Shed?",
+      "base_score": 8,
+      "final_score": 10,
+      "improvement": 2,
+      "base_reason": "The AI assistant provides significantly inaccurate information regarding Boston Terrier shedding levels and falsely states they have an undercoat, which is incorrect for this single-coated breed, though its general grooming advice is safe.",
+      "final_reason": "The AI accurately states Boston Terriers shed and have short coats, but overstates shedding as 'moderate' rather than 'light' and suggests brushing frequencies (daily/twice-weekly) and concerns (tangles, matting) that are generally not applicable to this breed's very short coat. The final point on bathing is also cut off, reducing overall usefulness."
+    },
+    {
+      "breed": "Chihuahua",
+      "question": "What were Chihuahuas Bred For?",
+      "base_score": 4,
+      "final_score": 8,
+      "improvement": 4,
+      "base_reason": "The AI's response incorrectly states Chihuahuas were bred for tracking prey, guarding property, or as hunting dogs. This is factually inaccurate, as Chihuahuas are widely recognized to have been bred primarily for companionship, significantly reducing the usefulness and consistency of the information provided.",
+      "final_reason": "The AI assistant incorrectly states Chihuahuas were originally bred as 'hunter-guard dogs' for tracking game and protecting livestock, which is inconsistent with historical accounts and their physical attributes. While it accurately notes their origin and modern companion role, the primary answer to their breeding purpose is flawed."
+    },
+    {
+      "breed": "American Staffordshire terrier",
+      "question": "What is the temperament of a Staffordshire Bull Terrier like?",
+      "base_score": 14,
+      "final_score": 12,
+      "improvement": -2,
+      "base_reason": "The AI accurately describes the temperament of a Staffordshire Bull Terrier, using clear bullet points and a responsible disclaimer about individual variation. It successfully answers the user's question about breed temperament.",
+      "final_reason": "The AI response accurately describes the temperament of a Staffordshire Bull Terrier, aligning well with breed characteristics, despite using the slightly ambiguous term 'Staffie.' It is medically safe as it provides no health advice. However, its usefulness is hampered by an incomplete final point, cutting off mid-sentence."
+    },
+    {
+      "breed": "American Staffordshire terrier",
+      "question": "Are Staffordshire Bull Terriers easy to train?",
+      "base_score": 5,
+      "final_score": 9,
+      "improvement": 4,
+      "base_reason": "The AI assistant completely hallucinated a 'Bobtail' breed, providing irrelevant and incorrect information for the user's question about Staffordshire Bull Terriers. This makes the response profoundly inconsistent with the breed and utterly unhelpful, despite not containing directly harmful medical advice.",
+      "final_reason": "The AI correctly states that Staffordshire Bull Terriers are relatively easy to train but can be stubborn, providing several good training tips like positive reinforcement and early socialization. However, it makes a significant error by suggesting the breed grows 'larger' and its 'size can pose challenges,' which is inaccurate for Staffordshire Bull Terriers (a medium-small breed). Additionally, the claim that dogs 'can become aggressive if overtrained' is a mischaracterization of aggression causes. These inaccuracies reduce the breed consistency and overall usefulness of the advice."
+    },
+    {
+      "breed": "Cairn",
+      "question": "Are Cairn Terriers easy to train?",
+      "base_score": 8,
+      "final_score": 11,
+      "improvement": 3,
+      "base_reason": "The AI assistant completely failed on breed consistency, providing training advice for a Cocker Spaniel instead of a Cairn Terrier. The general training advice itself is safe and includes good principles of positive reinforcement and early socialization. However, its usefulness is significantly diminished because it's for the wrong breed, failing to address the user's specific query about Cairn Terriers.",
+      "final_reason": "The response accurately describes Cairn Terrier traits and suggests safe, actionable training techniques. However, the concluding statement is poorly reasoned and contradictory, stating that positive breed traits might make them a bad fit, which detracts from the overall usefulness and breed consistency."
+    },
+    {
+      "breed": "Tibetan terrier",
+      "question": "Are Tibetan Terriers easy to train?",
+      "base_score": 13,
+      "final_score": 15,
+      "improvement": 2,
+      "base_reason": "The AI assistant's response is largely consistent with the breed's training needs, emphasizing intelligence and positive reinforcement. It provides safe and actionable advice like consistency and professional help. It could have been slightly more nuanced by mentioning their potential independent streak and sensitivity to harsh discipline, which are key factors in training this specific breed.",
+      "final_reason": "The AI assistant provides an excellent and comprehensive response that accurately reflects the trainability of Tibetan Terriers, emphasizing their intelligence and independent streak. The advice is safe, actionable, and well-structured, offering practical tips on positive reinforcement, consistency, patience, socialization, and exercise, making it highly useful for a pet owner."
+    },
+    {
+      "breed": "Scottish deerhound",
+      "question": "Do Deerhounds need a lot of grooming?",
+      "base_score": 3,
+      "final_score": 5,
+      "improvement": 2,
+      "base_reason": "The AI's response demonstrates poor breed consistency by mischaracterizing the Deerhound's coat and recommending inappropriate grooming practices like frequent bathing and clipping, which is medically unsafe and unhelpful for this breed. The advice on collar fit is irrelevant to grooming.",
+      "final_reason": "The AI assistant completely failed to address the user's pet, a Scottish Deerhound, instead providing information for a German Shepherd. This resulted in zero breed consistency and rendered the entire response useless for the user's actual question about Deerhound grooming. While the advice given for a German Shepherd wasn't inherently unsafe, it was entirely irrelevant to the user's context."
+    },
+    {
+      "breed": "Miniature pinscher",
+      "question": "What is the temperament of a Miniature Pinscher like?",
+      "base_score": 8,
+      "final_score": 13,
+      "improvement": 5,
+      "base_reason": "The AI's response offers a generic description of playfulness and trainability but largely misses the distinct temperament traits of a Miniature Pinscher, such as their fearless 'big dog' attitude or wariness of strangers. It also inaccurately lists hip dysplasia as a common breed concern and veers into unrequested health information, diminishing its focus and usefulness in directly answering the user's question about temperament.",
+      "final_reason": "The AI response accurately describes many core Miniature Pinscher temperament traits, such as being affectionate, active, intelligent, loyal, and assertive, which aligns well with the breed standard. It offers safe and sound advice regarding training and mental stimulation. However, the term \"Dogsy\" is unclear and not a standard temperament descriptor, and the response misses some nuances like their inherent fearlessness or wariness of strangers mentioned in the reference."
+    },
+    {
+      "breed": "Scotch terrier",
+      "question": "What Do Scottish Terriers Eat?",
+      "base_score": 11,
+      "final_score": 10,
+      "improvement": -1,
+      "base_reason": "The AI response provides generally safe and consistent advice for Scottish Terriers regarding commercial food, protein, and hydration. However, it is less useful than the reference by omitting specific guidance on feeding schedules for puppies versus adults and could phrase the supplement recommendation more cautiously to emphasize prior vet consultation.",
+      "final_reason": "The AI assistant provides safe general dog feeding advice and correctly notes Scottish Terriers' proneness to weight gain. However, the response is incomplete, cutting off mid-sentence in a crucial section on age-specific considerations, and includes a less relevant 'hay' avoidance point, diminishing its overall usefulness and comprehensive breed consistency."
+    },
+    {
+      "breed": "Old English sheepdog",
+      "question": "Are Old English Sheepdogs easy to train?",
+      "base_score": 14,
+      "final_score": 9,
+      "improvement": -5,
+      "base_reason": "The AI assistant provides accurate and useful training advice for Old English Sheepdogs, emphasizing positive reinforcement, early training, and consistency. It correctly identifies their intelligence and need for mental/physical stimulation as key factors. While the mention of 'guarding instincts' as a primary training challenge for OES might be a slight mischaracterization of the breed's typical temperament (they are more herding/watchful than guard dogs), the overall advice is safe, actionable, and highly relevant.",
+      "final_reason": "The response provides good, safe advice on training techniques and mostly accurate breed traits. However, the closing sentence is highly misleading and incorrect regarding the breed's need for companionship and outdoor activities, significantly detracting from breed consistency and overall usefulness."
+    },
+    {
+      "breed": "Norfolk terrier",
+      "question": "Are Norfolk Terriers easy to train?",
+      "base_score": 14,
+      "final_score": 10,
+      "improvement": -4,
+      "base_reason": "The AI assistant provides safe, useful, and actionable advice that generally aligns with the Norfolk Terrier breed's trainability, highlighting their intelligence and the importance of positive reinforcement. It could slightly improve by more explicitly addressing their independent terrier nature as a potential training nuance, which can make them less 'easy' despite their intelligence.",
+      "final_reason": "The AI assistant provides generally safe and useful training tips like starting early and positive reinforcement. However, it makes a significant factual error by repeatedly misclassifying the Norfolk Terrier as a 'herding breed,' which severely impacts breed consistency and accuracy."
+    },
+    {
+      "breed": "Pembroke",
+      "question": "How Much Are Pembroke Welsh Corgi Puppies?",
+      "base_score": 5,
+      "final_score": 7,
+      "improvement": 2,
+      "base_reason": "The AI response failed to address the specific breed, offering generic advice instead of a price range for Pembroke Welsh Corgi puppies. Recommending contacting 'puppy farms' without emphasizing ethical breeding or responsible sourcing is also a significant concern regarding animal welfare and health.",
+      "final_reason": "The AI's response correctly identifies general factors influencing puppy prices, but the specific examples given for 'well-known' and 'reputable' Pembroke Welsh Corgi breeders are significantly underestimated ($500-$700) compared to current market realities for ethically bred Corgis. This inaccuracy reduces its breed consistency and usefulness, potentially misleading users towards less reputable breeders, which has indirect medical safety implications for the puppy's health."
+    },
+    {
+      "breed": "Airedale",
+      "question": "Are Airedale Terriers Good Family Dogs?",
+      "base_score": 10,
+      "final_score": 11,
+      "improvement": 1,
+      "base_reason": "The response accurately identifies key Airedale traits like size, energy, and protectiveness, but incorrectly suggests a 'shy or timid nature' as typical for the breed. Its usefulness is significantly hampered by being cut off abruptly, failing to provide a complete answer or actionable advice.",
+      "final_reason": "The response accurately identifies many Airedale characteristics such as intelligence, energy, and protective instincts, and offers safe, relevant advice regarding training and socialization. However, it falls short on usefulness due to an abrupt cut-off at the end, leaving the information incomplete. It also doesn't convey the conditional nature of their suitability as family dogs (i.e., 'if you have the time') as strongly as the reference, potentially setting slightly unrealistic expectations for prospective owners regarding the dedication required."
+    },
+    {
+      "breed": "Boston bull",
+      "question": "How Long Do Boston Terriers Live?",
+      "base_score": 7,
+      "final_score": 11,
+      "improvement": 4,
+      "base_reason": "The AI assistant failed to provide the specific lifespan range for Boston Terriers, starting with an incomplete phrase. While the general advice on factors affecting longevity and the importance of vet check-ups is safe, it does not directly answer the user's primary question, making it largely unhelpful.",
+      "final_reason": "The AI response failed to provide the direct answer (lifespan in years) to the user's question due to truncation ('rs.'). While the general advice on prolonging a dog's life was safe and breed-consistent, the primary question was not answered, severely impacting usefulness."
+    },
+    {
+      "breed": "Sealyham terrier",
+      "question": "Are Sealyham Terriers Healthy?",
+      "base_score": 10,
+      "final_score": 11,
+      "improvement": 1,
+      "base_reason": "The AI provided safe and generally good advice, but its list of common health issues for Sealyham Terriers was not well-aligned with the breed's specific predispositions, missing key concerns like IVDD and ear infections while listing conditions less prominent for the breed. The actionable steps were also quite general.",
+      "final_reason": "The AI correctly identifies some health concerns like ear and eye issues, aligning with the breed. However, it misses key conditions like IVDD and Atopy, while listing Hip and Elbow Dysplasia as common, which are less specific to Sealyhams compared to the breed's known predispositions. The advice is medically safe but lacks the detailed, actionable, breed-specific preventive steps provided in the reference, making it less useful for an owner seeking tailored guidance."
+    },
+    {
+      "breed": "Italian greyhound",
+      "question": "Do Italian Greyhounds need a lot of grooming?",
+      "base_score": 7,
+      "final_score": 5,
+      "improvement": -2,
+      "base_reason": "The AI assistant incorrectly describes the Italian Greyhound as having a double coat and needing tail trimming, which are significant factual errors for the breed. While the advice is medically safe and offers actionable steps, these inaccuracies and the recommendation for overly frequent grooming for an IG's coat type reduce its overall usefulness and breed consistency.",
+      "final_reason": "The AI assistant's response contains significant inaccuracies regarding the Italian Greyhound breed. It falsely states that Italian Greyhounds have 'long ears' and are prone to ear infections, which is incorrect; they have small, rose-shaped ears. It also overstates the need for daily brushing and 'regular grooming' for their very short, smooth coat. This lack of breed consistency and the presence of medically inaccurate information make the advice less safe and significantly less useful for an Italian Greyhound owner."
+    },
+    {
+      "breed": "Great Pyrenees",
+      "question": "Do Great Pyrenees need a lot of grooming?",
+      "base_score": 14,
+      "final_score": 11,
+      "improvement": -3,
+      "base_reason": "The AI assistant provides excellent breed-specific grooming advice, accurately describing the Great Pyrenees' double coat and recommending appropriate brushing, bathing, and specialized care like blow-outs and mat trimming. The advice is medically safe and highly useful with actionable steps, though the 'Health Benefits' section is truncated.",
+      "final_reason": "The AI accurately describes the Great Pyrenees' double coat and provides medically safe general grooming advice. However, the brushing frequency recommendations are confusing and somewhat contradictory, and the advice for bathing and dental care is less specific and actionable than ideal for the breed."
+    },
+    {
+      "breed": "Golden retriever",
+      "question": "How Much Exercise Does a Golden Retriever Need?",
+      "base_score": 14,
+      "final_score": 10,
+      "improvement": -4,
+      "base_reason": "The AI assistant provides comprehensive and safe exercise recommendations for a Golden Retriever, including various activities and important considerations for individual needs and safety. While the initial daily walk duration of '30-60 minutes' could be more explicit about being a minimum base for such an active breed (many Goldens need closer to an hour or more of dedicated exercise plus play), the overall suite of suggestions effectively addresses the breed's high energy requirements.",
+      "final_reason": "The response correctly identifies Golden Retriever traits and provides safe advice. However, the recommended 2-3 hours of daily exercise is significantly higher than typical recommendations for the breed (usually 1-1.5 hours) and the reference answer. It also lacks specific actionable steps for how to achieve this exercise, making it less useful in practice."
+    },
+    {
+      "breed": "Staffordshire bullterrier",
+      "question": "Do Staffordshire Bull Terriers Shed?",
+      "base_score": 7,
+      "final_score": 7,
+      "improvement": 0,
+      "base_reason": "The AI's response is highly inconsistent with the breed, incorrectly stating Staffordshire Bull Terriers have an 'undercoat that sheds year-round.' While the grooming advice (brushing, bathing) is generally safe, it's based on an inaccurate premise, diminishing its usefulness for this specific breed known for low shedding and a single coat.",
+      "final_reason": "The AI assistant incorrectly describes the Staffordshire Bull Terrier's coat as having an 'abundant undercoat' requiring daily brushing to prevent 'matting and tangles' and recommends a 'slicker brush.' Staffies have short, single coats and are low-shedding, not prone to matting, making this advice inaccurate for the breed and misleading for the user's question about shedding."
+    },
+    {
+      "breed": "Brittany spaniel",
+      "question": "What do Brittanys eat?",
+      "base_score": 9,
+      "final_score": 8,
+      "improvement": -1,
+      "base_reason": "The AI's response is medically safe and offers sound general advice, but it lacks breed-specific details mentioned in the reference answer, such as a Brittany's tendency for obesity or age-appropriate feeding schedules. It provides general food categories but few actionable steps specific to the breed, referring the user to a vet for specifics.",
+      "final_reason": "The response incorrectly classifies Brittany Spaniels as 'large breeds,' which can lead to inappropriate food choices. While some recommendations are safe and generally good for dogs, the advice lacks specific guidance on age-appropriate feeding stages, frequency, and crucial portion control relevant to Brittanys' tendency to overeat, making it less useful and accurate than it could be."
+    },
+    {
+      "breed": "Pomeranian",
+      "question": "Are Pomeranians Hypoallergenic?",
+      "base_score": 3,
+      "final_score": 4,
+      "improvement": 1,
+      "base_reason": "The AI's response is critically flawed in breed consistency and medical safety. It incorrectly states that Pomeranians have 'small, light coats that shed very little fur and dander,' when in fact, they have thick double coats and are moderate to heavy shedder. This misinformation could lead an allergic individual to choose a Pomeranian, resulting in severe allergic reactions, making the advice unsafe and unuseful for the user's specific query.",
+      "final_reason": "The AI assistant provides critically incorrect information about Pomeranians, stating they have 'short hair' and are 'less likely to shed fur,' which is false for this double-coated breed known for shedding. It misleadingly presents them as an excellent choice for allergy sufferers based on these errors, making the advice medically unsafe and unhelpful despite a general disclaimer."
+    },
+    {
+      "breed": "Great Pyrenees",
+      "question": "Are Great Pyrenees easy to train?",
+      "base_score": 8,
+      "final_score": 15,
+      "improvement": 7,
+      "base_reason": "The AI's initial statement that Great Pyrenees are 'highly trainable' and 'eager to please' is fundamentally incorrect for the breed, which is known for its independence and stubbornness, leading to a low score for breed consistency. While the individual training tips provided are safe and generally useful for any dog, they fail to address the specific challenges of training a Great Pyrenees, making the response less useful for the specific breed owner.",
+      "final_reason": "The AI assistant's response accurately describes the Great Pyrenees' training temperament, offers safe and effective training methods, and provides actionable steps, making it highly useful for a potential or current owner."
+    },
+    {
+      "breed": "Cardigan",
+      "question": "How much exercise does a Cardigan Welsh Corgi need?",
+      "base_score": 9,
+      "final_score": 12,
+      "improvement": 3,
+      "base_reason": "The AI correctly identifies the need for daily exercise and mental stimulation for a Cardigan Welsh Corgi. However, the recommended 'at least 30 minutes' is an underestimate for this energetic breed, which typically requires closer to an hour. A significant omission is the advice regarding shorter, less strenuous exercise for puppies to protect their developing joints, which is crucial for a chondrodysplastic breed like the Corgi.",
+      "final_reason": "The AI assistant provides accurate breed information and safe advice, but it fails to quantify the amount of exercise needed, which was the central part of the user's question. It also includes several off-topic sections like socialization, training, bathing, and grooming that detract from the primary query about exercise duration."
+    },
+    {
+      "breed": "Newfoundland",
+      "question": "What do Newfoundlands eat?",
+      "base_score": 3,
+      "final_score": 7,
+      "improvement": 4,
+      "base_reason": "The AI's response contains significant factual inaccuracies about the Newfoundland's historical purpose and provides potentially unsafe and unhelpful dietary advice by suggesting 'bones' and an undefined 'natural diet' of raw components, rather than recommending a complete and balanced commercial dog food suitable for large breeds. It lacks practical, actionable guidance for feeding a pet Newfoundland.",
+      "final_reason": "The response identifies the breed but misses crucial dietary needs specific to giant breeds, such as controlled growth for puppies or the breed's predisposition to obesity. Medical safety is compromised by recommending 'Bulldog Pro' food for a Newfoundland. Usefulness is limited due to the incomplete nature of the response (cut off, vague brand recommendations, no feeding frequency guidance) and the inappropriate brand suggestion."
+    },
+    {
+      "breed": "Soft-coated wheaten terrier",
+      "question": "Are Wheaten Terriers easy to train?",
+      "base_score": 14,
+      "final_score": 15,
+      "improvement": 1,
+      "base_reason": "The AI assistant's response is highly consistent with the Wheaten Terrier breed characteristics, accurately describing their intelligence and energy levels impacting trainability. The advice provided is medically safe and offers useful guidance, though it could be slightly more specific with actionable training methods like the reference answer.",
+      "final_reason": "The AI accurately describes the trainability of Wheaten Terriers, acknowledging their intelligence and independent nature, and provides excellent, actionable advice centered on positive reinforcement, early socialization, and patience. All advice is safe and aligns perfectly with the breed."
+    },
+    {
+      "breed": "Beagle",
+      "question": "What is a Beagle?",
+      "base_score": 15,
+      "final_score": 10,
+      "improvement": -5,
+      "base_reason": "The AI's response perfectly describes a Beagle, accurately highlighting its physical traits, temperament, hunting heritage, popularity as a family pet, and renowned scent-tracking abilities, with no safety concerns.",
+      "final_reason": "The response provides a good structure and covers relevant aspects like temperament, training, and health safely. However, it contains significant inaccuracies regarding physical characteristics, specifically stating 'medium to large' size and 'feathering on ears and legs,' which are incorrect for Beagles and significantly reduce breed consistency and overall usefulness."
+    },
+    {
+      "breed": "Border collie",
+      "question": "When Does a Border Collie Stop Growing?",
+      "base_score": 15,
+      "final_score": 14,
+      "improvement": -1,
+      "base_reason": "The AI assistant's response accurately states the typical growth period for Border Collies, aligning well with breed-specific developmental timelines. The advice is medically safe, containing no harmful suggestions, and is highly useful by directly answering the user's question while also recommending veterinary consultation for specific concerns.",
+      "final_reason": "The AI assistant provides a comprehensive and medically safe answer, aligning well with Border Collie growth patterns, though its initial height cessation range is slightly later than the reference. It offers useful, actionable advice on factors influencing growth and the importance of veterinary care."
+    },
+    {
+      "breed": "Irish terrier",
+      "question": "What do Irish Terriers eat?",
+      "base_score": 9,
+      "final_score": 9,
+      "improvement": 0,
+      "base_reason": "The AI's response is medically safe, recommending consultation with a vet, but it lacks specific details related to the Irish Terrier breed, such as their proneness to weight gain or general feeding schedules for puppies versus adults, making it less useful and specific than it could be.",
+      "final_reason": "The AI's response is medically safe, advising vet consultation and avoiding harmful recommendations. However, it lacks breed-specific insights, missing key points like Irish Terriers being prone to weight gain, and provides overly generic advice. It also fails to elaborate on crucial age-appropriate diets and feeding schedules, making it less useful and actionable for the user's specific query about Irish Terrier feeding."
+    },
+    {
+      "breed": "Giant schnauzer",
+      "question": "What do Giant Schnauzers eat?",
+      "base_score": 10,
+      "final_score": 6,
+      "improvement": -4,
+      "base_reason": "The AI's response is medically safe and correctly identifies general nutritional components. However, it lacks breed-specific detail for Giant Schnauzers (e.g., large breed specific food, growth considerations, weight management), and offers limited actionable advice, primarily deferring to a veterinarian without providing concrete initial guidance on 'what they eat' as requested by the user.",
+      "final_reason": "The response is largely generic, failing to mention 'large breed' specific food crucial for Giant Schnauzers and omitting age-specific dietary advice for puppies, which is a significant safety and usefulness concern. Its mention of 'fresh foods and supplements' lacks the necessary caveats for safe, balanced home feeding, and the initial sentence is off-topic."
+    },
+    {
+      "breed": "Lakeland terrier",
+      "question": "Are Lakeland Terriers Healthy?",
+      "base_score": 7,
+      "final_score": 11,
+      "improvement": 4,
+      "base_reason": "The AI's response is weak on breed consistency, missing key common health issues like Legg-Calve-Perthes Disease and specific eye conditions, while including less characteristic ones. It contains a medical hallucination regarding pneumonia susceptibility due to chest cavity shape, impacting medical safety. The general health advice is safe but less useful due to the inaccurate disease list and lack of breed-specific care tips present in the reference.",
+      "final_reason": "The AI's response is medically safe and offers useful general advice on dog health maintenance. However, its breed consistency is fair; it correctly identifies hypothyroidism and generally discusses eye conditions, but misidentifies some 'common' health issues (Hip/Elbow Dysplasia are not primary predispositions for this breed) and misses several key breed-specific conditions like Legg-Calve-Perthes Disease, Distichiasis, and Primary Lens Luxation."
+    },
+    {
+      "breed": "Siberian husky",
+      "question": "Are Siberian Huskies Dangerous?",
+      "base_score": 10,
+      "final_score": 14,
+      "improvement": 4,
+      "base_reason": "The AI assistant's response is an incomplete sentence fragment, making it largely unhelpful and failing to directly answer the user's question or provide any comprehensive context. While the phrase 'friendly and gentle nature' accurately describes a positive aspect of Siberian Husky temperament, its fragmented delivery severely limits its usefulness.",
+      "final_reason": "The AI assistant provided an excellent and consistent description of Siberian Husky temperament and needs, offering safe and useful insights into their behavior, though it could have more directly addressed the 'dangerous' aspect of the user's question, as the reference answer did."
+    },
+    {
+      "breed": "Cardigan",
+      "question": "Are Cardigan Welsh Corgis healthy?",
+      "base_score": 11,
+      "final_score": 10,
+      "improvement": -1,
+      "base_reason": "The AI assistant provides medically safe and generally useful advice, correctly identifying some common Corgi health issues like hip dysplasia and eye conditions. However, it significantly misses key breed-specific concerns such as Intervertebral Disc Disease (IVDD) and Degenerative Myelopathy (DM), which are critical for Cardigan Welsh Corgis due to their build. This omission reduces its breed consistency and overall usefulness for an owner seeking specific insights for this breed.",
+      "final_reason": "The AI provided safe and generally accurate information about dog health, scoring well on medical safety. However, it significantly missed key breed-specific health issues like IVDD and Degenerative Myelopathy, which are prominent in Cardigan Welsh Corgis, and included less relevant conditions like bloat. This reduced its breed consistency and overall usefulness for the user seeking specific information about this breed's health."
+    },
+    {
+      "breed": "Great Pyrenees",
+      "question": "How much exercise does a Great Pyrenees need?",
+      "base_score": 9,
+      "final_score": 9,
+      "improvement": 0,
+      "base_reason": "The AI's response is generally safe and offers some actionable advice for mental stimulation. However, the recommended exercise duration of 'at least 30 minutes' is significantly less than typically recommended for a Great Pyrenees (often closer to 1 hour or more) and can be considered insufficient for many adults of the breed. It also misses crucial breed-specific considerations like slow growth, puppy exercise precautions, and their wandering tendencies (fence jumping), which were present in the reference answer. The suggestion of 'running' without qualification for a giant breed, and the emphasis on treadmills/pools as standard exercise equipment, are less aligned with typical Great Pyrenees needs.",
+      "final_reason": "The AI inaccurately identifies Great Pyrenees as herding dogs instead of livestock guardians, skewing its understanding of their energy and exercise needs. It omits crucial information about puppy exercise restrictions and the breed's tendency for roaming, though the daily exercise duration is somewhat aligned with the reference and the advice is generally safe and actionable."
+    },
+    {
+      "breed": "Pomeranian",
+      "question": "How Much Is a Pomeranian?",
+      "base_score": 7,
+      "final_score": 9,
+      "improvement": 2,
+      "base_reason": "The AI assistant's response is severely inconsistent with the actual market value of a purebred Pomeranian, providing a price range ($150-$400) that is drastically underestimated and potentially misleading for the user. While it avoids medical safety issues and lists some relevant factors, the fundamental inaccuracy of the cost renders the advice unhelpful and not actionable in a practical sense, failing to solve the user's core problem effectively.",
+      "final_reason": "The response provides a reasonable price range for purchase in USD but incorrectly bundles first-year living costs into the purchase price. It accurately identifies grooming and healthcare as ongoing expenses, but misidentifies the Pomeranian's distinctive long coat as 'short,' and contains a grammatically incomplete opening sentence."
+    },
+    {
+      "breed": "Standard poodle",
+      "question": "Do Poodles need a lot of grooming?",
+      "base_score": 7,
+      "final_score": 11,
+      "improvement": 4,
+      "base_reason": "The AI's response contains significant factual inaccuracies regarding Poodle coat types for Miniature and Toy Poodles, stating they have straight or flat hair, which is incorrect. This fundamental misunderstanding of the breed's primary characteristic severely impacts breed consistency and usefulness, despite offering some generally safe advice for Standard Poodles.",
+      "final_reason": "The AI provided safe and mostly useful grooming advice, detailing several key areas. However, it incorrectly stated Poodles have double coats and mischaracterized their hypoallergenic status, which are significant breed consistency errors."
+    },
+    {
+      "breed": "Lakeland terrier",
+      "question": "What Do Lakeland Terriers Eat?",
+      "base_score": 8,
+      "final_score": 8,
+      "improvement": 0,
+      "base_reason": "The response correctly identifies the breed but provides very general feeding advice, lacking specific actionable steps like portion control or feeding frequencies for different life stages. A significant safety concern arises from the incomplete sentence regarding raw diets, which fails to include crucial warnings about potential risks, making the advice potentially unsafe and less useful.",
+      "final_reason": "The AI assistant completely failed to answer the user's question about what Lakeland Terriers eat, instead providing general information about the breed's characteristics. While the information provided is accurate for the breed (thus somewhat consistent with the breed, though not the question), and it avoided giving any unsafe advice by not giving any dietary advice at all, it was entirely unhelpful in solving the user's problem."
+    },
+    {
+      "breed": "Sussex spaniel",
+      "question": "Are Sussex Spaniels easy to train?",
+      "base_score": 13,
+      "final_score": 13,
+      "improvement": 0,
+      "base_reason": "The AI assistant accurately describes Sussex Spaniels as intelligent but potentially stubborn, requiring consistent and patient positive reinforcement training from an early age. The advice is safe and provides actionable steps, although it could have further enhanced usefulness by explicitly mentioning early socialization and varied training sessions, as the reference did.",
+      "final_reason": "The AI assistant provides accurate and safe training advice that aligns well with the Sussex Spaniel breed's characteristics, emphasizing positive reinforcement and early socialization. While slightly more optimistic about trainability than the reference, it still highlights the need for consistency and provides actionable steps."
+    },
+    {
+      "breed": "English foxhound",
+      "question": "What is the temperament of an English Foxhound like?",
+      "base_score": 12,
+      "final_score": 9,
+      "improvement": -3,
+      "base_reason": "The AI assistant's response accurately describes the key temperament traits of an English Foxhound, including high energy, prey drive, and friendliness, aligning well with the breed's characteristics. The advice is safe, with no concerning information. However, it lacks the depth and specificity found in the reference, such as detailed exercise requirements, the independent nature affecting recall, or their characteristic bay, which would make it more useful and comprehensive.",
+      "final_reason": "The AI assistant includes an unrequested and largely inaccurate physical description of the breed. While it correctly identifies some aspects of temperament like energy and need for stimulation, it overstates intelligence and trainability, and misses key traits such as their gentle, sociable nature and strong prey drive."
+    },
+    {
+      "breed": "Weimaraner",
+      "question": "Are Weimaraners healthy?",
+      "base_score": 8,
+      "final_score": 9,
+      "improvement": 1,
+      "base_reason": "The AI response failed on breed consistency by explicitly referencing 'German Shepherd' instead of Weimaraner, severely impacting its usefulness for the specific user query. While the medical advice provided was safe and standard, it was not tailored to the breed in question, and the listed health concerns were not the most prominent ones for Weimaraners as highlighted in the reference.",
+      "final_reason": "The AI correctly identified some common Weimaraner health issues like hip dysplasia and thyroid disorders, and general breed traits. However, it missed critical breed-specific health concerns such as Gastric Dilation Volvulus (bloat) and bleeding disorders. The description of a 'dense undercoat' is incorrect for Weimaraners. While the advice given is safe, the omissions and inaccuracies reduce its overall usefulness and breed consistency."
+    },
+    {
+      "breed": "Standard poodle",
+      "question": "What is the temperament of a Poodle like?",
+      "base_score": 11,
+      "final_score": 14,
+      "improvement": 3,
+      "base_reason": "The AI accurately describes Poodle temperament, aligning with breed characteristics, and the information is safe. However, it provides extraneous information about all three Poodle sizes despite the user specifying a Standard Poodle, and the response is cut off mid-sentence, significantly impacting its usefulness.",
+      "final_reason": "The AI assistant provides an accurate and comprehensive overview of the Standard Poodle's temperament, hitting key characteristics like intelligence, trainability, alertness, and loyalty. It correctly highlights the importance of socialization and mental stimulation, aligning well with the breed's known traits. The information is safe and directly addresses the user's question, offering useful insights into managing this intelligent breed, though explicit actionable steps could be slightly more detailed."
+    },
+    {
+      "breed": "Irish water spaniel",
+      "question": "Are Irish Water Spaniels healthy?",
+      "base_score": 13,
+      "final_score": 13,
+      "improvement": 0,
+      "base_reason": "The AI assistant provides a medically safe and generally useful overview of Irish Water Spaniel health, listing relevant conditions like hip dysplasia, PRA, and skin issues. It emphasizes important actionable steps like regular vet check-ups, exercise, and grooming. While it misses a couple of specific conditions from the reference (Distichiasis, Hypothyroidism) and doesn't detail grooming as precisely as the reference, its overall consistency with the breed's common health concerns is strong, making it a valuable and safe response.",
+      "final_reason": "The AI assistant provides accurate health information relevant to Irish Water Spaniels, including common conditions like PRA and Elbow Dysplasia which were not in the reference but are known breed concerns, ensuring medical safety. It's highly useful by giving a broad overview of health and care needs, though it lacked specific details on conditions present in the reference like Distichiasis and Hypothyroidism."
+    },
+    {
+      "breed": "Weimaraner",
+      "question": "Do Weimaraners need a lot of grooming?",
+      "base_score": 7,
+      "final_score": 9,
+      "improvement": 2,
+      "base_reason": "The AI assistant completely failed breed consistency, incorrectly identifying the pet as a Doberman Pinscher instead of a Weimaraner. While the general grooming advice provided is medically safe, it is not useful for the user's specific pet due to the breed error, and it does not directly answer the question about Weimaraner grooming needs.",
+      "final_reason": "The AI's response has significant breed inconsistencies, particularly stating Weimaraners have 'thick coats' requiring maintenance and 'moderate energy levels,' which are inaccurate. While safe and providing some useful grooming steps, it includes much irrelevant information and a contradictory description of the breed's coat, reducing its overall usefulness."
+    },
+    {
+      "breed": "Cardigan",
+      "question": "Are Cardigan Welsh Corgis easy to train?",
+      "base_score": 10,
+      "final_score": 15,
+      "improvement": 5,
+      "base_reason": "The AI's response is medically safe and emphasizes positive reinforcement, but it lacks specific breed-consistent insights like their potential stubbornness and offers mostly generic training advice rather than actionable steps tailored to Cardigan Welsh Corgis.",
+      "final_reason": "The AI response accurately details Cardigan Welsh Corgi training characteristics, promotes safe positive reinforcement, and offers highly useful, actionable tips for successful training."
+    },
+    {
+      "breed": "Boxer",
+      "question": "How much exercise does a Boxer need?",
+      "base_score": 7,
+      "final_score": 7,
+      "improvement": 0,
+      "base_reason": "The AI assistant significantly underestimates the exercise needs of an adult Boxer, recommending only 30-60 minutes compared to their typical requirement of around 2 hours. It also fails to include crucial breed-specific safety advice regarding puppies and warm weather considerations for brachycephalic dogs, and contains an incomplete sentence, diminishing its overall usefulness and safety.",
+      "final_reason": "The AI's recommended exercise duration (30 minutes to an hour) is significantly less than what a Boxer typically needs. It also critically omits essential safety advice regarding heat intolerance for this brachycephalic breed and lacks specific guidelines for Boxer puppies, making it less breed-consistent, medically safe, and useful than the reference."
+    },
+    {
+      "breed": "Lhasa",
+      "question": "Are Lhasa Apsos easy to train?",
+      "base_score": 9,
+      "final_score": 14,
+      "improvement": 5,
+      "base_reason": "The AI assistant's response contradicts breed-specific information, incorrectly stating Lhasa Apsos are 'easier to train' and 'eager to please,' when they are known for their independent and stubborn nature. While the general training tips are safe and actionable, this fundamental misrepresentation of the breed significantly reduces its usefulness for a Lhasa Apso owner.",
+      "final_reason": "The AI response accurately describes the Lhasa Apso's trainability, emphasizing their intelligent yet stubborn nature and the need for patience and positive reinforcement. The advice is safe and highly useful, offering actionable steps for training, socialization, and general care, although the opening phrase is a bit awkward."
+    },
+    {
+      "breed": "English foxhound",
+      "question": "Are English Foxhounds easy to train?",
+      "base_score": 13,
+      "final_score": 14,
+      "improvement": 1,
+      "base_reason": "The AI assistant provides useful, actionable, and safe training advice for English Foxhounds, emphasizing key aspects like positive reinforcement, exercise, and consistency. However, its initial statement suggesting they are 'relatively easier to train' due to 'loyalty' is inconsistent with the breed's known independent and scent-driven nature, which often makes training more challenging than with some other breeds.",
+      "final_reason": "The AI assistant provides excellent and safe advice, accurately reflecting the English Foxhound's training nuances, including their intelligence, independent nature, and high prey drive. The tips are actionable and comprehensive, though there is a slight redundancy in the socialization points."
+    },
+    {
+      "breed": "Shetland sheepdog",
+      "question": "Are Shetland Sheepdogs healthy?",
+      "base_score": 9,
+      "final_score": 9,
+      "improvement": 0,
+      "base_reason": "The AI's response contains a significant factual error about the Shetland Sheepdog's coat type (stating it's short and dense when it's long and double), and it omits several key breed-specific health concerns while including more general ones. While the advice is medically safe and some general points are useful, the inaccuracies and omissions severely reduce its breed consistency and overall usefulness for a user asking about Sheltie health, especially compared to the comprehensive reference.",
+      "final_reason": "The response correctly identifies some breed-specific health concerns and offers general care tips. However, it makes a significant factual error by claiming Shetland Sheepdogs are 'hypoallergenic,' which is incorrect and contradictory given their double coat. It also lacks the depth and specificity of common health issues and breed-specific care, such as coat maintenance, compared to comprehensive resources."
+    },
+    {
+      "breed": "English setter",
+      "question": "Do English Setters need a lot of grooming?",
+      "base_score": 5,
+      "final_score": 13,
+      "improvement": 8,
+      "base_reason": "The AI assistant's response is significantly flawed. It hallucinates incorrect grooming terminology ('dusting sessions') and, critically, advises 'trimming... teeth,' which is medically incorrect and potentially harmful. It also misrepresents English Setters as having 'short-haired or long-haired' coat types, when they only have a distinct long, feathered coat. These inaccuracies severely impact its breed consistency, medical safety, and overall usefulness.",
+      "final_reason": "The AI assistant provides mostly accurate and safe advice regarding English Setter grooming, correctly identifying the need for frequent brushing, trimming, and ear care. However, it recommends brushing 'at least twice weekly' when 'daily' is often ideal for preventing matting in their feathered coats, and it completely omits dental care, which is a crucial aspect of overall grooming and health for any dog, especially one needing 'a lot of grooming'."
+    },
+    {
+      "breed": "Shih-Tzu",
+      "question": "What is the Average Shih Tzu Lifespan?",
+      "base_score": 13,
+      "final_score": 14,
+      "improvement": 1,
+      "base_reason": "The AI accurately provides a safe lifespan range for a Shih Tzu and includes useful, actionable advice on how to promote longevity. However, the mention of a separate 'adult dog's life expectancy' is confusing and slightly detracts from the directness of the breed-specific answer.",
+      "final_reason": "The AI accurately provides a lifespan range and safe, actionable advice regarding factors influencing longevity. While the stated lifespan range is slightly narrower than the reference (12-15 vs. 10-16 years), it is still largely consistent with the breed, and the additional health management tips are excellent."
+    },
+    {
+      "breed": "Shetland sheepdog",
+      "question": "What is the temperament of a Shetland Sheepdog like?",
+      "base_score": 11,
+      "final_score": 15,
+      "improvement": 4,
+      "base_reason": "The AI assistant's response accurately describes core Sheltie traits like intelligence, loyalty, and need for exercise, and correctly identifies their prey drive. However, it misses key temperament aspects such as their vocal nature (barking tendency) and explicit mention of their good disposition with children and other pets, and starts with a truncated phrase.",
+      "final_reason": "The AI assistant's response perfectly captures the temperament of a Shetland Sheepdog, providing accurate and consistent breed characteristics. The medical advice is safe and relevant, and the overall information is highly useful, actionable, and well-organized, directly addressing the user's query comprehensively."
+    },
+    {
+      "breed": "Whippet",
+      "question": "Are Whippets easy to train?",
+      "base_score": 14,
+      "final_score": 8,
+      "improvement": -6,
+      "base_reason": "The AI assistant's response is medically safe and highly useful, directly answering the user's question with actionable advice on positive reinforcement, consistency, socialization, and exercise. It aligns well with Whippet breed characteristics regarding training, though it could have included specific nuances like keeping training sessions short and engaging for this breed.",
+      "final_reason": "The response is moderately safe as it gives no medical advice. However, it contains significant inaccuracies about Whippet breed characteristics, stating they are good watchdogs (they are not typically) and that they might not be suitable for energetic outdoor activities or agility (they excel at these). This severely impacts breed consistency and usefulness by providing misleading information."
+    },
+    {
+      "breed": "German shepherd",
+      "question": "Are German Shepherds Dangerous?",
+      "base_score": 11,
+      "final_score": 15,
+      "improvement": 4,
+      "base_reason": "The response is medically safe and offers useful general dog care tips, but it lacks breed-specific focus by starting too broadly and including dander allergies, which are not typically the primary concern when asking if a German Shepherd is 'dangerous'. It doesn't directly address the protective instincts often associated with the breed and how to manage them, unlike the reference answer.",
+      "final_reason": "The AI assistant provides an accurate, balanced, and comprehensive description of German Shepherd temperament, including key characteristics and potential challenges. It offers safe and actionable advice on socialization, training, and positive reinforcement to prevent behavioral issues, directly addressing the user's concern about the breed being dangerous."
+    },
+    {
+      "breed": "German shepherd",
+      "question": "Are German Shepherds Good With Kids?",
+      "base_score": 14,
+      "final_score": 12,
+      "improvement": -2,
+      "base_reason": "The AI assistant's response is largely consistent with German Shepherd breed characteristics, emphasizing their protective nature alongside the need for proper socialization and training. All advice provided is medically safe and standard for dog ownership. The tips for ensuring comfort around children are actionable and useful, although the initial 'n.' seems like a typo and one point about gentle handling could be phrased more clearly.",
+      "final_reason": "The response provides a good overview of German Shepherds with children, covering positive traits, potential challenges, and actionable training advice. It scores well on medical safety and general usefulness. However, it significantly understates the shedding habits of German Shepherds, describing them as 'moderate' when they are known for being very heavy shedder, impacting breed consistency. The 'Suitable Living Environment' section is left blank, reducing overall completeness."
+    },
+    {
+      "breed": "Newfoundland",
+      "question": "How much exercise does a Newfoundland need?",
+      "base_score": 6,
+      "final_score": 5,
+      "improvement": -1,
+      "base_reason": "The AI assistant's response is too generic and significantly underestimates the exercise needs of a Newfoundland, recommending 30 minutes instead of the typical 1 hour. It also critically omits breed-specific safety advice regarding puppy over-exercise restrictions and overheating, which are paramount for this giant, heavy-coated breed.",
+      "final_reason": "The AI correctly identifies the breed's love for water and gentle nature but significantly overstates its energy levels, suggesting 'runs' without vital warnings about overheating and the dangers of over-exercising Newfoundland puppies due to joint development, making it unsafe and less useful than the reference."
+    },
+    {
+      "breed": "Sussex spaniel",
+      "question": "Are Sussex Spaniels healthy?",
+      "base_score": 12,
+      "final_score": 13,
+      "improvement": 1,
+      "base_reason": "The AI provided safe and generally useful advice, correctly identifying several common health issues for Sussex Spaniels and offering actionable preventative steps. However, it missed some prominent breed-specific conditions mentioned in the reference (e.g., IVDD, PDA, Pulmonic Stenosis) and included some more generic dog health issues, slightly impacting its breed consistency score.",
+      "final_reason": "The AI response provides generally accurate information regarding Sussex Spaniel health, listing common conditions like hip dysplasia and general heart issues. The medical advice is safe and actionable, recommending regular vet check-ups and genetic testing. It could be slightly more precise with specific heart conditions and acknowledge ear health as a common concern for the breed, which was highlighted in the reference."
+    },
+    {
+      "breed": "Boxer",
+      "question": "What is the temperament of a Boxer like?",
+      "base_score": 11,
+      "final_score": 14,
+      "improvement": 3,
+      "base_reason": "The AI accurately describes Boxers as high-energy, friendly, and good family pets, but uses misleading terms like 'dominant,' 'bossy,' and 'independent personality' which don't fully align with the breed's true nature as intelligent and people-oriented, and omits their characteristic boisterousness and clownish antics. No safety issues were present.",
+      "final_reason": "The AI assistant provides an accurate and concise description of the Boxer temperament, highlighting key traits like energy, loyalty, intelligence, and protectiveness. The advice regarding exercise and mental stimulation is safe and useful for potential owners, directly addressing the implications of the breed's temperament."
+    },
+    {
+      "breed": "Giant schnauzer",
+      "question": "Do Giant Schnauzers need a lot of grooming?",
+      "base_score": 5,
+      "final_score": 7,
+      "improvement": 2,
+      "base_reason": "The AI assistant's response is medically unsafe due to the mention of 'teeth trimming,' which is not a standard or safe grooming practice and can cause severe harm. It also misidentifies Giant Schnauzer ears as 'droopy' and misses crucial breed-specific grooming requirements like hand-stripping and beard trimming, while including misleading information about tail docking.",
+      "final_reason": "The AI assistant fundamentally misunderstands the Giant Schnauzer breed, incorrectly describing them as medium-sized with a 'long, silky coat' and listing incorrect coat colors. This critical error undermines the relevance and accuracy of its grooming advice, which is not tailored to a Giant Schnauzer's actual wiry double coat. While general grooming tips are safe, they are largely unhelpful for the specific breed."
+    },
+    {
+      "breed": "Miniature schnauzer",
+      "question": "Are Miniature Schnauzers easy to train?",
+      "base_score": 14,
+      "final_score": 7,
+      "improvement": -7,
+      "base_reason": "The AI assistant provides an excellent and comprehensive answer, aligning well with Miniature Schnauzer traits regarding intelligence and potential stubbornness. All advice is medically safe and offers highly useful, actionable steps for training, including starting early, positive reinforcement, and consistent, short sessions.",
+      "final_reason": "The AI assistant's response largely fails on breed consistency and usefulness by discussing other dog breeds instead of focusing on the Miniature Schnauzer, only offering one vague sentence initially about the requested breed. While the general advice given is safe, it does not answer the user's specific question for the specified pet."
+    },
+    {
+      "breed": "Kelpie",
+      "question": "What is the temperament of an Australian Kelpie like?",
+      "base_score": 4,
+      "final_score": 13,
+      "improvement": 9,
+      "base_reason": "The AI response contains significant factual inaccuracies, specifically stating Kelpies excel at water rescue (they are herding dogs) and grossly overestimating their adult weight (30-45 kg vs. actual 15-20 kg). These errors make the response inconsistent with the breed and severely diminish its usefulness and safety by providing misleading information.",
+      "final_reason": "The AI assistant's response accurately describes the core temperament of an Australian Kelpie, highlighting their energy, intelligence, and devotion. It offers safe, actionable advice regarding training and socialization, and clearly identifies suitable owners. While it could have included the breed's tendency to be reserved with strangers or specific herding instincts, it directly addresses the user's question with consistent and useful information."
+    },
+    {
+      "breed": "Rhodesian ridgeback",
+      "question": "Do Rhodesian Ridgeback need a lot of grooming?",
+      "base_score": 6,
+      "final_score": 3,
+      "improvement": -3,
+      "base_reason": "The AI's response contains multiple critical inaccuracies regarding the Rhodesian Ridgeback breed, particularly concerning its coat type (claiming a double coat and propensity for matting, which is false) and tail (claiming it curls and needs trimming). This misinformation makes the grooming advice largely unhelpful and inconsistent with the breed's actual needs, despite not posing direct medical safety risks. The response is also incomplete regarding teeth care.",
+      "final_reason": "The AI assistant's response is critically flawed. It incorrectly describes the Rhodesian Ridgeback's coat as a 'double-coat' with an undercoat, which is factually incorrect for the breed's single, short coat. More dangerously, it includes a hallucinated and medically unsafe recommendation for 'Tattoo Removal' during routine grooming, which is irresponsible and could lead to harm. This severe medical safety breach and breed inconsistency make the advice largely unhelpful and unsafe."
+    },
+    {
+      "breed": "Cardigan",
+      "question": "Do Cardigan Welsh Corgis need a lot of grooming?",
+      "base_score": 7,
+      "final_score": 5,
+      "improvement": -2,
+      "base_reason": "The AI's description of the Cardigan Welsh Corgi's coat ('soft, short hair that doesn't shed much') is inaccurate; they have a dense double coat and are known for shedding. Daily brushing is generally excessive compared to the more appropriate weekly brushing for maintenance, making the breed consistency and usefulness low. While no truly unsafe advice is given, the inaccuracies diminish the overall value of the response.",
+      "final_reason": "The AI response contains significant inaccuracies regarding breed characteristics (coat length, breed size) and provides medically unsound advice (wet food for eye moisture), which severely compromises its safety and usefulness despite a good structural attempt to answer the question."
+    },
+    {
+      "breed": "Lhasa",
+      "question": "Do Lhasa Apsos need a lot of grooming?",
+      "base_score": 9,
+      "final_score": 14,
+      "improvement": 5,
+      "base_reason": "The response accurately identifies the need for frequent brushing and details other grooming tasks. However, recommending bathing twice a month for a Lhasa Apso is too frequent and potentially detrimental to their skin and coat health. The claim that grooming serves as exercise is incorrect, and the closing statement contradicts earlier advice, reducing overall accuracy and usefulness.",
+      "final_reason": "The AI assistant provides an excellent, comprehensive overview of Lhasa Apso grooming needs, aligning well with the breed's characteristics and offering actionable advice across various grooming aspects. The only minor flaw is the ambiguous recommendation to 'brush your dog's ears' for ear health, which is not the standard or most effective method for preventing ear infections."
+    },
+    {
+      "breed": "Maine_Coon",
+      "question": "How Big Do Maine Coon Cats Get?",
+      "base_score": 8,
+      "final_score": 7,
+      "improvement": -1,
+      "base_reason": "The AI assistant provides some relevant information about Maine Coon size but includes inaccurate weight ranges for both males and females, uses non-standard and incorrect terminology ('coffers', 'bunbies'), and omits the important detail about their late maturation. However, it is medically safe and offers some useful additional breed characteristics.",
+      "final_reason": "The AI response significantly misrepresents the typical weight and height ranges for Maine Coon cats, providing much lower weight estimates and higher height estimates than accurate for the breed. It also incorrectly implies the existence of short-coated varieties and misses the critical information about their later maturity, making the core answer to the user's question unhelpful despite being safe."
+    },
+    {
+      "breed": "Ragdoll",
+      "question": "What Is a Ragdoll Cat?",
+      "base_score": 9,
+      "final_score": 7,
+      "improvement": -2,
+      "base_reason": "The response provides good information on temperament and name origin but contains significant inaccuracies regarding breed-specific coat colors and patterns, which are fundamental characteristics of Ragdolls, and overstates drooling as a unique breed trait.",
+      "final_reason": "The AI assistant provides a structured overview but contains significant factual errors regarding the Ragdoll breed's appearance (eye color, coat type) and health predispositions, making it inconsistent and less useful. While it doesn't give harmful medical advice directly, the inaccurate health information is a concern. The care advice is generic and offers limited specific actionable steps for Ragdolls."
+    },
+    {
+      "breed": "Egyptian_Mau",
+      "question": "Are Egyptian Mau Cats Hypoallergenic?",
+      "base_score": 7,
+      "final_score": 3,
+      "improvement": -4,
+      "base_reason": "The AI incorrectly describes the Egyptian Mau's coat as 'long and dense'. It fails to directly answer the question about hypoallergenicity and completely omits the crucial medical fact that all cats produce Fel d1 protein, the primary cause of cat allergies, regardless of shedding.",
+      "final_reason": "The AI fundamentally misunderstands the Egyptian Mau breed, describing it as having a 'long coat' and recommending grooming techniques like 'dusting their fur' which are incorrect and potentially harmful. This leads to inaccurate and unsafe advice, failing on breed consistency, medical safety, and usefulness."
+    },
+    {
+      "breed": "Siamese",
+      "question": "How Long Do Siamese Cats Live?",
+      "base_score": 9,
+      "final_score": 14,
+      "improvement": 5,
+      "base_reason": "The AI assistant's response is medically safe and offers relevant factors influencing cat longevity. However, it fails to directly answer the user's primary question regarding the typical lifespan of a Siamese cat, and the response appears to be cut off, reducing its overall usefulness and breed-specific consistency.",
+      "final_reason": "The AI accurately identifies factors influencing Siamese cat longevity and provides safe, actionable advice. While the upper limit of '25 years' is slightly optimistic compared to common averages (15-20 years, with 20 being a grand old age), it's not entirely impossible and the general advice is sound and useful for pet owners."
+    },
+    {
+      "breed": "Bengal",
+      "question": "Do Bengal Cats Shed?",
+      "base_score": 10,
+      "final_score": 13,
+      "improvement": 3,
+      "base_reason": "The AI incorrectly states that Bengal cats have \"average\" shedding when they are known for low shedding, impacting breed consistency, but the advice provided is medically safe, and includes useful general cat care tips and a strong recommendation to consult a veterinarian for concerns.",
+      "final_reason": "The response provides safe and useful grooming advice with actionable steps like brushing and bathing frequency. However, its initial statement of Bengals shedding an 'average amount' is slightly inconsistent with the common understanding and reference that they shed 'much less' than many other breeds, though it corrects itself by noting their coat 'helps reduce shedding'."
+    },
+    {
+      "breed": "Bengal",
+      "question": "What is the Average Lifespan for a Bengal Cat?",
+      "base_score": 15,
+      "final_score": 13,
+      "improvement": -2,
+      "base_reason": "The AI assistant provides an accurate lifespan range for Bengal cats and offers comprehensive, safe, and actionable advice perfectly tailored to the breed's characteristics, covering healthcare, nutrition, exercise, environment, and genetic factors.",
+      "final_reason": "The response provides a generally correct lifespan range for Bengal cats (though slightly optimistic for an 'average') and includes safe, useful advice on maximizing their longevity through proper care, veterinary attention, and a loving environment, directly addressing the user's query with actionable steps."
+    },
+    {
+      "breed": "Ragdoll",
+      "question": "Are Ragdoll Cats Hypoallergenic?",
+      "base_score": 12,
+      "final_score": 4,
+      "improvement": -8,
+      "base_reason": "The response accurately states that Ragdolls can trigger allergies due to their fur, aligning with breed characteristics. While it correctly answers the primary question, the suggestion of Persian cats as hypoallergenic or low-shedding is factually incorrect and could mislead an allergic individual, impacting medical safety and overall usefulness.",
+      "final_reason": "The AI's response is largely inaccurate regarding Ragdoll cats, stating they shed very little and produce less saliva, which contradicts general knowledge and the reference. This misinformation could lead an allergic person to make an unsuitable pet choice. Furthermore, the suggested 'low-allergy' breeds are also often incorrect (e.g., Maine Coons, British Shorthairs)."
+    },
+    {
+      "breed": "Persian",
+      "question": "How To Identify a Persian Cat?",
+      "base_score": 7,
+      "final_score": 9,
+      "improvement": 2,
+      "base_reason": "The AI assistant's response is largely inconsistent with the defining physical characteristics of a Persian cat, incorrectly describing features like body shape, eye shape, tail length, and movement. This makes the information unhelpful and misleading for breed identification, though it is medically safe.",
+      "final_reason": "The AI assistant provides a structured list of features, which is helpful. However, it contains significant inaccuracies regarding key identifying characteristics of a Persian cat, most notably describing their eyes as 'almond-shaped' instead of large and round, and incorrectly stating their tail 'often curls over the back.' While some points like coat density and overall size are correct, these critical errors compromise its accuracy for breed identification."
+    },
+    {
+      "breed": "Sphynx",
+      "question": "What is the Average Sphynx Cat’s Lifespan?",
+      "base_score": 10,
+      "final_score": 8,
+      "improvement": -2,
+      "base_reason": "The AI provided safe general advice for pet longevity but significantly overestimated the average Sphynx cat lifespan compared to commonly accepted ranges, reducing the accuracy and usefulness of its primary answer. It also consistently misspelled the breed name.",
+      "final_reason": "The AI assistant completely failed to provide the actual average lifespan range (e.g., 8-14 years), which was the central question, severely impacting its usefulness. While it accurately listed common Sphynx health issues and provided safe, general advice on care and research, the absence of the core numerical answer makes the response insufficient for the user's query."
+    }
+  ]
+}

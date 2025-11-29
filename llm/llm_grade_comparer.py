@@ -73,42 +73,59 @@ def compare_scores(base_results: List[Dict[str, Any]],
     }
 
 
-def print_comparison_report(comparison: Dict[str, Any]):
-    """Print a detailed comparison report."""
-    print("\n" + "="*80)
-    print("MODEL COMPARISON REPORT: Base vs Final")
-    print("="*80)
+def generate_comparison_report(comparison: Dict[str, Any]) -> str:
+    """Generate the comparison report content as a string."""
+    lines = []
     
-    print(f"\n📊 Overall Statistics:")
-    print(f"{'─'*80}")
-    print(f"  Base Model Average Score:   {comparison['base_avg']:.2f} ± {comparison['base_std']:.2f}")
-    print(f"  Final Model Average Score:  {comparison['final_avg']:.2f} ± {comparison['final_std']:.2f}")
-    print(f"  Improvement:                {comparison['improvement']:+.2f} ({comparison['improvement_pct']:+.1f}%)")
+    # Header
+    lines.append("MODEL COMPARISON REPORT: Base vs Final")
+    lines.append("=" * 80)
+    lines.append("")
     
-    print(f"\n🏆 Win/Loss Record:")
-    print(f"{'─'*80}")
-    print(f"  Final Model Wins:   {comparison['wins']:3d} ({comparison['wins']/comparison['total_samples']*100:.1f}%)")
-    print(f"  Final Model Losses: {comparison['losses']:3d} ({comparison['losses']/comparison['total_samples']*100:.1f}%)")
-    print(f"  Ties:               {comparison['ties']:3d} ({comparison['ties']/comparison['total_samples']*100:.1f}%)")
-    print(f"  Total Samples:      {comparison['total_samples']:3d}")
+    # Overall Statistics
+    lines.append("📊 Overall Statistics:")
+    lines.append("─" * 80)
+    lines.append(f"  Base Model Average Score:   {comparison['base_avg']:.2f} ± {comparison['base_std']:.2f}")
+    lines.append(f"  Final Model Average Score:  {comparison['final_avg']:.2f} ± {comparison['final_std']:.2f}")
+    lines.append(f"  Improvement:                {comparison['improvement']:+.2f} ({comparison['improvement_pct']:+.1f}%)")
+    lines.append("")
     
-    # Show biggest improvements
-    print(f"\n📈 Top 5 Improvements:")
-    print(f"{'─'*80}")
+    # Win/Loss Record
+    lines.append("🏆 Win/Loss Record:")
+    lines.append("─" * 80)
+    lines.append(f"  Final Model Wins:   {comparison['wins']:3d} ({comparison['wins']/comparison['total_samples']*100:.1f}%)")
+    lines.append(f"  Final Model Losses: {comparison['losses']:3d} ({comparison['losses']/comparison['total_samples']*100:.1f}%)")
+    lines.append(f"  Ties:               {comparison['ties']:3d} ({comparison['ties']/comparison['total_samples']*100:.1f}%)")
+    lines.append(f"  Total Samples:      {comparison['total_samples']:3d}")
+    lines.append("")
+    
+    # Top 5 Improvements
+    lines.append("📈 Top 5 Improvements:")
+    lines.append("─" * 80)
     sorted_improvements = sorted(comparison['comparisons'], key=lambda x: x['improvement'], reverse=True)
     for i, item in enumerate(sorted_improvements[:5], 1):
-        print(f"  {i}. {item['breed']} ({item['base_score']} → {item['final_score']}, +{item['improvement']})")
-        print(f"     Q: {item['question'][:70]}...")
+        lines.append(f"  {i}. {item['breed']} ({item['base_score']} → {item['final_score']}, +{item['improvement']})")
+        lines.append(f"     Q: {item['question'][:70]}...")
+    lines.append("")
     
-    # Show biggest declines
-    print(f"\n📉 Top 5 Declines:")
-    print(f"{'─'*80}")
+    # Top 5 Declines
+    lines.append("📉 Top 5 Declines:")
+    lines.append("─" * 80)
     sorted_declines = sorted(comparison['comparisons'], key=lambda x: x['improvement'])
     for i, item in enumerate(sorted_declines[:5], 1):
-        print(f"  {i}. {item['breed']} ({item['base_score']} → {item['final_score']}, {item['improvement']})")
-        print(f"     Q: {item['question'][:70]}...")
+        lines.append(f"  {i}. {item['breed']} ({item['base_score']} → {item['final_score']}, {item['improvement']})")
+        lines.append(f"     Q: {item['question'][:70]}...")
+    lines.append("")
+    lines.append("=" * 80)
     
-    print(f"\n{'='*80}\n")
+    return "\n".join(lines)
+
+
+def print_comparison_report(comparison: Dict[str, Any]):
+    """Print a detailed comparison report."""
+    report = generate_comparison_report(comparison)
+    print("\n" + report + "\n")
+
 
 def save_detailed_comparison(comparison: Dict[str, Any], output_path: str = "detailed_comparison.json"):
     """Save detailed comparison to a JSON file."""
@@ -116,10 +133,44 @@ def save_detailed_comparison(comparison: Dict[str, Any], output_path: str = "det
         json.dump(comparison, f, indent=2, ensure_ascii=False)
     print(f"💾 Detailed comparison saved to: {output_path}")
 
+
+def save_report_as_markdown(comparison: Dict[str, Any], output_path: str = "comparison_report.md"):
+    """Save comparison report as a markdown file."""
+    with open(output_path, 'w', encoding='utf-8') as f:
+        f.write("# Model Comparison Report: Base vs Final\n\n")
+        f.write("*You can generate your own report using `llm_grade_comparer.py` with `--save_report` argument*\n\n")
+        f.write("---\n\n")
+        
+        f.write("## 📊 Overall Statistics\n\n")
+        f.write(f"- **Base Model Average Score:** {comparison['base_avg']:.2f} ± {comparison['base_std']:.2f}\n")
+        f.write(f"- **Final Model Average Score:** {comparison['final_avg']:.2f} ± {comparison['final_std']:.2f}\n")
+        f.write(f"- **Improvement:** {comparison['improvement']:+.2f} ({comparison['improvement_pct']:+.1f}%)\n\n")
+        
+        f.write("## 🏆 Win/Loss Record\n\n")
+        f.write(f"- **Final Model Wins:** {comparison['wins']} ({comparison['wins']/comparison['total_samples']*100:.1f}%)\n")
+        f.write(f"- **Final Model Losses:** {comparison['losses']} ({comparison['losses']/comparison['total_samples']*100:.1f}%)\n")
+        f.write(f"- **Ties:** {comparison['ties']} ({comparison['ties']/comparison['total_samples']*100:.1f}%)\n")
+        f.write(f"- **Total Samples:** {comparison['total_samples']}\n\n")
+        
+        f.write("## 📈 Top 5 Improvements\n\n")
+        sorted_improvements = sorted(comparison['comparisons'], key=lambda x: x['improvement'], reverse=True)
+        for i, item in enumerate(sorted_improvements[:5], 1):
+            f.write(f"{i}. **{item['breed']}** ({item['base_score']} → {item['final_score']}, +{item['improvement']})\n")
+            f.write(f"   - *Question:* {item['question']}\n\n")
+        
+        f.write("## 📉 Top 5 Declines\n\n")
+        sorted_declines = sorted(comparison['comparisons'], key=lambda x: x['improvement'])
+        for i, item in enumerate(sorted_declines[:5], 1):
+            f.write(f"{i}. **{item['breed']}** ({item['base_score']} → {item['final_score']}, {item['improvement']})\n")
+            f.write(f"   - *Question:* {item['question']}\n\n")
+    
+    print(f"📄 Comparison report saved to: {output_path}")
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument('--output_model', type=str, default="output_final.jsonl")
     parser.add_argument('--verbose', action='store_true', help='Save detailed comparison to JSON file')
+    parser.add_argument('--save_report', action='store_true', help='Save comparison report as markdown file')
     args = parser.parse_args()
 
     # File paths
@@ -142,4 +193,8 @@ if __name__ == "__main__":
     
     # Save detailed comparison only if verbose flag is set
     if args.verbose:
-        save_detailed_comparison(comparison)
+        save_detailed_comparison(comparison, os.path.join(script_dir, "detailed_comparison.json"))
+    
+    # Save report as markdown if save-report flag is set
+    if args.save_report:
+        save_report_as_markdown(comparison, os.path.join(script_dir, "comparison_report.md"))
