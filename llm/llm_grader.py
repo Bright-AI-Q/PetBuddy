@@ -79,6 +79,15 @@ def load_base_model():
     tokenizer.pad_token = tokenizer.eos_token
     return model, tokenizer
 
+def load_finedtuned_model(model_name):
+    model = AutoModelForCausalLM.from_pretrained(
+        model_name,
+        torch_dtype=torch.float16,
+        device_map="auto",
+    )
+    tokenizer = AutoTokenizer.from_pretrained(model_name)
+    tokenizer.pad_token = tokenizer.eos_token
+    return model, tokenizer
 
 # Copied from evaluate_qwen_petnet.py
 # Unable to import because of unable to load_finetuned_model
@@ -115,17 +124,17 @@ client = openai.OpenAI(
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument('--config', type=str, default=None,
+    parser.add_argument('--model_name', type=str, default="qwen-petnet-final/final",
                         help='Finetuned model to use. If not provided, use the base model.')
-    parser.add_argument('--output', type=str, default="output_base.jsonl")
+    parser.add_argument('--output', type=str, default="output_final.jsonl")
     args = parser.parse_args()
 
     qa_data = load_questions_and_reference_answers()
 
-    if args.config is None:
+    if args.model_name is None:
         base_model, base_tokenizer = load_base_model()
     else:
-        raise NotImplementedError("Only base model evaluation is implemented currently.")
+        base_model, base_tokenizer = load_finedtuned_model(args.model_name)
 
     for item in qa_data:
         item["model_response"] = generate_response(
