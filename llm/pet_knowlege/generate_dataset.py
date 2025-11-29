@@ -47,7 +47,7 @@ INSTRUCTION_TEMPLATES = {
                  "How should you train a {breed}?", 
                  "Training recommendations for a {breed}."],
     "diet": ["What do {breed} eat?",
-             "What kind of food is best for a {breed}"
+             "What kind of food is best for a {breed}",
              "{breed} dietary recommendation."]
 }
 
