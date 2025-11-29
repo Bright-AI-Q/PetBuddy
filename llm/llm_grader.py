@@ -1,5 +1,6 @@
 """
-This module uses LLMs to judge the quality of generated data samples.
+This module runs the model based on questions from pet_knowledge/test_samples.jsonl
+and then uses LLM to judge the quality of generated data samples.
 """
 
 import argparse
