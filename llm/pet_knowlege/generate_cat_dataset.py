@@ -72,13 +72,12 @@ INSTRUCTION_TEMPLATES = {
 def generate_prompt_examples():
     prompt_templates = []
     for aspect, sample_templates in INSTRUCTION_TEMPLATES.items():
-        prompt_templates.append(
-            "Generate a JSON entry for {breed} cats about "
-            + aspect +
-            ": {{{{'instruction': 'User question', 'input': 'Detected breed: {breed}', 'output': 'Expert answer'}}}}."
-            " User question examples: " +
-            ", ".join([f"'{t}'" for t in sample_templates])
-        )
+        for sample_template in sample_templates:
+            prompt_templates.append(
+                "Generate a JSON entry for {breed} cats about "
+                + aspect +
+                ": {{{{'instruction': '" + sample_template + "', 'input': 'Detected breed: {breed}', 'output': 'Expert answer'}}}}."
+            )
     return prompt_templates
 
 
@@ -94,7 +93,8 @@ def call_gemini(prompt):
             "You must output a single JSON object with exactly these 3 fields: "
             "'instruction', 'input', and 'output'.",
             "Never use placeholder phrases like 'User question'. The 'instruction' field must contain the real user question.",
-            "The JSON must be strictly valid. No trailing commas or comments."
+            "The JSON must be strictly valid. No trailing commas or comments.",
+            "Escape all double quotes in the JSON output (e.g., use \"). Never include raw double quotes inside strings."
         ]
     )
 
