@@ -79,7 +79,9 @@ trainer = SFTTrainer(
         warmup_steps = 5,
         max_steps = 60,
         learning_rate = 2e-4,
-        fp16 = True,
+        # Unsloth: Model is in bfloat16 precision but you want to use float16 precision.
+        fp16 = False,
+        bf16 = True,
         logging_steps = 1,
         optim = "paged_adamw_8bit",
         weight_decay = 0.01,
