@@ -128,16 +128,19 @@ The first thing we tried, which is simply using MobileNetV2's pretrained backbon
 
 (10 points) How did you measure success? What experiments were used? What were the results, both quantitative and qualitative? Did you succeed? Did you fail? Why? Justify your reasons with arguments supported by evidence and data.
 
+\subsection{Vision model}
 We measured success by the validation accuracy of our vision model (PetNet) along with the number of parameters of the model. We aim to have a high validation accuracy while keeping the number of parameters of our model small. The loss function we used was Cross-Entropy with the model's predicted label probabilities compared with the actual label. (Add in more sections with how each module improves the model)
 
-\subsection{CutMix + FixMatch}
-\subsection{Dual attention mechanism}
-\subsection{Inverted Residual Block (IRB)}
-\subsection{Self Knowledge Distillation (KD)}
+\subsubsection{CutMix + FixMatch}
+\subsubsection{Dual attention mechanism}
+\subsubsection{Inverted Residual Block (IRB)}
+\subsubsection{Self Knowledge Distillation (KD)}
 
-\subsection{Hyperparameter tuning}
+\subsubsection{Hyperparameter tuning}
 We optimized our model by running hyperparameter tuning using Optuna created by Akiba et al\cite{akiba2019optuna}. We run the Optuna script with the following hyperparameters along with their ranges shown in the table below (TODO: add table). The Optuna script is ran on the PACE ICE cluster along with using local GPUs for training. The Optuna script is ran in a distributed manner with a SQLite file as the database with Write-ahead logging. A combination of V100, A100, and L40S is used as the GPU depending on their availability. The batch size is chosen such that it makes full use of the GPU's VRAM (as high as the VRAM allows).
 
+\subsection{Language Model}
+We used Bertscore introduced by Zhang et al.\cite{zhang2019bertscore} as our loss function while training our QLoRA.
 
 \textbf{Important: This section should be rigorous and thorough. Present detailed information about decision you made, why you made them, and any evidence/experimentation to back them up. This is especially true if you leveraged existing architectures, pre-trained models, and code (i.e. do not just show results of fine-tuning a pre-trained model without any analysis, claims/evidence, and conclusions, as that tends to not make a strong project). }
 
