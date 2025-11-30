@@ -77,7 +77,6 @@ trainer = SFTTrainer(
         gradient_accumulation_steps = 4,
         gradient_checkpointing = "unsloth",
         warmup_steps = 5,
-        max_steps = 60,
         learning_rate = 2e-4,
         # Unsloth: Model is in bfloat16 precision but you want to use float16 precision.
         fp16 = False,
