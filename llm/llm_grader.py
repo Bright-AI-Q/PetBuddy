@@ -113,8 +113,7 @@ def generate_response(model, tokenizer, prompt, max_new_tokens=256):
         )
 
     response = tokenizer.decode(outputs[0], skip_special_tokens=True)
-    # Remove the prompt from response
-    response = response[len(text) :].strip()
+    response = response.strip()
     return response
 
 api_key = "your_api_key_here"
@@ -132,7 +131,7 @@ if __name__ == "__main__":
 
     qa_data = load_questions_and_reference_answers()
 
-    if args.model_name is None:
+    if args.model_name.lower() in ["none", "null", ""]:
         base_model, base_tokenizer = load_base_model()
     else:
         base_model, base_tokenizer = load_finedtuned_model(args.model_name)
