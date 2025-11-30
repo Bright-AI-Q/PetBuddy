@@ -87,11 +87,18 @@ def main():
     
     # Formatting function
     def formatting_func(example):
-        instruction = example["instruction"]
-        output = example["output"]
-        text = f"{instruction}\n{output}" if instruction else output
-        tokens = tokenizer(text, truncation=True, max_length=best_params["max_length"])
-        return tokenizer.decode(tokens['input_ids'])
+        # If your training data has breed/question/reference_answer fields, use them.
+        question = example["instruction"]
+        reference_answer = example["output"]
+
+        # Build a chat-style prompt
+        messages = [
+            {"role": "user", "content": question},
+            {"role": "assistant", "content": reference_answer}
+        ]
+        # Since we have already included the assistant's response, we do not need to add generation prompt
+        text = tokenizer.apply_chat_template(messages, tokenize=False, add_generation_prompt=False)
+        return text
     
     # LoRA configuration
     print("\nConfiguring LoRA...")

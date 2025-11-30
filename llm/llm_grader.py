@@ -95,6 +95,7 @@ def load_finedtuned_model(model_name):
 def generate_response(model, tokenizer, prompt, max_new_tokens=256):
     # 1. Build chat-style prompt
     messages = [{"role": "user", "content": prompt}]
+    # Since we want the model to generate the assistant's response, we add generation prompt
     text = tokenizer.apply_chat_template(
         messages, tokenize=False, add_generation_prompt=True
     )
