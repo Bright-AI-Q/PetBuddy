@@ -41,7 +41,7 @@ responses that appropriately complete each request.
 
 
 def format_prompt(examples):
-    inputs = examples["input"]
+    inputs = examples["instruction"]
     outputs = examples["output"]
     texts = []
     for _input, _output in zip(inputs, outputs):
