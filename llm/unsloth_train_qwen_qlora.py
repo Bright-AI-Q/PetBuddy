@@ -88,7 +88,7 @@ trainer = SFTTrainer(
         lr_scheduler_type = "cosine",
         seed = 42,
         output_dir = "qwen-petnet-final/unsloth",
-        epochs = 3,
+        num_train_epochs = 3,
     ),
 )
 
