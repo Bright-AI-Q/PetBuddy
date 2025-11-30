@@ -27,18 +27,18 @@ def load_finetuned_model():
     return model, tokenizer
 
 def generate_response(model, tokenizer, prompt, max_new_tokens=256):
-    # Format the prompt properly for chat models
+    # 1. Build chat-style prompt
     messages = [{"role": "user", "content": prompt}]
     text = tokenizer.apply_chat_template(
-        messages,
-        tokenize=False,
-        add_generation_prompt=True
+        messages, tokenize=False, add_generation_prompt=True
     )
     
+    # 2. Tokenize and move to device
     inputs = tokenizer(text, return_tensors="pt", padding=True).to(model.device)
-    
+
+    # 3. Generate
     with torch.no_grad():
-        outputs = model.generate(
+        output_ids = model.generate(
             **inputs,
             max_new_tokens=max_new_tokens,
             temperature=0.7,
@@ -47,10 +47,14 @@ def generate_response(model, tokenizer, prompt, max_new_tokens=256):
             pad_token_id=tokenizer.eos_token_id,
             eos_token_id=tokenizer.eos_token_id,
         )
-    
-    response = tokenizer.decode(outputs[0], skip_special_tokens=True)
-    # Remove the prompt from response
-    response = response[len(text):].strip()
+
+    # 4. Strip the prompt part: keep only newly generated tokens
+    generated_ids = output_ids[0]
+    prompt_len = inputs.input_ids.shape[-1]
+    new_token_ids = generated_ids[prompt_len:]
+
+    # 5. Decode only the assistant's answer
+    response = tokenizer.decode(new_token_ids, skip_special_tokens=True).strip()
     return response
 
 def calculate_perplexity(model, tokenizer, text):
