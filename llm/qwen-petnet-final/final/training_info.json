@@ -9,8 +9,8 @@
     "warmup_ratio": 0.07609594282118139,
     "max_length": 640
   },
-  "num_train_samples": 1789,
-  "num_val_samples": 449,
+  "num_train_samples": 2187,
+  "num_val_samples": 548,
   "num_epochs": 3,
   "output_dir": "qwen-petnet-final/final"
 }
