@@ -92,3 +92,4 @@ trainer = SFTTrainer(
 )
 
 trainer.train()
+trainer.save_model("qwen-petnet-final/unsloth/final")
