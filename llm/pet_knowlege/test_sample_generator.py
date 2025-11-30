@@ -11,6 +11,7 @@ import json
 import re
 import requests
 import random
+from tuning_data_generator import breed_url
 
 import os
 script_dir = os.path.dirname(os.path.abspath(__file__))
@@ -266,8 +267,13 @@ def get_qna_data(breed_url, tag):
 
 if __name__ == "__main__":
     print("Scrapping test samples...")
+    for key in dog_breed_url:
+        if breed_url[key] == "":
+            print("Skipping dog breed with no train/val data:", key)
+            dog_breed_url[key] = ""
     dog_qna_data = get_qna_data(dog_breed_url, "dog")
     print("Dog data scraped:", len(dog_qna_data))
+    
     cat_qna_data = get_qna_data(cat_breed_url, "cat")
     print("Cat data scraped:", len(cat_qna_data))
 
