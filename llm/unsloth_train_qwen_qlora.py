@@ -72,22 +72,26 @@ trainer = SFTTrainer(
     dataset_num_proc = 2,
     packing = True, # Can make training 5x faster for short sequences.
     args = TrainingArguments(
-        per_device_train_batch_size = 1,
-        per_device_eval_batch_size = 1,
-        gradient_accumulation_steps = 4,
-        gradient_checkpointing = "unsloth",
-        warmup_steps = 5,
-        learning_rate = 2e-4,
+        eval_strategy = "epoch", #Evaluation is done at the end of each epoch.
+        save_strategy = "epoch", #Save is done at the end of each epoch.
+        gradient_checkpointing = False, #If True, use gradient checkpointing to save memory at the expense of slower backward pass.
+
         # Unsloth: Model is in bfloat16 precision but you want to use float16 precision.
         fp16 = False,
         bf16 = True,
+
+        seed = 42, # Default
+        gradient_accumulation_steps = 1, #It's okay. RTX 5060 TI has 16GB VRAM.
+
+        warmup_steps = 5,
+        learning_rate = 2e-4,
         logging_steps = 1,
         optim = "paged_adamw_8bit",
         weight_decay = 0.01,
+        # https://huggingface.co/docs/transformers/main/en/main_classes/optimizer_schedules#transformers.SchedulerType 
         lr_scheduler_type = "cosine",
-        seed = 42,
         output_dir = "qwen-petnet-final/unsloth",
-        num_train_epochs = 3,
+        num_train_epochs = 3
     ),
 )
 
