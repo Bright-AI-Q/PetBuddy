@@ -45,7 +45,7 @@ def format_prompt(examples):
     outputs = examples["output"]
     texts = []
     for _input, _output in zip(inputs, outputs):
-        text = chat_template.format(_input, _output) + tokenizer.eos_token
+        text = chat_template.format(INPUT=_input, OUTPUT=_output) + tokenizer.eos_token
         texts.append(text)
     return {"text": texts}
 
