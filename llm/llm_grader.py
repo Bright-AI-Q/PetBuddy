@@ -121,6 +121,7 @@ def generate_response(model, tokenizer, prompt, max_new_tokens=256):
 
     # 5. Decode only the assistant's answer
     response = tokenizer.decode(new_token_ids, skip_special_tokens=True).strip()
+    print(response)
     return response
 
 api_key = "your_api_key_here"
