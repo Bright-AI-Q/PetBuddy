@@ -91,7 +91,7 @@ trainer = SFTTrainer(
         # https://huggingface.co/docs/transformers/main/en/main_classes/optimizer_schedules#transformers.SchedulerType 
         lr_scheduler_type = "cosine",
         output_dir = "qwen-petnet-final/unsloth",
-        num_train_epochs = 3
+        num_train_epochs = 20
     ),
 )
 
