@@ -10,7 +10,7 @@ model:
 
 
 train:
-  resume_from_checkpoint: "runs/petnet_base/best.pt"
+  resume_from_checkpoint: "runs/petnet_att_skd_mup/best.pt"
   seed: 46
   batch_size: 16    # Batch size for training aad batch szie when you have gpu resources
   learning_rate: 0.00001
@@ -41,12 +41,12 @@ data:
   test_split: 0.1
 
   ldre_cfg:
-    enable: false
-    prob: 0.2
-    grid_size: 16
-    drop_count: 2
-    enhanced_mode: false  # Enhanced mode switch
-    top_k_ratio: 0.2
+    enable: true
+    prob: 0.3
+    grid_size: 8
+    drop_count: 50
+    enhanced_mode: true  # Enhanced mode switch
+    top_k_ratio: 0.15
 
 
 evaluation:
