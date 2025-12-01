@@ -21,7 +21,7 @@ __pycache__/
 *.pth
 
 # Experiment outputs/runs
-runs/
+
 petnet_study.db
 tools/experiments/petnet_study.db
 tools/experiments/runs/
