@@ -29,3 +29,4 @@ jsonlines
 sentence_transformers
 bert_score
 openai
+google-genai

@@ -1,73 +1,77 @@
 {
-  "breed": "Giant schnauzer",
-  "sections": [
-    {
-      "section": "Giant Schnauzer",
-      "content": ""
-    },
-    {
-      "section": "Introduction",
-      "content": "The Giant Schnauzer is a strong, intelligent, and highly trainable breed, originally bred for herding and guarding. It’s known for its protective nature, high energy levels, and loyal personality. T he Giant Schnauzer excels as a working dog and family companion . With its impressive stature, wiry coat, and sharp intelligence , this breed thrives in active homes that can provide proper training, exercise, and mental stimulation."
-    },
-    {
-      "section": "Giant Schnauzer Breed Overview",
-      "content": "Group: Working Size: Large Weight: 55-85 lbs Lifespan: 12-15 years Temperament: Loyal, Protective, Intelligent Coat: Dense, wiry, hypoallergenic Exercise Needs: Very High Group: Working"
-    },
-    {
-      "section": "History and Origin",
-      "content": "The Giant Schnauzer was developed in Germany in the 17th century. Originally bred as a farm dog for herding cattle and guarding property , it later became popular for police and military work due to its strength, intelligence, and loyalty . The breed is the largest of the three Schnauzer varieties ( Miniature, Standard, and Giant ), maintaining the distinctive beard, eyebrows, and wiry coat that define the Schnauzer family. Over time, the Giant Schnauzer gained recognition as a versatile working dog. The bred excels in guarding, search-and-rescue, and protection work ."
-    },
-    {
-      "section": "Physical Characteristics",
-      "content": "The Giant Schnauzer is a powerfully built and muscular breed, easily recognizable by its bold appearance and confident stance ."
-    },
-    {
-      "section": "Key Physical Traits:",
-      "content": "  Large, square-shaped head with a strong muzzle   Distinctive bushy eyebrows and beard that enhance its expression   Wiry, dense double coat that is weather-resistant   Long, muscular legs built for endurance and agility   Dark, expressive eyes that show intelligence and alertness The Giant Schnauzer’s coat comes in two main colors: solid black and salt-and-pepper . Regular grooming is essential to maintain its distinctive Schnauzer look ."
-    },
-    {
-      "section": "Giant Schnauzer Temperament and Personality",
-      "content": "The Giant Schnauzer is a bold, confident, and highly trainable breed. Originally bred to be a guardian and worker , it remains naturally protective of its home and family. This breed is known for being:  Loyal and Affectionate: Forms strong bonds with its family.  Intelligent and Alert: Quick to learn and eager to work.  Protective: Naturally wary of strangers, making it an excellent guard dog.  Energetic and Playful: Requires both physical and mental stimulation. Without proper training and socialization, the Giant Schnauzer can become dominant or territorial , so firm and consistent leadership is necessary."
-    },
-    {
-      "section": "Training and Socialization",
-      "content": "The Giant Schnauzer is highly intelligent and thrives with structured training . Due to its strong personality, early obedience training is essential to prevent unwanted behaviors."
-    },
-    {
-      "section": "Training Tips:",
-      "content": " Start Early: Begin training and socialization at a young age.  Use Positive Reinforcement: Reward-based training works best.  Stay Consistent: Establish firm rules and boundaries.  Mental Stimulation: Engage in puzzle games, obedience exercises, and advanced training."
-    },
-    {
-      "section": "Exercise and Activity Needs",
-      "content": "The Giant Schnauzer is a high-energy working dog that requires at least 1-2 hours of exercise daily . Without enough activity, they can develop destructive behaviors ."
-    },
-    {
-      "section": "Recommended Activities:",
-      "content": " Running or Hiking: A great way to burn off energy.  Agility Training: Helps keep their mind and body engaged.  Fetch and Tug-of-War: Strengthens the bond with owners.  Obedience and Protection Training: Utilizes their intelligence and guarding instincts."
-    },
-    {
-      "section": "Grooming and Care",
-      "content": "The Giant Schnauzer’s wiry coat requires regular grooming to maintain its texture and appearance."
-    },
-    {
-      "section": "Grooming Tips:",
-      "content": " Brush 2-3 times per week to prevent matting.  Professional hand-stripping or trimming every 6-8 weeks to maintain coat texture.  Bathe as needed , usually every 2-3 months .  Trim nails regularly and clean ears to prevent infections.  Brush teeth frequently to maintain oral health."
-    },
-    {
-      "section": "Common Health Concerns",
-      "content": "The Giant Schnauzer is generally a healthy breed , but it can be prone to certain genetic conditions :  Hip Dysplasia – A common issue in large breeds affecting joint mobility.  Bloat (Gastric Dilatation-Volvulus) – A life-threatening stomach condition.  Progressive Retinal Atrophy (PRA) – A genetic eye disorder leading to vision loss.  Hypothyroidism – A hormonal imbalance affecting metabolism."
-    },
-    {
-      "section": "Is the Giant Schnauzer Right for You",
-      "content": "The Giant Schnauzer is an excellent choice for experienced dog owners who can provide firm leadership, daily exercise, and mental stimulation . They thrive in homes where they have a job to do and can form a strong bond with their family ."
-    },
-    {
-      "section": "Pros and Cons of Owning a Giant Schnauzer",
-      "content": " Pros:  Highly intelligent and trainable  Loyal and protective, making an excellent guard dog  Energetic and playful, great for active owners  Hypoallergenic coat  Cons:  Requires extensive training and socialization  High exercise needs – not ideal for inactive owners  Can be dominant if not properly trained  Regular grooming maintenance required"
-    },
-    {
-      "section": "Finding a Giant Schnauzer",
-      "content": ""
-    }
-  ]
+    "breed": "Giant schnauzer",
+    "sections": [
+        {
+            "section": "Giant Schnauzer",
+            "content": ""
+        },
+        {
+            "section": "Introduction",
+            "content": "The Giant Schnauzer is a strong, intelligent, and highly trainable breed, originally bred for herding and guarding. It\u2019s known for its protective nature, high energy levels, and loyal personality. T he Giant Schnauzer excels as a working dog and family companion . With its impressive stature, wiry coat, and sharp intelligence , this breed thrives in active homes that can provide proper training, exercise, and mental stimulation."
+        },
+        {
+            "section": "Giant Schnauzer Breed Overview",
+            "content": "Group: Working Size: Large Weight: 55-85 lbs Lifespan: 12-15 years Temperament: Loyal, Protective, Intelligent Coat: Dense, wiry, hypoallergenic Exercise Needs: Very High Group: Working"
+        },
+        {
+            "section": "History and Origin",
+            "content": "The Giant Schnauzer was developed in Germany in the 17th century. Originally bred as a farm dog for herding cattle and guarding property , it later became popular for police and military work due to its strength, intelligence, and loyalty . The breed is the largest of the three Schnauzer varieties ( Miniature, Standard, and Giant ), maintaining the distinctive beard, eyebrows, and wiry coat that define the Schnauzer family. Over time, the Giant Schnauzer gained recognition as a versatile working dog. The bred excels\u00a0in guarding, search-and-rescue, and protection work ."
+        },
+        {
+            "section": "Physical Characteristics",
+            "content": "The Giant Schnauzer is a powerfully built and muscular breed, easily recognizable by its bold appearance and confident stance ."
+        },
+        {
+            "section": "Key Physical Traits:",
+            "content": "  Large, square-shaped head with a strong muzzle   Distinctive bushy eyebrows and beard that enhance its expression   Wiry, dense double coat that is weather-resistant   Long, muscular legs built for endurance and agility   Dark, expressive eyes that show intelligence and alertness The Giant Schnauzer\u2019s coat comes in two main colors: solid black and salt-and-pepper . Regular grooming is essential to maintain its distinctive Schnauzer look ."
+        },
+        {
+            "section": "Giant Schnauzer Temperament and Personality",
+            "content": "The Giant Schnauzer is a bold, confident, and highly trainable breed. Originally bred to be a guardian and worker , it remains naturally protective of its home and family. This breed is known for being:  Loyal and Affectionate: Forms strong bonds with its family.  Intelligent and Alert: Quick to learn and eager to work.  Protective: Naturally wary of strangers, making it an excellent guard dog.  Energetic and Playful: Requires both physical and mental stimulation. Without proper training and socialization, the Giant Schnauzer can become dominant or territorial , so firm and consistent leadership is necessary."
+        },
+        {
+            "section": "Training and Socialization",
+            "content": "The Giant Schnauzer is highly intelligent and thrives with structured training . Due to its strong personality, early obedience training is essential to prevent unwanted behaviors."
+        },
+        {
+            "section": "Training Tips:",
+            "content": " Start Early: Begin training and socialization at a young age.  Use Positive Reinforcement: Reward-based training works best.  Stay Consistent: Establish firm rules and boundaries.  Mental Stimulation: Engage in puzzle games, obedience exercises, and advanced training."
+        },
+        {
+            "section": "Exercise and Activity Needs",
+            "content": "The Giant Schnauzer is a high-energy working dog that requires at least 1-2 hours of exercise daily . Without enough activity, they can develop destructive behaviors ."
+        },
+        {
+            "section": "Recommended Activities:",
+            "content": " Running or Hiking: A great way to burn off energy.  Agility Training: Helps keep their mind and body engaged.  Fetch and Tug-of-War: Strengthens the bond with owners.  Obedience and Protection Training: Utilizes their intelligence and guarding instincts."
+        },
+        {
+            "section": "Grooming and Care",
+            "content": "The Giant Schnauzer\u2019s wiry coat requires regular grooming to maintain its texture and appearance."
+        },
+        {
+            "section": "Grooming Tips:",
+            "content": " Brush 2-3 times per week to prevent matting.  Professional hand-stripping or trimming every 6-8 weeks to maintain coat texture.  Bathe as needed , usually every 2-3 months .  Trim nails regularly and clean ears to prevent infections.  Brush teeth frequently to maintain oral health."
+        },
+        {
+            "section": "Common Health Concerns",
+            "content": "The Giant Schnauzer is generally a healthy breed , but it can be prone to certain genetic conditions :  Hip Dysplasia \u2013 A common issue in large breeds affecting joint mobility.  Bloat (Gastric Dilatation-Volvulus) \u2013 A life-threatening stomach condition.  Progressive Retinal Atrophy (PRA) \u2013 A genetic eye disorder leading to vision loss.  Hypothyroidism \u2013 A hormonal imbalance affecting metabolism."
+        },
+        {
+            "section": "Is the Giant Schnauzer Right for You",
+            "content": "The Giant Schnauzer is an excellent choice for experienced dog owners who can provide firm leadership, daily exercise, and mental stimulation . They thrive in homes where they have a job to do and can form a strong bond with their family ."
+        },
+        {
+            "section": "Pros and Cons of Owning a Giant Schnauzer",
+            "content": " Pros:  Highly intelligent and trainable  Loyal and protective, making an excellent guard dog  Energetic and playful, great for active owners  Hypoallergenic coat  Cons:  Requires extensive training and socialization  High exercise needs \u2013 not ideal for inactive owners  Can be dominant if not properly trained  Regular grooming maintenance required"
+        },
+        {
+            "section": "Finding a Giant Schnauzer",
+            "content": ""
+        },
+        {
+            "section": "diet",
+            "content": "The Giant Schnauzer is a magnificent, powerful, and intelligent working breed known for its high energy levels, distinctive appearance, and loyal nature. Providing a comprehensive and appropriate diet is crucial for their overall health, longevity, and to support their robust physique and active lifestyle. This guide will detail the essential dietary considerations for a Giant Schnauzer throughout its life stages.\n\n---\n\n### I. General Nutritional Principles for Giant Schnauzers\n\nRegardless of age, a Giant Schnauzer's diet should be built upon the following fundamental principles:\n\n1.  **High-Quality Protein:** As a muscular and active breed, Giant Schnauzers require a diet rich in high-quality animal protein sources such as chicken, beef, lamb, turkey, fish, or venison. Protein is essential for muscle maintenance and growth, tissue repair, and overall body function. Look for real meat as the first ingredient.\n2.  **Moderate, Healthy Fats:** Fats are a concentrated source of energy and are vital for healthy skin, a shiny coat, vitamin absorption, and organ function. Omega-3 and Omega-6 fatty acids (from sources like fish oil, flaxseed, or chicken fat) are particularly beneficial for their skin, coat, and joint health. However, excessive fat can lead to weight gain and potentially pancreatitis, so moderation is key.\n3.  **Complex Carbohydrates:** Whole grains (like brown rice, barley, oats, quinoa) or alternative carbohydrate sources (like sweet potatoes, peas, lentils) provide sustained energy and dietary fiber. Fiber aids digestion, promotes gut health, and helps regulate blood sugar. Avoid excessive fillers like corn, wheat, and soy, which can sometimes be allergens or less digestible for some dogs.\n4.  **Vitamins and Minerals:** A balanced diet should provide all necessary vitamins and minerals for bone health, immune function, metabolic processes"
+        }
+    ]
 }

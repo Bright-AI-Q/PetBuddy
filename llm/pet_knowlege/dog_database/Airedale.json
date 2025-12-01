@@ -1,73 +1,77 @@
 {
-  "breed": "Airedale",
-  "sections": [
-    {
-      "section": "Airedale Terrier",
-      "content": ""
-    },
-    {
-      "section": "History and Origin of the Airedale Terrier",
-      "content": "The Airedale Terrier originated in the Airedale Valley of Yorkshire, England , in the mid-19th century. Bred from the Otterhound and smaller Terrier breeds , Airedales were designed for hunting small game, such as rats and otters, as well as for guarding and companionship. Their intelligence and trainability led them to serve in World War I as messenger dogs , showcasing their bravery and adaptability. Today, they are prized for their versatility, excelling in police work, search and rescue, and as loving family pets."
-    },
-    {
-      "section": "Overview",
-      "content": "AKC Height: 21-23 inches AKC Weight: 50-70 pounds Colors: Tan with a black or grizzle saddle Life Expectancy: 11-14 years  Group: Terrier Group"
-    },
-    {
-      "section": "Airedale Terrier Appearance and Characteristics",
-      "content": "The Airedale Terrier has a distinctive, sturdy build with a dense, wiry coat and a regal stance. Their confident and alert expression reflects their intelligent and determined nature."
-    },
-    {
-      "section": "Key Physical Traits of the Airedale Terrier:",
-      "content": "Size: Medium to large, athletic, and muscular Coat: Hard, wiry, and water-resistant with a soft undercoat Face: Long head with expressive dark eyes and folded ears Tail: Carried high and often docked Despite their rugged appearance, Airedale Terriers are elegant and graceful movers , built for both endurance and agility."
-    },
-    {
-      "section": "Temperament and Personality",
-      "content": "The Airedale Terrier is known for its intelligence, confidence, and lively personality . They are highly adaptable, making them suitable for various roles, from watchdogs to family companions."
-    },
-    {
-      "section": "What Makes the Airedale Terrier Special?",
-      "content": "Highly Intelligent: Quick learners, but can be stubborn. Loyal and Protective: Natural watchdogs who are affectionate with their families. Playful and Energetic: Love outdoor activities and require plenty of exercise. Independent and Strong-Willed: Need firm but positive training to thrive."
-    },
-    {
-      "section": "Training and Socialization",
-      "content": "Training an Airedale Terrier can be both rewarding and challenging due to their intelligence and independent thinking. They respond best to consistent, positive reinforcement."
-    },
-    {
-      "section": "Training Tips:",
-      "content": "Start Early: Begin obedience training and socialization from puppyhood. Be Firm and Consistent: Establish clear rules and boundaries. Use Positive Reinforcement: Reward with treats, praise, and playtime. Encourage Mental Stimulation: Engage them with puzzles, agility courses, and interactive games."
-    },
-    {
-      "section": "Grooming and Care",
-      "content": "Airedales have a low-shedding, wiry coat that requires regular maintenance to keep them looking their best."
-    },
-    {
-      "section": "Grooming Needs:",
-      "content": "Brushing: At least 2-3 times per week to prevent matting. Hand-Stripping or Clipping: Every 6-8 weeks to maintain coat texture. Ear Cleaning: Regular checks and cleaning to prevent infections. Dental Care: Brush teeth regularly to promote oral health. Nail Trimming: Keep nails short to avoid discomfort while walking."
-    },
-    {
-      "section": "Health and Lifespan",
-      "content": "The Airedale Terrier is generally a healthy breed, but they can be prone to certain genetic and age-related health conditions ."
-    },
-    {
-      "section": "Common Health Concerns:",
-      "content": "Hip Dysplasia: A common joint issue in larger breeds. Hypothyroidism: Can cause weight gain and lethargy. Skin Allergies: Some Airedales may suffer from environmental or food allergies. Cancer: Like many breeds, Airedales have a predisposition to certain cancers."
-    },
-    {
-      "section": "Is the Airedale Terrier the Right Dog for You?",
-      "content": "This is a fantastic breed for the right owner, but they are not suited for everyone . Their high energy levels and independent nature require an owner who can provide proper training and stimulation."
-    },
-    {
-      "section": "Ideal for:",
-      "content": " Active individuals or families who love outdoor activities  Owners with experience handling intelligent and strong-willed breeds  Those looking for a protective but friendly family companion  People who can commit to consistent training and socialization"
-    },
-    {
-      "section": "Not Ideal for:",
-      "content": " First-time dog owners who are unprepared for training challenges  Individuals who prefer a low-energy, relaxed dog  People with limited time for exercise and mental stimulation  Owners who dislike regular grooming maintenance"
-    },
-    {
-      "section": "Where to Find an Airedale Terrier",
-      "content": "If you’re ready to welcome an Airedale into your home, consider adopting or purchasing from a reputable breeder."
-    }
-  ]
+    "breed": "Airedale",
+    "sections": [
+        {
+            "section": "Airedale Terrier",
+            "content": ""
+        },
+        {
+            "section": "History and Origin of the Airedale Terrier",
+            "content": "The Airedale Terrier originated in the Airedale Valley of Yorkshire, England , in the mid-19th century. Bred from the Otterhound and smaller Terrier breeds , Airedales were designed for hunting small game, such as rats and otters, as well as for guarding and companionship. Their intelligence and trainability led them to serve in World War I as messenger dogs , showcasing their bravery and adaptability. Today, they are prized for their versatility, excelling in police work, search and rescue, and as loving family pets."
+        },
+        {
+            "section": "Overview",
+            "content": "AKC Height: 21-23 inches AKC Weight: 50-70 pounds Colors: Tan with a black or grizzle saddle Life Expectancy: 11-14 years  Group: Terrier Group"
+        },
+        {
+            "section": "Airedale Terrier Appearance and Characteristics",
+            "content": "The Airedale Terrier has a distinctive, sturdy build with a dense, wiry coat and a regal stance. Their confident and alert expression reflects their intelligent and determined nature."
+        },
+        {
+            "section": "Key Physical Traits of the Airedale Terrier:",
+            "content": "Size: Medium to large, athletic, and muscular Coat: Hard, wiry, and water-resistant with a soft undercoat Face: Long head with expressive dark eyes and folded ears Tail: Carried high and often docked Despite their rugged appearance, Airedale Terriers are elegant and graceful movers , built for both endurance and agility."
+        },
+        {
+            "section": "Temperament and Personality",
+            "content": "The Airedale Terrier is\u00a0known for its intelligence, confidence, and lively personality . They are highly adaptable, making them suitable for various roles, from watchdogs to family companions."
+        },
+        {
+            "section": "What Makes the Airedale Terrier Special?",
+            "content": "Highly Intelligent: Quick learners, but can be stubborn. Loyal and Protective: Natural watchdogs who are affectionate with their families. Playful and Energetic: Love outdoor activities and require plenty of exercise. Independent and Strong-Willed: Need firm but positive training to thrive."
+        },
+        {
+            "section": "Training and Socialization",
+            "content": "Training an Airedale Terrier can be both rewarding and challenging due to their intelligence and independent thinking. They respond best to consistent, positive reinforcement."
+        },
+        {
+            "section": "Training Tips:",
+            "content": "Start Early: Begin obedience training and socialization from puppyhood. Be Firm and Consistent: Establish clear rules and boundaries. Use Positive Reinforcement: Reward with treats, praise, and playtime. Encourage Mental Stimulation: Engage them with puzzles, agility courses, and interactive games."
+        },
+        {
+            "section": "Grooming and Care",
+            "content": "Airedales have a low-shedding, wiry coat that requires regular maintenance to keep them looking their best."
+        },
+        {
+            "section": "Grooming Needs:",
+            "content": "Brushing: At least 2-3 times per week to prevent matting. Hand-Stripping or Clipping: Every 6-8 weeks to maintain coat texture. Ear Cleaning: Regular checks and cleaning to prevent infections. Dental Care: Brush teeth regularly to promote oral health. Nail Trimming: Keep nails short to avoid discomfort while walking."
+        },
+        {
+            "section": "Health and Lifespan",
+            "content": "The Airedale Terrier is generally a healthy breed, but they can be prone to certain genetic and age-related health conditions ."
+        },
+        {
+            "section": "Common Health Concerns:",
+            "content": "Hip Dysplasia: A common joint issue in larger breeds. Hypothyroidism: Can cause weight gain and lethargy. Skin Allergies: Some Airedales may suffer from environmental or food allergies. Cancer: Like many breeds, Airedales have a predisposition to certain cancers."
+        },
+        {
+            "section": "Is the Airedale Terrier the Right Dog for You?",
+            "content": "This is a fantastic breed for the right owner, but they are not suited for everyone . Their high energy levels and independent nature require an owner who can provide proper training and stimulation."
+        },
+        {
+            "section": "Ideal for:",
+            "content": " Active individuals or families who love outdoor activities  Owners with experience handling intelligent and strong-willed breeds  Those looking for a protective but friendly family companion  People who can commit to consistent training and socialization"
+        },
+        {
+            "section": "Not Ideal for:",
+            "content": " First-time dog owners who are unprepared for training challenges  Individuals who prefer a low-energy, relaxed dog  People with limited time for exercise and mental stimulation  Owners who dislike regular grooming maintenance"
+        },
+        {
+            "section": "Where to Find an Airedale Terrier",
+            "content": "If you\u2019re ready to welcome an Airedale into your home, consider adopting or purchasing from a reputable breeder."
+        },
+        {
+            "section": "diet",
+            "content": "Airedale Terriers are robust, energetic, and intelligent dogs that require a well-balanced and appropriate diet to support their active lifestyle and maintain their distinctive health. Providing comprehensive dietary information involves understanding their specific needs at different life stages, choosing the right food, and being aware of potential health concerns.\n\nHere is a detailed guide to feeding your Airedale Terrier:\n\n---\n\n### **I. Fundamental Nutritional Principles for Airedales**\n\nLike all dogs, Airedales need a diet rich in protein, balanced fats, complex carbohydrates, vitamins, and minerals. The quality of these ingredients is paramount.\n\n1.  **High-Quality Protein:** Protein is essential for muscle development, repair, and overall body function. Look for foods where a named meat source (e.g., chicken, lamb, beef, fish) is the first ingredient. Aim for a diet with at least 25-30% protein for puppies and active adults, and slightly less (20-25%) for less active or senior dogs.\n2.  **Balanced Fats:** Fats are a concentrated source of energy, crucial for healthy skin and coat, and aid in vitamin absorption. Look for healthy fats like chicken fat, salmon oil, flaxseed, or sunflower oil. Omega-3 and Omega-6 fatty acids are particularly important for skin, coat, and cognitive function.\n3.  **Complex Carbohydrates:** Carbohydrates provide sustained energy. Good sources include whole grains (brown rice, oats, barley), sweet potatoes, peas, and lentils. Avoid excessive amounts of simple carbohydrates or fillers like corn, wheat, and soy, which can sometimes be allergens for sensitive dogs.\n4.  **Vitamins and Minerals:** A balanced commercial dog food will contain all necessary vitamins and minerals. These support immune function, bone health, nerve function, and metabolism.\n5.  **Water:** Always provide constant access to fresh, clean water. Hydration is critical for all bodily functions.\n\n---\n\n### **II. Choosing the Right Food Type**\n\nThe market offers various food types, each with pros and cons.\n\n1.  **Commercial Dry Kibble:**\n    *   **Pros:** Convenient, cost-effective, aids in dental health (some kibble designs), and formulated to be nutritionally complete.\n    *   **Cons:** Can be less palatable than wet food, and some lower-quality brands use fillers.\n    *   **Recommendation:** Choose a premium-quality kibble specifically formulated for medium to large breeds. Look for an \"AAFCO statement\" on the packaging, ensuring it meets the nutritional levels established by the Association of American Feed Control Officials for the specific life stage (e.g., \"for all life stages,\" \"for growth,\" \"for adult maintenance\").\n2.  **Wet/Canned Food:**\n    *   **Pros:** Highly palatable, good for hydration, often contains more whole meat.\n    *   **Cons:** More expensive, shorter shelf life once opened, and doesn't offer dental benefits.\n    *   **Recommendation:** Can be fed as a supplement to kibble or as a standalone diet if nutritionally complete.\n3.  **Raw Food (BARF - Biologically Appropriate Raw Food / Prey Model):**\n    *   **Pros:**"
+        }
+    ]
 }

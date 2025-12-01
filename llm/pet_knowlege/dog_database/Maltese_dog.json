@@ -1,49 +1,53 @@
 {
-  "breed": "Maltese dog",
-  "sections": [
-    {
-      "section": "Maltese",
-      "content": ""
-    },
-    {
-      "section": "Introduction",
-      "content": "The Maltese is a toy breed renowned for its flowing white coat , gentle nature , and centuries of devotion as a cherished companion dog . With its royal history and playful spirit , the Maltese brings grace, affection, and charm to any home. Whether curled up on a lap or prancing proudly through the house, the Maltese is a timeless symbol of canine elegance ."
-    },
-    {
-      "section": "Maltese Breed Overview",
-      "content": "Size: Toy Weight: 4-7 lbs Lifespan: 12-15 years Temperament: Affectionate, Playful, Gentle Coat: Long, silky, straight Exercise Needs: Low to Moderate Group: Toy"
-    },
-    {
-      "section": "History and Origin",
-      "content": "The Maltese boasts a rich and ancient history , dating back thousands of years as a beloved lapdog of royalty and aristocracy .  Originated in the Mediterranean , particularly on the island of Malta .  A favorite of ancient Greek and Roman nobility .  Valued for its beauty, companionship, and charm .  Featured in artwork, poetry, and literature throughout history."
-    },
-    {
-      "section": "Physical Characteristics",
-      "content": "The Maltese is instantly recognizable by its pure white coat and delicate beauty .  Small, compact body with fine-boned elegance.  Long, flowing coat of silky white hair.  Dark, round eyes with a gentle, intelligent expression.  Black nose and lips , offering a striking contrast to the white coat.  Carries itself with graceful confidence , almost as if floating when it moves."
-    },
-    {
-      "section": "Temperament and Personality",
-      "content": "The Maltese is loving, playful, and charming , thriving as a companion dog and loyal family member.  Affectionate and Loving: Devoted to its owners and loves being held.  Playful and Spirited: Despite its small size, it enjoys games and adventures .  Gentle and Friendly: Typically good with children and other pets .  Alert and Curious: Always aware of its surroundings, making a good little watchdog.  Adaptable: Equally happy in apartments or larger homes."
-    },
-    {
-      "section": "Exercise and Training Needs",
-      "content": "While small , the Maltese still benefits from daily walks and playtime to stay happy and healthy.  Short daily walks and some indoor play are sufficient.  Enjoys learning tricks and thrives on positive reinforcement training .  Socialization is key to prevent shyness around new people and pets.  Puzzle toys and games can keep their bright minds engaged .  Consistent house training is important, as small breeds can sometimes be stubborn."
-    },
-    {
-      "section": "Grooming and Care",
-      "content": "The Maltese’s luxurious coat demands regular maintenance to stay pristine and healthy.  Daily brushing to prevent tangles and mats.  Regular bathing to keep the coat bright white and clean.  Many owners opt for a puppy cut for easier maintenance.  Eye care is essential to avoid staining around the eyes.  Regularly trim nails, clean ears, and brush teeth for complete care."
-    },
-    {
-      "section": "Common Health Concerns",
-      "content": "The Maltese is generally a healthy breed , but like all dogs, it has some health risks to be aware of.  Patellar Luxation: A common issue in small breeds.  Dental Disease: Prone to tartar buildup and dental issues.  Collapsed Trachea: Can occur if the dog pulls on a collar.  Tear Staining: Particularly noticeable on their white fur.  Hypoglycemia: Puppies can be prone to low blood sugar."
-    },
-    {
-      "section": "Pros and  Cons of Owning a Maltese",
-      "content": " Pros:  Exceptionally affectionate — loves being close to its family.  Ideal size for apartment living .  Hypoallergenic coat (low-shedding).  Playful and easy to entertain indoors .  Long lifespan offers many years of companionship .  Cons:  High-maintenance grooming , especially for show coats.  Can develop separation anxiety if left alone too long.  Fragile — needs careful handling to avoid injury.  Prone to barking if not trained early.  Can be difficult to house train without consistency."
-    },
-    {
-      "section": "Finding a Maltese",
-      "content": ""
-    }
-  ]
+    "breed": "Maltese dog",
+    "sections": [
+        {
+            "section": "Maltese",
+            "content": ""
+        },
+        {
+            "section": "Introduction",
+            "content": "The Maltese is a toy breed renowned for its flowing white coat , gentle nature , and centuries of devotion as a cherished companion dog . With its royal history and playful spirit , the Maltese brings grace, affection, and charm to any home. Whether curled up on a lap or prancing proudly through the house, the Maltese is a timeless symbol of canine elegance ."
+        },
+        {
+            "section": "Maltese Breed Overview",
+            "content": "Size: Toy Weight: 4-7 lbs Lifespan: 12-15 years Temperament: Affectionate, Playful, Gentle Coat: Long, silky, straight Exercise Needs: Low to Moderate Group: Toy"
+        },
+        {
+            "section": "History and Origin",
+            "content": "The Maltese boasts a rich and ancient history , dating back thousands of years as a beloved lapdog of royalty and aristocracy .  Originated in the Mediterranean , particularly on the island of Malta .  A favorite of ancient Greek and Roman nobility .  Valued for its beauty, companionship, and charm .  Featured in artwork, poetry, and literature throughout history."
+        },
+        {
+            "section": "Physical Characteristics",
+            "content": "The Maltese is instantly recognizable by its pure white coat and delicate beauty .  Small, compact body with fine-boned elegance.  Long, flowing coat of silky white hair.  Dark, round eyes with a gentle, intelligent expression.  Black nose and lips , offering a striking contrast to the white coat.  Carries itself with graceful confidence , almost as if floating when it moves."
+        },
+        {
+            "section": "Temperament and Personality",
+            "content": "The Maltese is loving, playful, and charming , thriving as a companion dog and loyal family member.  Affectionate and Loving: Devoted to its owners and loves being held.  Playful and Spirited: Despite its small size, it enjoys games and adventures .  Gentle and Friendly: Typically good with children and other pets .  Alert and Curious: Always aware of its surroundings, making a good little watchdog.  Adaptable: Equally happy in apartments or larger homes."
+        },
+        {
+            "section": "Exercise and Training Needs",
+            "content": "While small , the Maltese still benefits from daily walks and playtime to stay happy and healthy.  Short daily walks and some indoor play are sufficient.  Enjoys learning tricks and thrives on positive reinforcement training .  Socialization is key to prevent shyness around new people and pets.  Puzzle toys and games can keep their bright minds engaged .  Consistent house training is important, as small breeds can sometimes be stubborn."
+        },
+        {
+            "section": "Grooming and Care",
+            "content": "The Maltese\u2019s luxurious coat demands regular maintenance to stay pristine and healthy.  Daily brushing to prevent tangles and mats.  Regular bathing to keep the coat bright white and clean.  Many owners opt for a puppy cut for easier maintenance.  Eye care is essential to avoid staining around the eyes.  Regularly trim nails, clean ears, and brush teeth for complete care."
+        },
+        {
+            "section": "Common Health Concerns",
+            "content": "The Maltese is generally a healthy breed , but like all dogs, it has some health risks to be aware of.  Patellar Luxation: A common issue in small breeds.  Dental Disease: Prone to tartar buildup and dental issues.  Collapsed Trachea: Can occur if the dog pulls on a collar.  Tear Staining: Particularly noticeable on their white fur.  Hypoglycemia: Puppies can be prone to low blood sugar."
+        },
+        {
+            "section": "Pros and  Cons of Owning a Maltese",
+            "content": " Pros:  Exceptionally affectionate \u2014 loves being close to its family.  Ideal size for apartment living .  Hypoallergenic coat (low-shedding).  Playful and easy to entertain indoors .  Long lifespan offers many years of companionship .  Cons:  High-maintenance grooming , especially for show coats.  Can develop separation anxiety if left alone too long.  Fragile \u2014 needs careful handling to avoid injury.  Prone to barking if not trained early.  Can be difficult to house train without consistency."
+        },
+        {
+            "section": "Finding a Maltese",
+            "content": ""
+        },
+        {
+            "section": "diet",
+            "content": "Maltese dogs are beloved for their small size, beautiful white coats, and lively personalities. Providing them with a proper diet is crucial for maintaining their health, energy levels, and characteristic long, silky fur. Due to their small stature and specific breed predispositions, their dietary needs require careful attention.\n\nHere's a comprehensive and detailed guide to feeding your Maltese:\n\n---\n\n### I. General Principles of Feeding a Maltese\n\n1.  **High-Quality Small Breed Formula:** Always opt for a premium dog food specifically formulated for small breeds. These formulas are designed with smaller kibble sizes suitable for tiny mouths and teeth, and they often contain a balanced nutrient profile tailored to the higher metabolism and specific needs of small dogs.\n2.  **Portion Control is Key:** Maltese dogs are tiny and can easily become overweight if overfed. Obesity can lead to various health issues, including joint problems (like patellar luxation, which Maltese are prone to), heart disease, and diabetes.\n    *   **Measure precisely:** Do not free-feed. Use a measuring cup to ensure accurate portion sizes as recommended on the food packaging, adjusting based on your dog's age, activity level, and metabolism.\n    *   **Consult your vet:** The best way to determine the exact caloric needs for your individual Maltese is to consult with your veterinarian.\n3.  **Feeding Frequency:**\n    *   **Puppies (under 6 months):** Need 3-4 small meals per day to prevent hypoglycemia (low blood sugar), which is a serious risk in tiny puppies.\n    *   **Adults (6 months+):** 2 meals per day (morning and evening) is generally ideal. This helps regulate their metabolism, prevents overeating at one sitting, and maintains consistent energy levels.\n4.  **Fresh Water Access:** Always ensure your Maltese has constant access to fresh, clean water. Change the water daily, and clean the bowl regularly. Filtered water may be beneficial for some Maltese, potentially helping to reduce tear staining.\n\n---\n\n### II. Choosing the Right"
+        }
+    ]
 }

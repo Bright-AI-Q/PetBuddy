@@ -1,81 +1,85 @@
 {
-  "breed": "Kerry blue terrier",
-  "sections": [
-    {
-      "section": "Kerry Blue Terrier",
-      "content": ""
-    },
-    {
-      "section": "Introduction",
-      "content": "The Kerry Blue Terrier is a medium-sized, bold, and intelligent breed known for its distinctive blue coat and lively personality. Originally bred in Ireland for farm work, hunting, and guarding, the Kerry Blue Terrier is a versatile dog with a playful spirit and a deep loyalty to its family. Whether you’re looking for an energetic playmate, a capable watchdog, or a charming show dog, the Kerry Blue Terrier offers both beauty and brains."
-    },
-    {
-      "section": "Kerry Blue Terrier Breed Overview",
-      "content": "Size: Medium Weight: 33-40 lbs Lifespan: 12-15 years Temperament: Spirited, Intelligent, Loyal Coat: Soft, wavy, and dense Exercise Needs: High Group: Terrier"
-    },
-    {
-      "section": "History and Origin",
-      "content": "The Kerry Blue Terrier originates from County Kerry, Ireland, where it was developed as an all-purpose farm dog. Known for its versatility, the breed excelled at herding livestock, hunting small game, and even working as a guard dog. Over time, the Kerry Blue also became a favorite in the show ring due to its striking coat and confident presence."
-    },
-    {
-      "section": "Highlights:",
-      "content": "Originated in County Kerry, Ireland . Historically used for herding, hunting, and guarding. Famous for its unique blue coat, which develops over time."
-    },
-    {
-      "section": "Physical Characteristics",
-      "content": "The Kerry Blue Terrier’s signature feature is its dense, wavy coat, which shifts from black at birth to a beautiful shade of blue by adulthood."
-    },
-    {
-      "section": "Key Physical Traits:",
-      "content": " Medium-sized, muscular build.  Soft, wavy coat ranging from deep slate to pale silver blue.  Distinctive beard and bushy eyebrows.  Dark, expressive eyes full of intelligence and mischief.  High-set tail carried proudly."
-    },
-    {
-      "section": "Temperament and Personality",
-      "content": "Kerry Blues are spirited, confident, and always ready for action. They form strong bonds with their families and thrive when involved in daily activities."
-    },
-    {
-      "section": "Key Traits:",
-      "content": " Loyal and affectionate: Devoted to their family.  Playful and energetic: Always up for fun and games.  Intelligent and curious: Quick learners with a mischievous streak.  Alert and protective: Natural watchdog instincts."
-    },
-    {
-      "section": "Exercise and Training Needs",
-      "content": "This is a high-energy breed that requires plenty of physical and mental stimulation to stay happy and well-behaved."
-    },
-    {
-      "section": "Recommendations:",
-      "content": " 1-2 hours of exercise daily, including walks, playtime, and training.  Enjoys agility, obedience, and even advanced tricks training.  Responds well to positive reinforcement , but requires firm, consistent leadership.  Socialization from a young age helps manage the breed’s natural boldness."
-    },
-    {
-      "section": "Grooming and Care of the Kerry Blue Terrier",
-      "content": "The Kerry Blue’s unique coat requires regular grooming to keep it looking its best."
-    },
-    {
-      "section": "Grooming Tips:",
-      "content": " Brush several times per week to prevent tangles and mats.  Professional grooming every 6-8 weeks for shaping and trimming.  Regular beard cleaning to prevent debris buildup.  Trim nails and check ears regularly.  Regular dental care helps maintain oral health."
-    },
-    {
-      "section": "Common Health Concerns",
-      "content": "Kerry Blue Terriers are generally healthy, but like all breeds, they are prone to certain health conditions."
-    },
-    {
-      "section": "Potential Issues in the Kerry Blue Terrier:",
-      "content": " Hip Dysplasia: A common concern in active breeds.  Skin Issues: Dermatitis and allergies are known to affect the breed.  Eye Conditions: Including cataracts and entropion (eyelid rolling inward).  Progressive Neuronal Abiotrophy (PNA): A rare neurological disorder."
-    },
-    {
-      "section": "Pros and  Cons of Owning a Kerry Blue Terrier",
-      "content": ""
-    },
-    {
-      "section": "Pros:",
-      "content": " Loyal and protective—excellent family watchdog.  Energetic and fun—great for active households.  Intelligent and trainable—excels in dog sports and obedience.  Hypoallergenic coat—low shedding, suitable for some allergy sufferers."
-    },
-    {
-      "section": "Cons:",
-      "content": " Requires regular, professional grooming.  High energy level—needs significant daily exercise.  Can be stubborn—best suited for experienced owners.  May be aggressive toward other dogs if not socialized properly."
-    },
-    {
-      "section": "Finding a Kerry Blue Terrier",
-      "content": ""
-    }
-  ]
+    "breed": "Kerry blue terrier",
+    "sections": [
+        {
+            "section": "Kerry Blue Terrier",
+            "content": ""
+        },
+        {
+            "section": "Introduction",
+            "content": "The Kerry Blue Terrier is a medium-sized, bold, and intelligent breed known for its distinctive blue coat and lively personality. Originally bred in Ireland for farm work, hunting, and guarding, the Kerry Blue Terrier is a versatile dog with a playful spirit and a deep loyalty to its family. Whether you\u2019re looking for an energetic playmate, a capable watchdog, or a charming show dog, the Kerry Blue Terrier offers both beauty and brains."
+        },
+        {
+            "section": "Kerry Blue Terrier Breed Overview",
+            "content": "Size: Medium Weight: 33-40 lbs Lifespan: 12-15 years Temperament: Spirited, Intelligent, Loyal Coat: Soft, wavy, and dense Exercise Needs: High Group: Terrier"
+        },
+        {
+            "section": "History and Origin",
+            "content": "The Kerry Blue Terrier originates from County Kerry, Ireland, where it was developed as an all-purpose farm dog. Known for its versatility, the breed excelled at herding livestock, hunting small game, and even working as a guard dog. Over time, the Kerry Blue also became a favorite in the show ring due to its striking coat and confident presence."
+        },
+        {
+            "section": "Highlights:",
+            "content": "Originated in County Kerry, Ireland . Historically used for herding, hunting, and guarding. Famous for its unique blue coat, which develops over time."
+        },
+        {
+            "section": "Physical Characteristics",
+            "content": "The Kerry Blue Terrier\u2019s signature feature is its dense, wavy coat, which shifts from black at birth to a beautiful shade of blue by adulthood."
+        },
+        {
+            "section": "Key Physical Traits:",
+            "content": " Medium-sized, muscular build.  Soft, wavy coat ranging from deep slate to pale silver blue.  Distinctive beard and bushy eyebrows.  Dark, expressive eyes full of intelligence and mischief.  High-set tail carried proudly."
+        },
+        {
+            "section": "Temperament and Personality",
+            "content": "Kerry Blues are spirited, confident, and always ready for action. They form strong bonds with their families and thrive when involved in daily activities."
+        },
+        {
+            "section": "Key Traits:",
+            "content": " Loyal and affectionate: Devoted to their family.  Playful and energetic: Always up for fun and games.  Intelligent and curious: Quick learners with a mischievous streak.  Alert and protective: Natural watchdog instincts."
+        },
+        {
+            "section": "Exercise and Training Needs",
+            "content": "This is a high-energy breed that requires plenty of physical and mental stimulation to stay happy and well-behaved."
+        },
+        {
+            "section": "Recommendations:",
+            "content": " 1-2 hours of exercise daily, including walks, playtime, and training.  Enjoys agility, obedience, and even advanced tricks training.  Responds well to positive reinforcement , but requires firm, consistent leadership.  Socialization from a young age helps manage the breed\u2019s natural boldness."
+        },
+        {
+            "section": "Grooming and Care of the Kerry Blue Terrier",
+            "content": "The Kerry Blue\u2019s unique coat requires regular grooming to keep it looking its best."
+        },
+        {
+            "section": "Grooming Tips:",
+            "content": " Brush several times per week to prevent tangles and mats.  Professional grooming every 6-8 weeks for shaping and trimming.  Regular beard cleaning to prevent debris buildup.  Trim nails and check ears regularly.  Regular dental care helps maintain oral health."
+        },
+        {
+            "section": "Common Health Concerns",
+            "content": "Kerry Blue Terriers are generally healthy, but like all breeds, they are prone to certain health conditions."
+        },
+        {
+            "section": "Potential Issues in the Kerry Blue Terrier:",
+            "content": " Hip Dysplasia: A common concern in active breeds.  Skin Issues: Dermatitis and allergies are known to affect the breed.  Eye Conditions: Including cataracts and entropion (eyelid rolling inward).  Progressive Neuronal Abiotrophy (PNA): A rare neurological disorder."
+        },
+        {
+            "section": "Pros and  Cons of Owning a Kerry Blue Terrier",
+            "content": ""
+        },
+        {
+            "section": "Pros:",
+            "content": " Loyal and protective\u2014excellent family watchdog.  Energetic and fun\u2014great for active households.  Intelligent and trainable\u2014excels in dog sports and obedience.  Hypoallergenic coat\u2014low shedding, suitable for some allergy sufferers."
+        },
+        {
+            "section": "Cons:",
+            "content": " Requires regular, professional grooming.  High energy level\u2014needs significant daily exercise.  Can be stubborn\u2014best suited for experienced owners.  May be aggressive toward other dogs if not socialized properly."
+        },
+        {
+            "section": "Finding a Kerry Blue Terrier",
+            "content": ""
+        },
+        {
+            "section": "diet",
+            "content": "The Kerry Blue Terrier is a spirited, intelligent, and active breed known for its distinctive blue coat and charming personality. Providing the right diet is crucial for their overall health, energy levels, coat condition, and to mitigate potential breed-specific health concerns. This comprehensive guide will detail the dietary instructions and information for a Kerry Blue Terrier.\n\n---\n\n### I. Core Nutritional Principles for Kerry Blue Terriers\n\nA well-balanced diet for a Kerry Blue Terrier, like any dog, should consist of high-quality ingredients providing essential nutrients in appropriate proportions.\n\n1.  **High-Quality Protein:** This is the cornerstone of a dog's diet, essential for muscle development and repair, healthy skin and coat, and enzyme production. Look for named meat sources (e.g., chicken meal, lamb, salmon, beef) as the first and primary ingredient.\n2.  **Healthy Fats:** Provide concentrated energy, aid in vitamin absorption, and are vital for skin and coat health. Sources include chicken fat, flaxseed, fish oil (omega-3 fatty acids like EPA and DHA), and sunflower oil (omega-6 fatty acids).\n3.  **Complex Carbohydrates:** Offer sustained energy and dietary fiber for digestive health. Good sources include sweet potatoes, brown rice, barley, oats, and peas. Avoid excessive amounts of simple carbohydrates like corn, wheat, and soy, especially if your KBT shows sensitivities.\n4.  **Vitamins and Minerals:** Essential for myriad bodily functions, including immune health, bone strength, and metabolic processes. A complete commercial dog food should be fortified with these.\n5.  **Water:** Always the most critical nutrient. Fresh, clean water must be available at all times.\n\n---\n\n### II. Types of Food Options\n\nWhen choosing food for your Kerry Blue Terrier, you have several options, each with its own advantages and considerations:\n\n1.  **High-Quality Commercial Dry Kibble:**\n    *   **Advantages:** Convenient, cost-effective, typically nutritionally balanced, helps clean teeth.\n    *   **What to Look For:**\n        *   **AAFCO Statement:** Ensure the food meets the nutritional levels established by the AAFCO (Association of American Feed Control Officials) for your dog's life stage (puppy, adult, all life stages).\n        *   **First Ingredients:** A named meat protein should be the first ingredient (e.g., \"deboned chicken\" or \"lamb meal\").\n        *   **Avoid Fillers:** Limit foods with corn, wheat, and soy as primary ingredients, as"
+        }
+    ]
 }

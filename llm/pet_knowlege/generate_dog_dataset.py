@@ -21,40 +21,43 @@ SECTION_KEYWORDS = {
     "health": ["health concerns", "disease", "lifespan", "health issues"],
     "temperament": ["temperament", "personality", "traits"],
     "family suitability": ["family", "children", "ideal", "not ideal"],
-    "overview": ["overview", "introduction", "summary", "final", "what is a"],
+    "overview": ["overview", "introduction", "summary", "final", "what is a", "key facts"],
     "training": ["training", "socialization", "commands", "tricks", "behaviors"],
-    "diet": ["feeding", "nutritition", "food", "diet"]
+    "diet": ["feeding", "nutrition", "diet"],
+    "size": ["inches", "pounds", "Height:", "Weight:"]
 }
 
 OVERVIEW_KEYWORDS = ["overview", "introduction", "summary", "final"]
 
 INSTRUCTION_TEMPLATES = {
-    "care": ["Give care instructions for a {breed}. If you don't have breed-specific info, provide general dog care instructions.", 
-             "How should a {breed} be cared for? If you don't have breed-specific info, provide general dog care instructions.", 
-             "What are the care requirements of a {breed}? If you don't have breed-specific info, provide general dog care instructions."],
-    "grooming": ["What grooming does a {breed} need? If you don't have breed-specific info, provide general dog grooming instructions.", 
-                 "How do you groom a {breed}? If you don't have breed-specific info, provide general dog grooming instructions.", 
-                 "Grooming instructions for a {breed}. If you don't have breed-specific info, provide general dog grooming instructions."],
-    "exercise": ["How much exercise does a {breed} need? If you don't have breed-specific info, provide general dog exercise instructions.", 
-                 "Exercise requirements for a {breed}. If you don't have breed-specific info, provide general dog grooming instructions.", 
-                 "What activities should a {breed} do? If you don't have breed-specific info, provide general dog grooming instructions."],
-    "health": ["What health problems commonly affect the {breed}? If you don't have breed-specific info, provide general dog health problems.", 
-               "Health concerns for a {breed}. If you don't have breed-specific info, provide general dog health concerns.", 
-               "List common diseases of a {breed}. If you don't have breed-specific info, provide general dog diseases."],
-    "temperament": ["Describe the temperament of a {breed}. If you don't have breed-specific info, provide general dog temperment information.", 
-                    "Personality traits of a {breed}. If you don't have breed-specific info, provide general dog personality information."],
-    "family suitability": ["Is the {breed} a good family dog? If you don't have breed-specific info, provide general dog family compatibility information.", 
-               "How suitable is a {breed} for families? If you don't have breed-specific info, provide general dog family compatibility information."],
+    "care": ["Give care instructions for a {breed}.", 
+             "How should a {breed} be cared for?", 
+             "What are the care requirements of a {breed}?"],
+    "grooming": ["What grooming does a {breed} need?", 
+                 "How do you groom a {breed}?", 
+                 "Grooming instructions for a {breed}."],
+    "exercise": ["How much exercise does a {breed} need?", 
+                 "Exercise requirements for a {breed}.", 
+                 "What activities should a {breed} do?"],
+    "health": ["What health problems commonly affect the {breed}?", 
+               "Health concerns for a {breed}.", 
+               "List common diseases of a {breed}."],
+    "temperament": ["Describe the temperament of a {breed}.", 
+                    "Personality traits of a {breed}."],
+    "family suitability": ["Is the {breed} a good family dog?", 
+               "How suitable is a {breed} for families?"],
     "overview": ["Give a general overview of the {breed}.", 
                  "Provide a summary of the {breed}."],
-    "training": ["Provide training tips for a {breed}. If you don't have breed-specific info, provide general dog training instruction.", 
-                 "How should you train a {breed}? If you don't have breed-specific info, provide general dog training instruction.", 
-                 "Training recommendations for a {breed}. If you don't have breed-specific info, provide general dog training instruction."],
-    "diet": ["What do {breed} eat? If you don't have breed-specific info, provide general dog feeding instruction." ,
-             "What kind of food is best for a {breed}? If you don't have breed-specific info, provide general dog dietary instruction.",
-             "{breed} dietary recommendation. If you don't have breed-specific info, provide general dog dietary information."]
+    "training": ["Provide training tips for a {breed}.", 
+                 "How should you train a {breed}?", 
+                 "Training recommendations for a {breed}."],
+    "diet": ["What do {breed} eat?" ,
+             "What kind of food is best for a {breed}?",
+             "{breed} dietary recommendation."],
+    "size": ["What is the size of {breed}?",
+             "How much do {breed} weighs?",
+             "How tall is {breed}"]
 }
-
 
 def is_overview_section(section):
     """Returns True if the section appears to be an overview/summary section"""
@@ -91,8 +94,8 @@ def extract_sections(sections, keywords, section_type):
         content = sec.get("content", "").strip()
         
         # For non-overview sections, skip if this section is an overview
-        if section_type != "overview" and is_overview_section(sec):
-            continue
+        # if section_type != "overview" and is_overview_section(sec):
+        #     continue
         
         # Check if section matches the keywords
         if any(k in title or k in content.lower() for k in keywords):
@@ -134,16 +137,25 @@ def make_examples(breed_data):
         
         if not text.strip():
             print(f"[WARN] No '{key}' data for {breed}. Using Gemini to prompt.")
-            prompt_to_gemini = f"Provide comprehensive and detailed information about the {key} requirements/instruction/information for a {breed} dog. Structure the response clearly with paragraphs."
+            prompt_to_gemini = f"Provide comprehensive and detailed information about the {key} instruction/information for a {breed} dog. Structure the response clearly with paragraphs."
             
             # Call Gemini API ONCE
             synthetic_text = get_gemini_response(prompt_to_gemini) 
             text = synthetic_text
+            
+            breed_data["sections"].append({"section": f"{key}", "content": synthetic_text})  # Save the synthetic text under a new field
+            
+            breed_filename = breed.replace(" ", "_")
+            # Optionally, save the breed_data back to the file immediately
+            breed_file_path = os.path.join(input_dir, f"{breed_filename}.json")
+            with open(breed_file_path, "w", encoding="utf-8") as f:
+                json.dump(breed_data, f, indent=4)
+            print(f"Updated breed data for {breed} with synthetic {key} text.")
 
         for instr_template in INSTRUCTION_TEMPLATES[key]:
             examples.append({
                 "instruction": instr_template.format(breed=breed),
-                "input": "",
+                "input": f"Detected breed: {breed}",
                 "output": text
             })
     

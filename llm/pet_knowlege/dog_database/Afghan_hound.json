@@ -1,73 +1,77 @@
 {
-  "breed": "Afghan hound",
-  "sections": [
-    {
-      "section": "Afghan Hound",
-      "content": ""
-    },
-    {
-      "section": "History and Origin of the Afghan Hound",
-      "content": "The Afghan Hound is believed to be one of the oldest dog breeds, with origins dating back thousands of years to the mountainous regions of Afghanistan. These dogs were bred for hunting large game such as deer and leopards, using their speed and keen eyesight. Their long, flowing coats protected them from the harsh climate of their native terrain. The breed was introduced to Europe in the 19th century and quickly gained popularity due to its striking appearance. The Afghan Hound was officially recognized by the American Kennel Club (AKC) in 1926 and has since become a symbol of elegance and refinement in the dog world."
-    },
-    {
-      "section": "Overview",
-      "content": "AKC Height: 25-27 inches AKC Weight: 50-60 pounds Colors: Various shades including cream, black, red, blue, and brindle Life Expectancy: 12-15 years  Group: Hound Group"
-    },
-    {
-      "section": "Afghan Hound Appearance and Characteristics",
-      "content": "The Afghan Hound is instantly recognizable due to its long, silky coat, lean build, and aristocratic posture. This breed possesses both beauty and agility, making it one of the most elegant dogs in the world."
-    },
-    {
-      "section": "Key Physical Traits of the Afghan Hound:",
-      "content": "Size: Tall, slender, and athletic Coat: Long, silky, and flowing Face: Long snout with dark, expressive eyes Tail: Carried high with a slight curl at the end Despite their luxurious coats, Afghans are built for speed and endurance, making them excellent runners and natural-born hunters."
-    },
-    {
-      "section": "Afghan Hound Temperament and Personality",
-      "content": "The Afghan Hound is known for its unique combination of independence, intelligence, and aloofness. While they are affectionate with their families, they often have a dignified and somewhat reserved demeanor. Unlike many other breeds, they are not overly clingy or eager to please, making them best suited for experienced dog owners."
-    },
-    {
-      "section": "What Makes the Afghan Hound Special?",
-      "content": "Independent and intelligent: They think for themselves, which can sometimes make training a challenge. Loyal but reserved: They form strong bonds with their family but may be aloof with strangers. Playful and energetic: Despite their regal appearance, they enjoy playtime and running. Sensitive and gentle: They respond best to positive reinforcement and a gentle approach."
-    },
-    {
-      "section": "Training and Socialization",
-      "content": "Training an Afghan Hound requires patience and consistency. Their independent nature means they may not always obey commands immediately, but they are highly intelligent and capable of learning with the right approach."
-    },
-    {
-      "section": "Training Tips:",
-      "content": "Start Early: Begin socialization and training as a puppy to build good behavior. Use Positive Reinforcement: This breed responds best to praise and treats rather than harsh corrections. Be Patient: Their independent streak can make training slower than with other breeds. Encourage Socialization: Expose them to different environments, people, and animals to prevent timid or aloof behavior."
-    },
-    {
-      "section": "Grooming and Care",
-      "content": "The Afghan’s stunning coat requires dedicated grooming to keep it in top condition. Regular brushing and bathing are essential to prevent matting and maintain their signature silky fur."
-    },
-    {
-      "section": "Grooming Needs:",
-      "content": "Brushing: Daily brushing is necessary to prevent tangles and keep the coat smooth. Bathing: Afghan Hounds need frequent baths (about every two weeks) to maintain their clean and shiny coats. Ear Cleaning: Due to their long ears, regular checks and cleaning help prevent infections. Dental Care: Brush their teeth regularly to maintain oral health. Nail Trimming: Keep their nails trimmed to avoid discomfort when walking or running."
-    },
-    {
-      "section": "Health and Lifespan",
-      "content": "The Afghan is generally a healthy breed with a lifespan of 12-15 years . However, they can be prone to certain health issues due to their size and genetics."
-    },
-    {
-      "section": "Common Health Concerns:",
-      "content": "Hip Dysplasia: A hereditary condition that affects joint movement. Hypothyroidism: A thyroid condition that can lead to weight gain and lethargy. Cataracts: Some Afghan Hounds are prone to vision problems as they age. Bloat (Gastric Torsion): Like many deep-chested breeds, they are at risk of bloat, a serious digestive issue."
-    },
-    {
-      "section": "Is the Afghan Hound the Right Dog for You?",
-      "content": "The Afghan is an excellent choice for owners who appreciate an independent yet affectionate dog. However, their unique temperament and grooming needs mean they are not the best fit for everyone."
-    },
-    {
-      "section": "Ideal for:",
-      "content": " Experienced dog owners who understand independent breeds  Those who can commit to regular grooming and coat maintenance  Families with older children who respect a dog’s space  Active individuals who can provide daily exercise and playtime"
-    },
-    {
-      "section": "Not Ideal for:",
-      "content": " First-time dog owners who expect easy training  People looking for a highly obedient or eager-to-please breed  Those who don’t have time for extensive grooming  Families with very young children who may not handle their delicate nature well"
-    },
-    {
-      "section": "Where to Find an Afghan Hound",
-      "content": "If you’re interested in welcoming this breed into your home, consider adopting from a rescue organization or finding a reputable breeder."
-    }
-  ]
+    "breed": "Afghan hound",
+    "sections": [
+        {
+            "section": "Afghan Hound",
+            "content": ""
+        },
+        {
+            "section": "History and Origin of the Afghan Hound",
+            "content": "The Afghan Hound is believed to be one of the oldest dog breeds, with origins dating back thousands of years to the mountainous regions of Afghanistan. These dogs were bred for hunting large game such as deer and leopards, using their speed and keen eyesight. Their long, flowing coats protected them from the harsh climate of their native terrain. The breed was introduced to Europe in the 19th century and quickly gained popularity due to its striking appearance. The Afghan Hound was officially recognized by the American Kennel Club (AKC) in 1926 and has since become a symbol of elegance and refinement in the dog world."
+        },
+        {
+            "section": "Overview",
+            "content": "AKC Height: 25-27 inches AKC Weight: 50-60 pounds Colors: Various shades including cream, black, red, blue, and brindle Life Expectancy: 12-15 years  Group: Hound Group"
+        },
+        {
+            "section": "Afghan Hound Appearance and Characteristics",
+            "content": "The Afghan Hound is instantly recognizable due to its long, silky coat, lean build, and aristocratic posture. This breed possesses both beauty and agility, making it one of the most elegant dogs in the world."
+        },
+        {
+            "section": "Key Physical Traits of the Afghan Hound:",
+            "content": "Size: Tall, slender, and athletic Coat: Long, silky, and flowing Face: Long snout with dark, expressive eyes Tail: Carried high with a slight curl at the end Despite their luxurious coats, Afghans are built for speed and endurance, making them excellent runners and natural-born hunters."
+        },
+        {
+            "section": "Afghan Hound Temperament and Personality",
+            "content": "The Afghan Hound is known for its unique combination of independence, intelligence, and aloofness. While they are affectionate with their families, they often have a dignified and somewhat reserved demeanor. Unlike many other breeds, they are not overly clingy or eager to please, making them best suited for experienced dog owners."
+        },
+        {
+            "section": "What Makes the Afghan Hound Special?",
+            "content": "Independent and intelligent: They think for themselves, which can sometimes make training a challenge. Loyal but reserved: They form strong bonds with their family but may be aloof with strangers. Playful and energetic: Despite their regal appearance, they enjoy playtime and running. Sensitive and gentle: They respond best to positive reinforcement and a gentle approach."
+        },
+        {
+            "section": "Training and Socialization",
+            "content": "Training an Afghan Hound requires patience and consistency. Their independent nature means they may not always obey commands immediately, but they are highly intelligent and capable of learning with the right approach."
+        },
+        {
+            "section": "Training Tips:",
+            "content": "Start Early: Begin socialization and training as a puppy to build good behavior. Use Positive Reinforcement: This breed responds best to praise and treats rather than harsh corrections. Be Patient: Their independent streak can make training slower than with other breeds. Encourage Socialization: Expose them to different environments, people, and animals to prevent timid or aloof behavior."
+        },
+        {
+            "section": "Grooming and Care",
+            "content": "The Afghan\u2019s stunning coat requires dedicated grooming to keep it in top condition. Regular brushing and bathing are essential to prevent matting and maintain their signature silky fur."
+        },
+        {
+            "section": "Grooming Needs:",
+            "content": "Brushing: Daily brushing is necessary to prevent tangles and keep the coat smooth. Bathing: Afghan Hounds need frequent baths (about every two weeks) to maintain their clean and shiny coats. Ear Cleaning: Due to their long ears, regular checks and cleaning help prevent infections. Dental Care: Brush their teeth regularly to maintain oral health. Nail Trimming: Keep their nails trimmed to avoid discomfort when walking or running."
+        },
+        {
+            "section": "Health and Lifespan",
+            "content": "The Afghan is generally a healthy breed with a lifespan of 12-15 years . However, they can be prone to certain health issues due to their size and genetics."
+        },
+        {
+            "section": "Common Health Concerns:",
+            "content": "Hip Dysplasia: A hereditary condition that affects joint movement. Hypothyroidism: A thyroid condition that can lead to weight gain and lethargy. Cataracts: Some Afghan Hounds are prone to vision problems as they age. Bloat (Gastric Torsion): Like many deep-chested breeds, they are at risk of bloat, a serious digestive issue."
+        },
+        {
+            "section": "Is the Afghan Hound the Right Dog for You?",
+            "content": "The Afghan is an excellent choice for owners who appreciate an independent yet affectionate dog. However, their unique temperament and grooming needs mean they are not the best fit for everyone."
+        },
+        {
+            "section": "Ideal for:",
+            "content": " Experienced dog owners who understand independent breeds  Those who can commit to regular grooming and coat maintenance  Families with older children who respect a dog\u2019s space  Active individuals who can provide daily exercise and playtime"
+        },
+        {
+            "section": "Not Ideal for:",
+            "content": " First-time dog owners who expect easy training  People looking for a highly obedient or eager-to-please breed  Those who don\u2019t have time for extensive grooming  Families with very young children who may not handle their delicate nature well"
+        },
+        {
+            "section": "Where to Find an Afghan Hound",
+            "content": "If you\u2019re interested in welcoming this breed\u00a0into your home, consider adopting from a rescue organization or finding a reputable breeder."
+        },
+        {
+            "section": "diet",
+            "content": "Afghan Hounds are magnificent, elegant, and athletic dogs with unique dietary needs that support their lean physique, luxurious coat, and high energy levels. Providing a comprehensive and balanced diet is crucial for their overall health, longevity, and well-being.\n\nHere's a detailed guide to feeding an Afghan Hound:\n\n---\n\n### I. Core Nutritional Principles for Afghan Hounds\n\nA balanced diet for an Afghan Hound should focus on high-quality ingredients that provide the right balance of protein, fats, carbohydrates, vitamins, and minerals.\n\n1.  **High-Quality Commercial Dog Food:**\n    *   **Dry Kibble:** Often the most convenient and cost-effective option. Choose a premium brand specifically formulated for large breeds or active dogs. Look for foods that list a named meat source (e.g., \"chicken meal,\" \"lamb\") as the first ingredient, rather than generic \"meat by-products.\" Avoid foods with excessive fillers like corn, wheat, or soy, especially if your Afghan Hound shows sensitivities.\n    *   **Wet/Canned Food:** Can be a good option for picky eaters or to add moisture to the diet. However, it's often more expensive and less calorie-dense than kibble. If feeding wet food exclusively, ensure it's nutritionally complete and balanced.\n    *   **Combination:** Many owners feed a mix of high-quality dry kibble with a spoonful of wet food, plain yogurt, or cooked lean meat to entice picky eaters.\n    *   **AAFCO Statement:** Always check for an AAFCO (Association of American Feed Control Officials) statement on the label, indicating the food is \"complete and balanced\" for a specific life stage (e.g., \"for growth,\" \"for maintenance,\" or \"for all life stages\").\n\n2.  **Homemade Diets (with Caution):**\n    *   If you opt for a homemade diet, it is **imperative** to consult with a veterinary nutritionist to ensure it is nutritionally complete and balanced. Afghan Hounds have specific requirements, and an imbalanced homemade diet can lead to severe health issues over time.\n    *   A homemade diet typically consists of cooked lean protein (chicken, turkey, beef), complex carbohydrates (brown rice, sweet potato"
+        }
+    ]
 }

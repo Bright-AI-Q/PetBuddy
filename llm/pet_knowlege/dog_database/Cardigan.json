@@ -1,65 +1,69 @@
 {
-  "breed": "Cardigan",
-  "sections": [
-    {
-      "section": "Cardigan Welsh Corgi",
-      "content": ""
-    },
-    {
-      "section": "What is a Cardigan Welsh Corgi",
-      "content": "The Cardigan Welsh Corgi is one of two types of Corgis, the other being the Pembroke Welsh Corgi. While both breeds share many similarities, this breed has a distinct appearance, characterized by its rounded ears, thick double coat, and longer body. Originating from Wales, these dogs were initially bred to herd cattle and livestock. Their natural intelligence and high energy levels made them excellent working dogs, and those traits remain prevalent today."
-    },
-    {
-      "section": "Key Facts:",
-      "content": "AKC Height : 10.5-12 inches AKC Weight : 25-38 pounds Colors : Red, sable, brindle, blue merle (with or without white markings) Life Expectancy : 12-15 years Temperament : Loyal, intelligent, alert, and energetic Group : Herding Group"
-    },
-    {
-      "section": "History and Origin of the Cardigan Welsh Corgi",
-      "content": "The Cardigan Welsh Corgi has a long history that dates back over a thousand years. Originating in Wales, these dogs were used primarily for herding cattle and other livestock. They were prized for their ability to work tirelessly, navigate through tough terrain, and herd animals with precision. The Cardigan Welsh Corgi is believed to have descended from Cardigan County in Wales, and over the years, they became closely associated with the region’s farmers and herders. They were initially considered a working dog, but their friendly and affectionate personality quickly made them popular as companions as well. Over time, the Cardigan Welsh Corgi became recognized for their intelligence, agility, and devotion to their families. Today, they are one of the most beloved companion dogs, known for their loyalty and playful demeanor."
-    },
-    {
-      "section": "Appearance and Characteristics",
-      "content": "The Cardigan Welsh Corgi has a distinct look that makes them easily recognizable. Their compact yet sturdy build allows them to work efficiently as herding dogs, and their short stature only adds to their charm. With their expressive eyes, rounded ears, and thick double coat, they are both adorable and practical dogs."
-    },
-    {
-      "section": "Key Physical Features:",
-      "content": " Size : The Cardigan Welsh Corgi stands at a height of 10.5 to 12 inches at the shoulder, making them a small breed with a compact and muscular body.  Coat : They have a thick double coat that provides insulation against the elements. Their coat can come in various colors, including red, sable, brindle, and blue merle.  Tail : Unlike the Pembroke Welsh Corgi, which is often tailless or has a short tail, the Cardigan Welsh Corgi has a full, bushy tail.  Ears : Their ears are large and rounded, giving them a friendly and alert expression.  Build : This Corgi has a sturdy, low-set body with short legs, which is characteristic of herding breeds."
-    },
-    {
-      "section": "Cardigan Welsh Corgi Temperament and Personality",
-      "content": "The breed is known for its loving, loyal, and playful nature. They are often described as being full of energy, with a mischievous streak that keeps them entertaining and fun to be around. Although they are small dogs, they have a large presence and are often unaware of their size, which makes them brave and confident."
-    },
-    {
-      "section": "Key Personality Traits of the Cardigan Welsh Corgi:",
-      "content": "Loyal and Affectionate : These dogs are deeply devoted to their families and love being around their humans. They are known to form strong bonds with their owners and often seek out attention and affection. Intelligent : As a herding breed, Corgis are highly intelligent and eager to learn. They thrive in environments where they can use their minds and enjoy a variety of tasks. Energetic : Although they may be small, Corgis are highly energetic and need regular exercise. They enjoy outdoor activities and playtime, making them great companions for active families. Alert and Protective : While friendly and affectionate, Cardigan Welsh Corgis can also be wary of strangers. They have strong guarding instincts and are quick to alert their owners of any potential threats."
-    },
-    {
-      "section": "Training and Socialization of the Cardigan Welsh Corgi",
-      "content": "Training a Cardigan Welsh Corgi is an enjoyable experience, thanks to their high intelligence and eagerness to please. However, it is important to start early and be consistent with training. These dogs are known for their independence, so they may try to test boundaries, especially if they’re not given enough mental and physical stimulation."
-    },
-    {
-      "section": "Training Tips for a Well-Behaved Cardigan Welsh Corgi:",
-      "content": "Start Early : Socialize and train your Cardigan Welsh Corgi as early as possible. This breed is quick to learn and can benefit from exposure to different environments, people, and dogs. Positive Reinforcement : Use treats, praise, and rewards to reinforce good behavior. Cardigan Welsh Corgis respond best to positive reinforcement rather than punishment-based training methods. Provide Mental Stimulation : These dogs are highly intelligent and thrive when they have something to do. Puzzle toys, training games, and tasks that challenge their minds are excellent ways to keep them engaged. Be Consistent : Cardigan Welsh Corgis are quick learners, but they also benefit from a structured routine. Be consistent with commands and expectations to ensure they understand what is expected of them."
-    },
-    {
-      "section": "Grooming and Care for the Cardigan Welsh Corgi",
-      "content": "The Cardigan Welsh Corgi has a thick double coat that requires regular grooming to keep it in top condition. While they are not as high-maintenance as some other breeds, their coat can shed quite a bit, especially during shedding seasons."
-    },
-    {
-      "section": "Grooming Needs for the Cardigan Welsh Corgi:",
-      "content": "Brushing : Regular brushing is necessary to keep the coat healthy and to prevent mats or tangles. During shedding seasons, frequent brushing will help manage the loose hair. Bathing : Bathe your Cardigan Welsh Corgi when they become dirty or start to smell, but avoid over-bathing, as this can dry out their skin. Ear Care : Regularly check their ears for signs of infection or wax buildup, especially if they have long, floppy ears. Nail Trimming : Keep their nails trimmed to prevent overgrowth and discomfort. Dental Care : Brush their teeth regularly to prevent dental issues and consider providing dental chews to help maintain oral health."
-    },
-    {
-      "section": "Health and Lifespan",
-      "content": "This is a generally healthy breed with a lifespan of 12 to 15 years. Like all breeds, they may be prone to certain health issues, but with proper care and regular vet check-ups, they can live long, healthy lives."
-    },
-    {
-      "section": "Common Health Concerns:",
-      "content": " Hip Dysplasia : A common condition in many dog breeds, including Corgis. This occurs when the hip joint doesn’t develop properly, leading to arthritis and pain.  Intervertebral Disc Disease (IVDD) : Due to their long body and short legs, these dogs are susceptible to IVDD, which affects the spine.  Obesity : Like many small breeds, Corgis can be prone to obesity. It is important to monitor their diet and ensure they get enough exercise."
-    },
-    {
-      "section": "Where to Find a Cardigan Welsh Corgi",
-      "content": "If you’re interested in adopting a Cardigan Welsh Corgi , consider checking out rescue organizations and breed-specific rescues. Many organizations have dogs available for adoption and can help you find the perfect match."
-    }
-  ]
+    "breed": "Cardigan",
+    "sections": [
+        {
+            "section": "Cardigan Welsh Corgi",
+            "content": ""
+        },
+        {
+            "section": "What is a Cardigan Welsh Corgi",
+            "content": "The Cardigan Welsh Corgi is one of two types of Corgis, the other being the Pembroke Welsh Corgi. While both breeds share many similarities, this breed\u00a0has a distinct appearance, characterized by its rounded ears, thick double coat, and longer body. Originating from Wales, these dogs were initially bred to herd cattle and livestock. Their natural intelligence and high energy levels made them excellent working dogs, and those traits remain prevalent today."
+        },
+        {
+            "section": "Key Facts:",
+            "content": "AKC Height : 10.5-12 inches AKC Weight : 25-38 pounds Colors : Red, sable, brindle, blue merle (with or without white markings) Life Expectancy : 12-15 years Temperament : Loyal, intelligent, alert, and energetic Group : Herding Group"
+        },
+        {
+            "section": "History and Origin of the Cardigan Welsh Corgi",
+            "content": "The Cardigan Welsh Corgi has a long history that dates back over a thousand years. Originating in Wales, these dogs were used primarily for herding cattle and other livestock. They were prized for their ability to work tirelessly, navigate through tough terrain, and herd animals with precision. The Cardigan Welsh Corgi is believed to have descended from Cardigan County in Wales, and over the years, they became closely associated with the region\u2019s farmers and herders. They were initially considered a working dog, but their friendly and affectionate personality quickly made them popular as companions as well. Over time, the Cardigan Welsh Corgi became recognized for their intelligence, agility, and devotion to their families. Today, they are one of the most beloved companion dogs, known for their loyalty and playful demeanor."
+        },
+        {
+            "section": "Appearance and Characteristics",
+            "content": "The Cardigan Welsh Corgi has a distinct look that makes them easily recognizable. Their compact yet sturdy build allows them to work efficiently as herding dogs, and their short stature only adds to their charm. With their expressive eyes, rounded ears, and thick double coat, they are both adorable and practical dogs."
+        },
+        {
+            "section": "Key Physical Features:",
+            "content": " Size : The Cardigan Welsh Corgi stands at a height of 10.5 to 12 inches at the shoulder, making them a small breed with a compact and muscular body.  Coat : They have a thick double coat that provides insulation against the elements. Their coat can come in various colors, including red, sable, brindle, and blue merle.  Tail : Unlike the Pembroke Welsh Corgi, which is often tailless or has a short tail, the Cardigan Welsh Corgi has a full, bushy tail.  Ears : Their ears are large and rounded, giving them a friendly and alert expression.  Build : This Corgi has a sturdy, low-set body with short legs, which is characteristic of herding breeds."
+        },
+        {
+            "section": "Cardigan Welsh Corgi Temperament and Personality",
+            "content": "The breed is known for its loving, loyal, and playful nature. They are often described as being full of energy, with a mischievous streak that keeps them entertaining and fun to be around. Although they are small dogs, they have a large presence and are often unaware of their size, which makes them brave and confident."
+        },
+        {
+            "section": "Key Personality Traits of the Cardigan Welsh Corgi:",
+            "content": "Loyal and Affectionate : These dogs are deeply devoted to their families and love being around their humans. They are known to form strong bonds with their owners and often seek out attention and affection. Intelligent : As a herding breed, Corgis are highly intelligent and eager to learn. They thrive in environments where they can use their minds and enjoy a variety of tasks. Energetic : Although they may be small, Corgis are highly energetic and need regular exercise. They enjoy outdoor activities and playtime, making them great companions for active families. Alert and Protective : While friendly and affectionate, Cardigan Welsh Corgis can also be wary of strangers. They have strong guarding instincts and are quick to alert their owners of any potential threats."
+        },
+        {
+            "section": "Training and Socialization of the Cardigan Welsh Corgi",
+            "content": "Training a Cardigan Welsh Corgi is an enjoyable experience, thanks to their high intelligence and eagerness to please. However, it is important to start early and be consistent with training. These dogs are known for their independence, so they may try to test boundaries, especially if they\u2019re not given enough mental and physical stimulation."
+        },
+        {
+            "section": "Training Tips for a Well-Behaved Cardigan Welsh Corgi:",
+            "content": "Start Early : Socialize and train your Cardigan Welsh Corgi as early as possible. This breed is quick to learn and can benefit from exposure to different environments, people, and dogs. Positive Reinforcement : Use treats, praise, and rewards to reinforce good behavior. Cardigan Welsh Corgis respond best to positive reinforcement rather than punishment-based training methods. Provide Mental Stimulation : These dogs are highly intelligent and thrive when they have something to do. Puzzle toys, training games, and tasks that challenge their minds are excellent ways to keep them engaged. Be Consistent : Cardigan Welsh Corgis are quick learners, but they also benefit from a structured routine. Be consistent with commands and expectations to ensure they understand what is expected of them."
+        },
+        {
+            "section": "Grooming and Care for the Cardigan Welsh Corgi",
+            "content": "The Cardigan Welsh Corgi has a thick double coat that requires regular grooming to keep it in top condition. While they are not as high-maintenance as some other breeds, their coat can shed quite a bit, especially during shedding seasons."
+        },
+        {
+            "section": "Grooming Needs for the Cardigan Welsh Corgi:",
+            "content": "Brushing : Regular brushing is necessary to keep the coat healthy and to prevent mats or tangles. During shedding seasons, frequent brushing will help manage the loose hair. Bathing : Bathe your Cardigan Welsh Corgi when they become dirty or start to smell, but avoid over-bathing, as this can dry out their skin. Ear Care : Regularly check their ears for signs of infection or wax buildup, especially if they have long, floppy ears. Nail Trimming : Keep their nails trimmed to prevent overgrowth and discomfort. Dental Care : Brush their teeth regularly to prevent dental issues and consider providing dental chews to help maintain oral health."
+        },
+        {
+            "section": "Health and Lifespan",
+            "content": "This\u00a0is a generally healthy breed with a lifespan of 12 to 15 years. Like all breeds, they may be prone to certain health issues, but with proper care and regular vet check-ups, they can live long, healthy lives."
+        },
+        {
+            "section": "Common Health Concerns:",
+            "content": " Hip Dysplasia : A common condition in many dog breeds, including Corgis. This occurs when the hip joint doesn\u2019t develop properly, leading to arthritis and pain.  Intervertebral Disc Disease (IVDD) : Due to their long body and short legs, these dogs are susceptible to IVDD, which affects the spine.  Obesity : Like many small breeds, Corgis can be prone to obesity. It is important to monitor their diet and ensure they get enough exercise."
+        },
+        {
+            "section": "Where to Find a Cardigan Welsh Corgi",
+            "content": "If you\u2019re interested in adopting a Cardigan Welsh Corgi , consider checking out rescue organizations and breed-specific rescues. Many organizations have dogs available for adoption and can help you find the perfect match."
+        },
+        {
+            "section": "family suitability",
+            "content": "The Cardigan Welsh Corgi is a charming, intelligent, and sturdy little dog with a big personality. Originating from Wales, they were historically used as herding dogs, driving cattle by nipping at their heels. This working heritage deeply influences their temperament and needs today, making them a unique and rewarding addition to the right family. Understanding their specific traits is crucial for determining family suitability.\n\n---\n\n### Comprehensive Family Suitability Information for a Cardigan Welsh Corgi\n\n**1. Core Temperament and Personality:**\nCardigans are known for being intelligent, loyal, and affectionate companions. They are often described as having a \"big dog in a small body\" mentality, possessing a confident and sometimes independent streak. They are generally playful and enjoy being involved in family activities, thriving on companionship. While alert and often reserved with strangers initially, once they accept someone, they are typically friendly. Their sensitive nature means they respond best to positive reinforcement and a consistent, kind hand in training.\n\n**2. Compatibility with Children:**\nCardigans can be excellent family dogs and generally get along well with children, especially if raised with them from a young age and properly socialized. However, their strong herding instinct can manifest as nipping at heels, particularly with fast-moving toddlers or children. This is not aggression but an instinctual behavior that needs to be managed through training and supervision. Families with very young children must be prepared to teach both the dog and the children how to interact respectfully. Older, respectful children who understand how to treat a dog will find a loyal and fun playmate in a Cardigan. They are sturdy enough to withstand enthusiastic play but should never be treated as a toy.\n\n**3. Interaction with Other Pets:**\nCardigans generally coexist peacefully with other dogs and cats, especially if introduced early and socialized properly. Their confident nature means they may try to assert dominance, but this can be managed with consistent leadership from the owner. Due to their herding and prey drive, smaller pocket pets (like hamsters"
+        }
+    ]
 }

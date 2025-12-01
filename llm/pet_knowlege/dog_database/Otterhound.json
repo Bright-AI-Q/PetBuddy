@@ -1,73 +1,77 @@
 {
-  "breed": "Otterhound",
-  "sections": [
-    {
-      "section": "Otterhound",
-      "content": ""
-    },
-    {
-      "section": "History and Origin of the Otterhound",
-      "content": "The Otterhound has its origins in medieval England, where they were bred for hunting otters. They were highly valued for their exceptional scenting abilities and endurance in water. The breed’s popularity declined with the reduction of otter populations and changes in hunting laws. Recognized by the American Kennel Club (AKC) in 1909, the Otterhound remains a rare and treasured breed among enthusiasts."
-    },
-    {
-      "section": "Overview",
-      "content": "AKC Height: 24-27 inches AKC Weight: 80-115 pounds Colors: Black, gray, wheaten, or various combinations Life Expectancy: 10-13 years Group: Hound Group"
-    },
-    {
-      "section": "Otterhound Appearance and Characteristics",
-      "content": "The Otterhound is a large breed, typically weighing between 80-115 pounds and standing about 24-27 inches tall. They have a robust, muscular build with a dense, water-resistant double coat that comes in various colors, including black, gray, wheaten, and combinations. Their signature features include a large head, expressive eyes, and webbed feet for swimming."
-    },
-    {
-      "section": "Key Physical Traits of the Otterhound:",
-      "content": "Size: Large, sturdy, and muscular Coat: Dense, water-resistant double coat Face: Large head with expressive eyes Tail: Long and bushy, used as a rudder when swimming"
-    },
-    {
-      "section": "Otterhound Temperament and Personality",
-      "content": "These hounds are known for their friendly and adventurous nature. These dogs are highly devoted to their families and are especially good with children. They are intelligent, playful, and have a strong sense of independence, making them excellent companions for active families."
-    },
-    {
-      "section": "What Makes the Otterhound Special?",
-      "content": " Loyal and affectionate: They form strong bonds with their families and are known for their gentle nature.  Adventurous and playful: They enjoy outdoor activities and have a great love for water.  Intelligent and independent: Quick learners who can be a bit stubborn.  Alert and protective: They make excellent watchdogs, always ready to protect their family."
-    },
-    {
-      "section": "Training and Socialization",
-      "content": "Training an Otterhound requires patience and consistency. While they are intelligent, they can also be quite strong-willed. Early socialization and positive reinforcement methods work best with this breed."
-    },
-    {
-      "section": "Training Tips:",
-      "content": "Start Early: Begin training and socialization as a puppy to prevent stubborn behavior. Use Positive Reinforcement: Treats, praise, and rewards work well. Be Consistent: Establish a routine to help them understand commands. Expose Them to New Experiences: Introduce them to different environments, people, and other pets."
-    },
-    {
-      "section": "Grooming and Care",
-      "content": "The Otterhound has a dense, water-resistant coat that requires regular grooming to keep it looking its best. While they don’t shed excessively, their coat needs regular maintenance to prevent matting and keep it healthy."
-    },
-    {
-      "section": "Grooming Needs:",
-      "content": "Brushing: At least 2-3 times per week to prevent matting. Trimming: Regular trimming around the face and paws. Bathing: Occasional baths using a mild dog shampoo. Dental Care: Brush their teeth regularly to prevent dental issues. Nail Trimming: Trim nails as needed to prevent overgrowth."
-    },
-    {
-      "section": "Health and Lifespan",
-      "content": "The Otterhound is generally a healthy breed with a lifespan of 10-13 years. However, like all breeds, they are prone to certain health conditions. Responsible breeding and regular vet checkups can help maintain their health."
-    },
-    {
-      "section": "Common Otterhound Health Concerns:",
-      "content": " Hip Dysplasia: A hereditary condition affecting mobility.  Elbow Dysplasia: A common joint issue in large breeds.  Gastric Dilatation-Volvulus (Bloat): A serious condition affecting the stomach.  Ear Infections: Due to their droopy ears and love for water, they can be prone to ear infections."
-    },
-    {
-      "section": "Is the Otterhound the Right Dog for You?",
-      "content": "This is a fantastic breed for those looking for a large, adventurous, and loyal companion. However, they may not be the best fit for everyone. Here’s a quick checklist to help you decide:"
-    },
-    {
-      "section": "Ideal for:",
-      "content": " People who want a large and adventurous companion  Owners with experience handling independent dogs  Those with ample space for regular exercise  Families who can provide regular grooming and training"
-    },
-    {
-      "section": "Not Ideal for:",
-      "content": " Families with very young children (due to their large size)  Owners who prefer a highly obedient dog  Those who don’t have time for regular grooming and socialization"
-    },
-    {
-      "section": "Where to Find an Otterhound",
-      "content": "If you’re interested in bringing an Otterhound into your home, consider adopting from a rescue organization or finding a reputable breeder."
-    }
-  ]
+    "breed": "Otterhound",
+    "sections": [
+        {
+            "section": "Otterhound",
+            "content": ""
+        },
+        {
+            "section": "History and Origin of the Otterhound",
+            "content": "The Otterhound has its origins in medieval England, where they were bred for hunting otters. They were highly valued for their exceptional scenting abilities and endurance in water. The breed\u2019s popularity declined with the reduction of otter populations and changes in hunting laws. Recognized by the American Kennel Club (AKC) in 1909, the Otterhound remains a rare and treasured breed among enthusiasts."
+        },
+        {
+            "section": "Overview",
+            "content": "AKC Height: 24-27 inches AKC Weight: 80-115 pounds Colors: Black, gray, wheaten, or various combinations Life Expectancy: 10-13 years Group: Hound Group"
+        },
+        {
+            "section": "Otterhound Appearance and Characteristics",
+            "content": "The Otterhound is a large breed, typically weighing between 80-115 pounds and standing about 24-27 inches tall. They have a robust, muscular build with a dense, water-resistant double coat that comes in various colors, including black, gray, wheaten, and combinations. Their signature features include a large head, expressive eyes, and webbed feet for swimming."
+        },
+        {
+            "section": "Key Physical Traits of the Otterhound:",
+            "content": "Size: Large, sturdy, and muscular Coat: Dense, water-resistant double coat Face: Large head with expressive eyes Tail: Long and bushy, used as a rudder when swimming"
+        },
+        {
+            "section": "Otterhound Temperament and Personality",
+            "content": "These hounds are known for their friendly and adventurous nature. These dogs are highly devoted to their families and are especially good with children. They are intelligent, playful, and have a strong sense of independence, making them excellent companions for active families."
+        },
+        {
+            "section": "What Makes the Otterhound Special?",
+            "content": " Loyal and affectionate: They form strong bonds with their families and are known for their gentle nature.  Adventurous and playful: They enjoy outdoor activities and have a great love for water.  Intelligent and independent: Quick learners who can be a bit stubborn.  Alert and protective: They make excellent watchdogs, always ready to protect their family."
+        },
+        {
+            "section": "Training and Socialization",
+            "content": "Training an Otterhound requires patience and consistency. While they are intelligent, they can also be quite strong-willed. Early socialization and positive reinforcement methods work best with this breed."
+        },
+        {
+            "section": "Training Tips:",
+            "content": "Start Early: Begin training and socialization as a puppy to prevent stubborn behavior. Use Positive Reinforcement: Treats, praise, and rewards work well. Be Consistent: Establish a routine to help them understand commands. Expose Them to New Experiences: Introduce them to different environments, people, and other pets."
+        },
+        {
+            "section": "Grooming and Care",
+            "content": "The Otterhound has a dense, water-resistant coat that requires regular grooming to keep it looking its best. While they don\u2019t shed excessively, their coat needs regular maintenance to prevent matting and keep it healthy."
+        },
+        {
+            "section": "Grooming Needs:",
+            "content": "Brushing: At least 2-3 times per week to prevent matting. Trimming: Regular trimming around the face and paws. Bathing: Occasional baths using a mild dog shampoo. Dental Care: Brush their teeth regularly to prevent dental issues. Nail Trimming: Trim nails as needed to prevent overgrowth."
+        },
+        {
+            "section": "Health and Lifespan",
+            "content": "The Otterhound is generally a healthy breed with a lifespan of 10-13 years. However, like all breeds, they are prone to certain health conditions. Responsible breeding and regular vet checkups can help maintain their health."
+        },
+        {
+            "section": "Common Otterhound Health Concerns:",
+            "content": " Hip Dysplasia: A hereditary condition affecting mobility.  Elbow Dysplasia: A common joint issue in large breeds.  Gastric Dilatation-Volvulus (Bloat): A serious condition affecting the stomach.  Ear Infections: Due to their droopy ears and love for water, they can be prone to ear infections."
+        },
+        {
+            "section": "Is the Otterhound the Right Dog for You?",
+            "content": "This is a fantastic breed for those looking for a large, adventurous, and loyal companion. However, they may not be the best fit for everyone. Here\u2019s a quick checklist to help you decide:"
+        },
+        {
+            "section": "Ideal for:",
+            "content": " People who want a large and adventurous companion  Owners with experience handling independent dogs  Those with ample space for regular exercise  Families who can provide regular grooming and training"
+        },
+        {
+            "section": "Not Ideal for:",
+            "content": " Families with very young children (due to their large size)  Owners who prefer a highly obedient dog  Those who don\u2019t have time for regular grooming and socialization"
+        },
+        {
+            "section": "Where to Find an Otterhound",
+            "content": "If you\u2019re interested in bringing an Otterhound into your home, consider adopting from a rescue organization or finding a reputable breeder."
+        },
+        {
+            "section": "diet",
+            "content": "The Otterhound is a charming, shaggy-coated, large scent hound known for its unique appearance, amiable nature, and historical role in otter hunting. Like all large breeds, they have specific dietary needs that, when met, contribute significantly to their overall health, longevity, and well-being. Providing a comprehensive and balanced diet tailored to their life stage, activity level, and potential breed-specific health concerns is paramount.\n\nHere's a detailed guide to the diet and feeding instructions for an Otterhound:\n\n---\n\n### 1. Core Principles of a Healthy Otterhound Diet\n\nThe foundation of an Otterhound's diet should be a high-quality, complete, and balanced dog food. This means the food meets the nutritional requirements established by the Association of American Feed Control Officials (AAFCO) for the specific life stage (puppy, adult, senior).\n\n*   **High-Quality Ingredients:** Look for foods with real meat (chicken, beef, lamb, fish) as the first ingredient, followed by digestible carbohydrates (brown rice, sweet potato, oats), healthy fats, and a good balance of vitamins and minerals. Avoid foods with excessive fillers, artificial colors, flavors, or preservatives.\n*   **Nutritional Balance:**\n    *   **Protein:** Essential for muscle development and maintenance. Otterhounds, being active and muscular, require a good percentage of high-quality animal protein.\n    *   **Fats:** Provide concentrated energy, support skin and coat health (omega-3 and omega-6 fatty acids), and aid in nutrient absorption.\n    *   **Carbohydrates:** Offer sustained energy for their active lifestyle.\n    *   **Vitamins & Minerals:** Crucial for all bodily functions, immune system support, and bone health.\n\n---\n\n### 2. Life Stage Specific Feeding\n\nAn Otterhound's nutritional needs change dramatically throughout its life.\n\n*   **Puppy (Up to 12-18 months):**\n    *   **Large Breed Puppy Formula:** This is critical. Otterhound puppies grow rapidly and need a specific balance of calcium and phosphorus, along with controlled calorie levels, to prevent overly rapid growth. Too much calcium or too many calories can contribute to orthopedic problems like hip and elbow"
+        }
+    ]
 }

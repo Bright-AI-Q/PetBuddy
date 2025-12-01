@@ -1,73 +1,77 @@
 {
-  "breed": "Norwich terrier",
-  "sections": [
-    {
-      "section": "Norwich Terrier",
-      "content": ""
-    },
-    {
-      "section": "History and Origin of the Norwich Terrier",
-      "content": "The Norwich Terrier originated in England in the early 20th century. Bred for hunting small vermin and as a farm dog, they were highly valued for their tenacity and friendly nature. The breed was recognized by the American Kennel Club (AKC) in 1936. The Norwich Terrier is closely related to the Norfolk Terrier, with the main difference being their ears—Norwiches have erect ears while Norfolks have dropped ears."
-    },
-    {
-      "section": "Overview",
-      "content": " AKC Height: 10 inches  AKC Weight: 11-12 pounds  Colors: Red, wheaten, black and tan, or grizzle  Life Expectancy: 12-15 years  Group: Terrier Group"
-    },
-    {
-      "section": "Norwich Terrier Appearance and Characteristics",
-      "content": "The Norwich Terrier is a small breed, typically weighing between 11-12 pounds and standing about 10 inches tall. They have a sturdy, compact build with a harsh, wiry coat that comes in various colors, including red, wheaten, black and tan, and grizzle. Their signature features include erect ears, expressive eyes, and a confident stance."
-    },
-    {
-      "section": "Key Physical Traits of the Norwich Terrier:",
-      "content": " Size: Small, sturdy, and compact  Coat: Harsh, wiry, and weather-resistant  Face: Expressive eyes and erect ears  Tail: Typically docked, carried erect"
-    },
-    {
-      "section": "Norwich Terrier Temperament and Personality",
-      "content": "The Norwich Terrier is known for its spirited and friendly personality. These dogs are highly intelligent, loyal, and full of energy. They are playful and enjoy being the center of attention, making them excellent companions for active families."
-    },
-    {
-      "section": "What Makes the Norwich Terrier Special?",
-      "content": "Loyal and affectionate: They form strong bonds with their families and thrive on human interaction. Curious and intelligent: Quick learners who enjoy mental challenges. Alert and fearless: They make excellent watchdogs, always ready to alert their family to any potential danger. Playful and energetic: Enjoy interactive games and regular exercise."
-    },
-    {
-      "section": "Training and Socialization",
-      "content": "Training a Norwich Terrier is rewarding due to their intelligence and eagerness to please. However, they can be a bit stubborn, so patience and consistency are key. Early socialization and positive reinforcement methods work best with this breed."
-    },
-    {
-      "section": "Training Tips:",
-      "content": "️ Start Early: Begin training and socialization as a puppy to prevent stubborn behavior. ️ Use Positive Reinforcement: Treats, praise, and rewards work well. ️ Be Consistent: Establish a routine to help them understand commands. ️ Expose Them to New Experiences: Introduce them to different environments, people, and other pets."
-    },
-    {
-      "section": "Grooming and Care",
-      "content": "The Norwich Terrier has a unique, wiry coat that requires regular grooming to keep it looking its best. While they don’t shed excessively, their coat needs regular maintenance to prevent matting and keep it healthy."
-    },
-    {
-      "section": "Grooming Needs:",
-      "content": "Brushing: At least 2-3 times per week to prevent matting. Trimming: Regular trimming around the face and paws. Bathing: Occasional baths using a mild dog shampoo. Dental Care: Brush their teeth regularly to prevent dental issues. Nail Trimming: Trim nails as needed to prevent overgrowth."
-    },
-    {
-      "section": "Health and Lifespan",
-      "content": "The Norwich Terrier is generally a healthy breed with a lifespan of 12-15 years. However, like all breeds, they are prone to certain health conditions. Responsible breeding and regular vet checkups can help maintain their health."
-    },
-    {
-      "section": "Common Health Concerns:",
-      "content": " Hip Dysplasia: A hereditary condition affecting mobility.  Patellar Luxation: A common knee issue in small breeds.  Heart Disease: Some Norwich Terriers are prone to heart conditions.  Skin Allergies: They can be sensitive to certain allergens, requiring regular grooming and care."
-    },
-    {
-      "section": "Is the Norwich Terrier the Right Dog for You?",
-      "content": "This is a fantastic breed for those looking for a small, playful, and loyal companion. However, they may not be the best fit for everyone. Here’s a quick checklist to help you decide:"
-    },
-    {
-      "section": "Ideal for:",
-      "content": " People who want a small but sturdy companion  Apartment dwellers or those with limited space  Owners willing to commit to regular grooming and training  Families with older children who can respect their small size"
-    },
-    {
-      "section": "Not Ideal for:",
-      "content": " Families with very young children (due to their small, delicate size)  Owners who prefer a highly obedient dog  Those who don’t have time for regular grooming and socialization"
-    },
-    {
-      "section": "Where to Find a Norwich Terrier",
-      "content": "If you’re interested in bringing a Norwich into your home, consider adopting from a rescue organization or finding a reputable breeder."
-    }
-  ]
+    "breed": "Norwich terrier",
+    "sections": [
+        {
+            "section": "Norwich Terrier",
+            "content": ""
+        },
+        {
+            "section": "History and Origin of the Norwich Terrier",
+            "content": "The Norwich Terrier originated in England in the early 20th century. Bred for hunting small vermin and as a farm dog, they were highly valued for their tenacity and friendly nature. The breed was recognized by the American Kennel Club (AKC) in 1936. The Norwich Terrier is closely related to the Norfolk Terrier, with the main difference being their ears\u2014Norwiches have erect ears while Norfolks have dropped ears."
+        },
+        {
+            "section": "Overview",
+            "content": " AKC Height: 10 inches  AKC Weight: 11-12 pounds  Colors: Red, wheaten, black and tan, or grizzle  Life Expectancy: 12-15 years  Group: Terrier Group"
+        },
+        {
+            "section": "Norwich Terrier Appearance and Characteristics",
+            "content": "The Norwich Terrier is a small breed, typically weighing between 11-12 pounds and standing about 10 inches tall. They have a sturdy, compact build with a harsh, wiry coat that comes in various colors, including red, wheaten, black and tan, and grizzle. Their signature features include erect ears, expressive eyes, and a confident stance."
+        },
+        {
+            "section": "Key Physical Traits of the Norwich Terrier:",
+            "content": " Size: Small, sturdy, and compact  Coat: Harsh, wiry, and weather-resistant  Face: Expressive eyes and erect ears  Tail: Typically docked, carried erect"
+        },
+        {
+            "section": "Norwich Terrier Temperament and Personality",
+            "content": "The Norwich Terrier is known for its spirited and friendly personality. These dogs are highly intelligent, loyal, and full of energy. They are playful and enjoy being the center of attention, making them excellent companions for active families."
+        },
+        {
+            "section": "What Makes the Norwich Terrier Special?",
+            "content": "Loyal and affectionate: They form strong bonds with their families and thrive on human interaction. Curious and intelligent: Quick learners who enjoy mental challenges. Alert and fearless: They make excellent watchdogs, always ready to alert their family to any potential danger. Playful and energetic: Enjoy interactive games and regular exercise."
+        },
+        {
+            "section": "Training and Socialization",
+            "content": "Training a Norwich Terrier is rewarding due to their intelligence and eagerness to please. However, they can be a bit stubborn, so patience and consistency are key. Early socialization and positive reinforcement methods work best with this breed."
+        },
+        {
+            "section": "Training Tips:",
+            "content": "\ufe0f Start Early: Begin training and socialization as a puppy to prevent stubborn behavior. \ufe0f Use Positive Reinforcement: Treats, praise, and rewards work well. \ufe0f Be Consistent: Establish a routine to help them understand commands. \ufe0f Expose Them to New Experiences: Introduce them to different environments, people, and other pets."
+        },
+        {
+            "section": "Grooming and Care",
+            "content": "The Norwich Terrier has a unique, wiry coat that requires regular grooming to keep it looking its best. While they don\u2019t shed excessively, their coat needs regular maintenance to prevent matting and keep it healthy."
+        },
+        {
+            "section": "Grooming Needs:",
+            "content": "Brushing: At least 2-3 times per week to prevent matting. Trimming: Regular trimming around the face and paws. Bathing: Occasional baths using a mild dog shampoo. Dental Care: Brush their teeth regularly to prevent dental issues. Nail Trimming: Trim nails as needed to prevent overgrowth."
+        },
+        {
+            "section": "Health and Lifespan",
+            "content": "The Norwich Terrier is generally a healthy breed with a lifespan of 12-15 years. However, like all breeds, they are prone to certain health conditions. Responsible breeding and regular vet checkups can help maintain their health."
+        },
+        {
+            "section": "Common Health Concerns:",
+            "content": " Hip Dysplasia: A hereditary condition affecting mobility.  Patellar Luxation: A common knee issue in small breeds.  Heart Disease: Some Norwich Terriers are prone to heart conditions.  Skin Allergies: They can be sensitive to certain allergens, requiring regular grooming and care."
+        },
+        {
+            "section": "Is the Norwich Terrier the Right Dog for You?",
+            "content": "This is a fantastic breed for those looking for a small, playful, and loyal companion. However, they may not be the best fit for everyone. Here\u2019s a quick checklist to help you decide:"
+        },
+        {
+            "section": "Ideal for:",
+            "content": " People who want a small but sturdy companion  Apartment dwellers or those with limited space  Owners willing to commit to regular grooming and training  Families with older children who can respect their small size"
+        },
+        {
+            "section": "Not Ideal for:",
+            "content": " Families with very young children (due to their small, delicate size)  Owners who prefer a highly obedient dog  Those who don\u2019t have time for regular grooming and socialization"
+        },
+        {
+            "section": "Where to Find a Norwich Terrier",
+            "content": "If you\u2019re interested in bringing a Norwich into your home, consider adopting from a rescue organization or finding a reputable breeder."
+        },
+        {
+            "section": "diet",
+            "content": "The diet for a Norwich Terrier is a cornerstone of their overall health, energy levels, and longevity. As a small, active, and intelligent breed, they have specific nutritional needs that, when met, contribute to a vibrant life. This guide provides comprehensive and detailed information to help you nourish your Norwich Terrier optimally.\n\n---\n\n### I. General Nutritional Principles for Norwich Terriers\n\nNorwich Terriers thrive on a balanced diet that provides adequate protein for muscle maintenance, healthy fats for energy and skin/coat health, complex carbohydrates for sustained energy, and essential vitamins and minerals.\n\n1.  **High-Quality Commercial Dog Food (Kibble or Wet)**\n    *   **Meat as the First Ingredient:** Look for a named meat source (e.g., chicken, lamb, salmon, beef) as the first ingredient. Avoid foods where the first ingredient is a \"meat meal\" or generic \"meat by-products\" without further specification, or worse, a grain filler.\n    *   **Small Breed Formula:** Many reputable brands offer formulas specifically designed for small breeds. These typically feature smaller kibble sizes, which are easier for a Norwich Terrier's mouth to chew, and a nutrient profile tailored to their metabolism and energy needs.\n    *   **Whole Grains or Grain-Free (if appropriate):** Whole grains like brown rice, oats, barley, and quinoa can be excellent sources of fiber and nutrients. Grain-free diets are suitable for dogs with diagnosed grain allergies or sensitivities, but are not necessary for all dogs and should be discussed with your vet.\n    *   **Healthy Fats:** Look for sources like chicken fat, fish oil (rich in Omega-3 fatty acids like EPA and DHA), flaxseed, and sunflower oil. These are crucial for skin and coat health, brain function, and reducing inflammation.\n    *   **Fruits and Vegetables:** Quality foods often include wholesome fruits and vegetables (e.g., sweet potatoes, peas, carrots, apples, cranberries) for natural vitamins, minerals, and antioxidants.\n    *   **Avoid Fillers and Artificial Additives:** Steer clear of foods containing corn syrup, artificial colors, flavors, and preservatives (like BHA, BHT, ethoxyquin).\n    *   **AAFCO Statement:** Ensure the food package states that it meets the nutritional levels established by the AAFCO (Association of American Feed Control Officials) for the specific life"
+        }
+    ]
 }
