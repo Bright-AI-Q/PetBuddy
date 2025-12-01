@@ -105,6 +105,7 @@ def validate_input_dirs():
         raise FileNotFoundError(f"Oxford dataset not found at {OXFORD_ROOT}")
     if not STANFORD_ROOT.exists():
         raise FileNotFoundError(f"Stanford dataset not found at {STANFORD_ROOT}")
+
 def main():
     try:
         validate_input_dirs()
