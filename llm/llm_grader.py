@@ -11,6 +11,7 @@ from typing import List, Dict, Any
 import torch
 from transformers import AutoModelForCausalLM, AutoTokenizer
 import openai
+import rag_engine
 
 def load_questions_and_reference_answers() -> List[Dict[str, Any]]:
     script_dir = os.path.dirname(os.path.abspath(__file__))
@@ -90,8 +91,82 @@ def load_finedtuned_model(model_name):
     tokenizer.pad_token = tokenizer.eos_token
     return model, tokenizer
 
-# Copied from evaluate_qwen_petnet.py
-# Unable to import because of unable to load_finetuned_model
+# Method to generate response with RAG
+def generate_rag_response(model, tokenizer, user_query, rag_engine, max_new_tokens=256):
+    """
+    Integrates the RAG retrieval with your generation step.
+    Optimized for Qwen models.
+    """
+    import torch
+    
+    # 1. Retrieve Context
+    breed_name, context_text = rag_engine.retrieve_context(user_query)
+    
+    if not context_text:
+        # Fallback for generic chit-chat or unknown breeds
+        messages = [
+            {"role": "system", "content": "You are a helpful dog expert assistant."},
+            {"role": "user", "content": user_query}
+        ]
+    else:
+        # 2. Construct RAG Prompt with retrieved context
+        system_prompt = f"""You are a specialized veterinary assistant with access to a breed database.
+
+You have been provided with documentation about the {breed_name}.
+
+INSTRUCTIONS:
+- Answer the user's question using ONLY information from the Reference Document below
+- If the answer is not in the document, respond: "I don't have that information in my database."
+- Do not make up facts or add information not present in the document
+- Use exact statistics (weight, height, lifespan) as provided
+
+### REFERENCE DOCUMENT:
+{context_text}
+"""
+        messages = [
+            {"role": "system", "content": system_prompt},
+            {"role": "user", "content": user_query}
+        ]
+    
+    # 3. Apply Qwen chat template
+    text = tokenizer.apply_chat_template(
+        messages, 
+        tokenize=False, 
+        add_generation_prompt=True
+    )
+    
+    # 4. Tokenize and move to device
+    inputs = tokenizer(text, return_tensors="pt", padding=True).to(model.device)
+    
+    # 5. Generate Answer
+    with torch.no_grad():
+        output_ids = model.generate(
+            **inputs,
+            max_new_tokens=max_new_tokens,
+            temperature=0.1,  # Low temperature for factual accuracy
+            top_p=0.9,
+            do_sample=True,
+            pad_token_id=tokenizer.eos_token_id,
+            eos_token_id=tokenizer.eos_token_id,
+        )
+    
+    # 6. Extract only the newly generated tokens
+    generated_ids = output_ids[0]
+    prompt_len = inputs.input_ids.shape[-1]
+    new_token_ids = generated_ids[prompt_len:]
+    
+    # 7. Decode the assistant's response
+    response = tokenizer.decode(new_token_ids, skip_special_tokens=True).strip()
+    
+    # Debug output
+    print(f"Query: {user_query}")
+    print(f"Breed: {breed_name if breed_name else 'Not detected'}")
+    print(f"Response: {response}")
+    print("=" * 50)
+    
+    return response
+
+# Copied from evaluate_qwen_petnet.py, method to generate response without RAG
 def generate_response(model, tokenizer, prompt, max_new_tokens=256):
     # 1. Build chat-style prompt
     messages = [{"role": "user", "content": prompt}]
@@ -122,10 +197,12 @@ def generate_response(model, tokenizer, prompt, max_new_tokens=256):
 
     # 5. Decode only the assistant's answer
     response = tokenizer.decode(new_token_ids, skip_special_tokens=True).strip()
+    print(prompt)
     print(response)
+    print("++++++++++++++++++++++++++++++++++++++++++++++++++")
     return response
 
-api_key = "your_api_key_here"
+api_key = "your-api-key-here"
 
 client = openai.OpenAI(
     base_url="https://generativelanguage.googleapis.com/v1beta/openai/", api_key=api_key
@@ -136,6 +213,7 @@ if __name__ == "__main__":
     parser.add_argument('--model_name', type=str, default="qwen-petnet-final/final",
                         help='Finetuned model to use. If not provided, use the base model.')
     parser.add_argument('--output', type=str, default="output_final.jsonl")
+    parser.add_argument('--use_rag', type=bool, default=False, help='Whether to use RAG')
     args = parser.parse_args()
 
     qa_data = load_questions_and_reference_answers()
@@ -145,10 +223,16 @@ if __name__ == "__main__":
     else:
         base_model, base_tokenizer = load_finedtuned_model(args.model_name)
 
+    if args.use_rag:
+        rag = rag_engine.DogBreedRAG("./pet_knowlege/dog_database/")
+
     for item in qa_data:
-        item["model_response"] = generate_response(
-            base_model, base_tokenizer, item["question"]
-        )
+        if args.use_rag:
+            item["model_response"] = generate_rag_response(base_model, base_tokenizer, item["question"], rag)
+        else:
+            item["model_response"] = generate_response(
+                base_model, base_tokenizer, item["question"]
+            )
 
         if api_key == "your_api_key_here":
             print("Please set your API key in the code. Skipping evaluation...")
