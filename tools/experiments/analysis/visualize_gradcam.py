@@ -33,7 +33,7 @@ from pytorch_grad_cam.utils.image import show_cam_on_image
 from PIL import Image, ImageDraw, ImageFont
 
 # Add project root directory to system path
-project_root = Path(__file__).parent.parent
+project_root = Path(__file__).parent.parent.parent.parent
 sys.path.append(str(project_root))
 
 from models.petnet import PetNet
@@ -148,8 +148,7 @@ def main():
         stage_repeats=model_config.get('stage_repeats', [2, 3, 4]),
         attn_cfg=model_config.get('attn_cfg', None),
         selfkd_cfg=model_config.get('selfkd_cfg', None),
-        max_pets_per_image=10,
-        drop_path_rate=0.0  # Must be 0 for inference
+        max_pets_per_image=10
     )
 
     # Load weights
