@@ -84,6 +84,8 @@ We use a combination of the Stanford dogs dataset\cite{khosla2011novel} and the 
 
 Our combined dataset contains 27,970 annotated images of cats and dogs belonging to 144 breeds. Of those, 136 are dogs and 12 are cats. The number of cat breeds are much less than dogs, but each cat breed contains 150-200 images so it is still sufficient for our vision model to learn a good representation for cats. We then split the images into training, validation, and test set in a 8:1:1 ratio.
 
+
+
 %-------------------------------------------------------------------------
 %------------------------------------------------------------------------
 \section{Approach}
@@ -129,7 +131,7 @@ The first thing we tried, which is simply using MobileNetV2's pretrained backbon
 (10 points) How did you measure success? What experiments were used? What were the results, both quantitative and qualitative? Did you succeed? Did you fail? Why? Justify your reasons with arguments supported by evidence and data.
 
 \subsection{Vision model}
-We measured success by the validation accuracy of our vision model (PetNet) along with the number of parameters of the model. We aim to have a high validation accuracy while keeping the number of parameters of our model small. The loss function we used was Cross-Entropy with the model's predicted label probabilities compared with the actual label. (Add in more sections with how each module improves the model)
+We measured success by the validation accuracy of our vision model (PetNet) along with the number of parameters of the model. We aim to have a high validation accuracy while keeping the number of parameters of our model small. The loss function we used was Cross-Entropy with the model's predicted label probabilities compared with the actual label. Refer to table \ref{tab:petnet} for information on how different modules affect the performance of PetNet. (Add in more sections with how each module improves the model)
 
 \subsubsection{CutMix + FixMatch}
 \subsubsection{Dual attention mechanism}
@@ -138,6 +140,26 @@ We measured success by the validation accuracy of our vision model (PetNet) alon
 
 \subsubsection{Hyperparameter tuning}
 We optimized our model by running hyperparameter tuning using Optuna created by Akiba et al\cite{akiba2019optuna}. We run the Optuna script with the following hyperparameters along with their ranges shown in the table below (TODO: add table). The Optuna script is ran on the PACE ICE cluster along with using local GPUs for training. The Optuna script is ran in a distributed manner with a SQLite file as the database with Write-ahead logging. A combination of V100, A100, and L40S is used as the GPU depending on their availability. The batch size is chosen such that it makes full use of the GPU's VRAM (as high as the VRAM allows).
+
+\begin{table*}
+\begin{center}
+\begin{tabular}{|l|c|p{2cm}|}
+\hline
+Model & Mean accuracy & Params (M) \\
+\hline\hline
+Base PetNet & xx & xx \\
+With dual attention & xx & xx \\
+With self KD & xx & xx \\
+With LDRE & xx & xx \\
+With enhanced LDRE & xx & xx \\
+With CutMix + FixMatch & xx & xx \\
+With all modules & xx & xx \\
+\hline
+\end{tabular}
+\end{center}
+\caption{PetNet performance after adding ablation modules.}
+\label{tab:petnet}
+\end{table*}
 
 \subsection{Language Model}
 We used Bertscore introduced by Zhang et al.\cite{zhang2019bertscore} as our loss function while training our QLoRA.
