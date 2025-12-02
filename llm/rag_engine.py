@@ -77,7 +77,7 @@ class DogBreedRAG:
             if breed_nospace in query_nospace:
                 return self.breed_index[breed_name]
 
-        # Case 3: Partial match by shared words
+        # Case 3: Partial match by shared words (minimum 2)
         query_words = set(query_norm.split())
 
         for breed_name in sorted_breeds:
@@ -87,6 +87,16 @@ class DogBreedRAG:
             # two or more shared words → good match
             matching = query_words & breed_words
             if len(matching) >= 2:
+                return self.breed_index[breed_name]
+            
+        # Case 4 : Partial match by one shared word
+        for breed_name in sorted_breeds:
+            breed_norm = self._normalize_text(breed_name)
+            breed_words = set(breed_norm.split())
+
+            # one shared word as last resort
+            matching = query_words & breed_words
+            if len(matching) >= 1:
                 return self.breed_index[breed_name]
 
         return None
