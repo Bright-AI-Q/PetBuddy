@@ -3,7 +3,7 @@ import torch
 
 model, tokenizer = FastLanguageModel.from_pretrained(
     model_name="Qwen/Qwen2.5-1.5B-Instruct",
-    max_seq_length=2048,
+    max_seq_length=1024,
     dtype=None,  # None for auto detection.
     load_in_4bit=True,
 )
