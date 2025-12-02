@@ -24,7 +24,7 @@
 \begin{document}
 
 %%%%%%%%% TITLE
-\title{PetBuddy: A Pet Recognition and AI Feeding Advisor\\CS 7643}
+\title{PetBuddy: A Pet Breed Recognition and Care Advisor\\CS 7643}
 
 \author{Hwaai Kang Kee*, Bright Wang*, Cindy Surjadi*, Jinyang Deng\\
 Georgia Institute of Technology\\
@@ -50,7 +50,7 @@ Georgia Institute of Technology\\
 
 %%%%%%%%% ABSTRACT
 \begin{abstract}
-   There are approximately 200 - 350 breeds of dogs and 45 - 70 breeds of cats. Different types of breeds can have different care instructions. Thus, it can be difficult for pet owners to keep track of the best ways to care for their pets. This project aims to create a product that will generate personalized pet care instructions based on an image of the pet. We introduce our own multiclass pet breed classifier called PetNet, which is based on MobileNetV2's architecture~\cite{sandler2018mobilenetv2}. We aim for this to be a lightweight network that could be used in resource constrained environments such as mobile devices. Together with Qwen~\cite{bai2023qwen} as the LLM component to generate pet care instructions.
+   There are approximately 200 - 350 breeds of dogs and 45 - 70 breeds of cats. Different types of breeds can have different care instructions. Thus, it can be difficult for pet owners to keep track of the best ways to care for their pets. This project aims to create an application that will generate breed specific pet care instructions based on an image of the pet. We introduce our own multiclass pet breed classifier called PetNet, which is based on MobileNetV2's architecture~\cite{sandler2018mobilenetv2}. We aim for this to be a lightweight network that could be used in resource constrained environments such as mobile devices. There is also a language model component, we would use Qwen~\cite{bai2023qwen} to generate breed specific pet care instructions.
 \end{abstract}
 
 %%%%%%%%% BODY TEXT
@@ -84,7 +84,7 @@ We use a combination of the Stanford dogs dataset\cite{khosla2011novel} and the 
 
 Our combined dataset contains 27,970 annotated images of cats and dogs belonging to 144 breeds. Of those, 136 are dogs and 12 are cats. The number of cat breeds are much less than dogs, but each cat breed contains 150-200 images so it is still sufficient for our vision model to learn a good representation for cats. We then split the images into training, validation, and test set in a 8:1:1 ratio.
 
-
+We also use the Ap-10k\cite{yu2021ap} and the StanfordExtra dog\cite{biggs2020left} dataset to estimate keypoints such as body, tail, and fur patterns in our Landmark-Driven Region Erasing (LDRE) method. This is a data augmentation method that will be further elaborated in the next section.
 
 %-------------------------------------------------------------------------
 %------------------------------------------------------------------------
@@ -94,24 +94,28 @@ Our combined dataset contains 27,970 annotated images of cats and dogs belonging
 
 We separate our project into 2 parts. First is the vision model, where we perform multi-class classification and assign one label to the image. We did not do multi-label classification since the majority of our training data contains only 1 pet breed per image. Second is the language model, where we generate pet care instructions based on the specific breed of the pet.
 
-\subsection{Data Augmentation}
-\subsubsection{Local Dropout Random Erasing (LDRE)}
-This is a data augmentation technique devised by Bright Wang built on top of the Random Erasing method introduced by Zhong et al.\cite{zhong2020random}. The Grid-based dropping mechanism is inspired by GridMask\cite{chen2020gridmask}. The Enhanced LDRE part which uses keypoints to guide dropping is inspired by the "Hide-and-Seek" paper by Krishna and Yong\cite{kumar2017hide}. (Provide more details here)
-
-\subsubsection{CutMix + FixMatch}
-We randomly apply one of CutMix\cite{yun2019cutmix} or FixMatch\cite{sohn2020fixmatch} to each image in training data to help the model generalize better and increase regularization of the model. (Provide evidence)
-
 \subsection{Vision model}
 We use MobileNetV2\cite{sandler2018mobilenetv2} as the backbone architecture with pretrained weights as our starting network. We then added several modifications to the architecture in an attempt to improve it.
 
 \subsubsection{Dual attention mechanism}
-We implemented the dual attention mechanism\cite{fu2019dual} introduced by Fu et al. as one of our modules in PetNet. We found that adding dual attention increased validation accuracy of our model. (Provide evidence)
-
-\subsubsection{Inverted Residual Block (IRB)}
-We used the IRB\cite{sandler2018mobilenetv2} introduced in MobileNetV2 by directly using the torchvision library\cite{marcel2010torchvision}. Adding IRBs increased validation accuracy of our model. (Provide evidence)
+2 attention mechanisms are added after the Inverted Residual Block (IRB) layers in the original MobileNetV2 architecture. Firstly, Efficient Channel Attention (ECA) from ECA-net introduced by Wang et al.\cite{Wang_2020_CVPR} is used as the first attention mechanism. Secondly, learnable 2D positional encodings introduced by DEtection TRansformers (DETR)\cite{carion2020end} are added to our image features. To handle varying input resolutions without training, the dynamic interpolation strategy introduced in Vision Transformers (ViT)\cite{dosovitskiy2020image} is used to resize our learnable positional encodings to match the current dimensions of the image features.
 
 \subsubsection{Self Knowledge Distillation (KD)}
-We used self KD introduced by Yun et al.\cite{Yun_2020_CVPR}. We find that adding self KD helped the model generalize better and increase regularization of the model. (Provide evidence)
+A self KD strategy inspired by Zhang et al.\cite{zhang2019your} is implemented, where auxiliary heads at intermediate stages are trained to mimic the final classification layer's soft prediction. Auxiliary classifiers are added to stage 2 and stage 3 of the MobileNetV2 architecture, which acts as the student. While the last classifier (stage 4) acts as the teacher. We compute this loss as the KL divergence between the student and the teacher logits with the following equation. This loss is added to our cross entropy loss for classification.
+\begin{equation}
+    \mathcal{L}_{KD} = \sum_{i \in \{2,3\}} \alpha_i \cdot T^2 \cdot \mathcal{KL} \left( \sigma \left( \frac{z_t}{T} \right), \sigma \left( \frac{z_{s_i}}{T} \right) \right)
+\end{equation}
+Where $\alpha_i$ is the weight of the loss of the particular stage, $T$ is the temperature, which is a scalar used to scale output probabilities, $z_t$ are the teacher's logits, and $z_{s_i}$ are the student's logits.
+
+\subsubsection{Landmark-Driven Random Erasing (LDRE)}
+This is a data augmentation technique devised by Bright Wang built on top of the Random Erasing method introduced by Zhong et al.\cite{zhong2020random}. The Grid-based dropping mechanism is inspired by GridMask\cite{chen2020gridmask}. This method is similar to the one introduced by Kumar et al.\cite{kumar2017hide} but instead of random grid masking, LDRE explicitly targets semantic regions such as the head and body to force the model to learn robust features rather than memorizing noise. Instead of random occlusion, LDRE is performing semantic occlusion. YOLOv8-pose\cite{10533619} pretrained weights are used to identify anatomical keypoints. The pose model is finetuned on the AP-10k dataset before it is used to identify keypoints for the images in our composite dataset.
+
+First, the image is divided into a fixed size grid of 16x16. Then, a saliency score $S_{i,j}$ is calculated for each grid cell based on keypoint confidence and proximity as shown in the following equation. (Elaborate further)
+
+\begin{equation}
+    \mathcal{L}_{KD} = \sum_{i \in \{2,3\}} \alpha_i \cdot T^2 \cdot \mathcal{KL} \left( \sigma \left( \frac{z_t}{T} \right), \sigma \left( \frac{z_{s_i}}{T} \right) \right)
+\end{equation}
+
 
 \subsection{Language model}
 
