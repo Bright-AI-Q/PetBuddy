@@ -3,7 +3,7 @@ import torch
 
 model, tokenizer = FastLanguageModel.from_pretrained(
     model_name="Qwen/Qwen2.5-1.5B-Instruct",
-    max_length=2048,
+    max_seq_length=2048,
     dtype=None,  # None for auto detection.
     load_in_4bit=True,
 )
@@ -82,6 +82,8 @@ trainer = SFTTrainer(
 
         seed = 42, # Default
         gradient_accumulation_steps = 1, #It's okay. RTX 5060 TI has 16GB VRAM.
+
+        label_smoothing_factor = 0.1, # To improve generalization.
 
         warmup_steps = 5,
         learning_rate = 2e-4,
