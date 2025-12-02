@@ -81,7 +81,9 @@ trainer = SFTTrainer(
         bf16 = True,
 
         seed = 42, # Default
-        gradient_accumulation_steps = 1, #It's okay. RTX 5060 TI has 16GB VRAM.
+        per_device_train_batch_size = 1,
+        per_device_eval_batch_size = 1,
+        gradient_accumulation_steps = 4, #It's okay. RTX 5060 TI has 16GB VRAM.
 
         label_smoothing_factor = 0.05, # To improve generalization.
 
