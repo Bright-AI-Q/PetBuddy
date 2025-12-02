@@ -21,7 +21,7 @@ model = FastLanguageModel.get_peft_model(
         "down_proj",
     ],
     lora_alpha=16,
-    lora_dropout=0.05,  # A bit overfitting
+    lora_dropout=0.0,  # A bit overfitting. If non-zero, this causes issue with unsloth
     bias="none",  # Supports any, but = "none" is optimized
     use_gradient_checkpointing="unsloth",  # True or "unsloth" for very long context
     random_state=42,
