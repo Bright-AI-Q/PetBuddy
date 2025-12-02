@@ -21,7 +21,7 @@ model = FastLanguageModel.get_peft_model(
         "down_proj",
     ],
     lora_alpha=16,
-    lora_dropout=0,  # Supports any, but = 0 is optimized
+    lora_dropout=0.05,  # A bit overfitting
     bias="none",  # Supports any, but = "none" is optimized
     use_gradient_checkpointing="unsloth",  # True or "unsloth" for very long context
     random_state=42,
@@ -83,8 +83,9 @@ trainer = SFTTrainer(
         seed = 42, # Default
         gradient_accumulation_steps = 1, #It's okay. RTX 5060 TI has 16GB VRAM.
 
-        label_smoothing_factor = 0.1, # To improve generalization.
+        label_smoothing_factor = 0.05, # To improve generalization.
 
+        load_best_model_at_end = True,
         warmup_steps = 5,
         learning_rate = 2e-4,
         logging_steps = 1,
@@ -99,3 +100,4 @@ trainer = SFTTrainer(
 
 trainer.train()
 trainer.save_model("qwen-petnet-final/unsloth/final")
+tokenizer.save_pretrained("qwen-petnet-final/unsloth/final")
