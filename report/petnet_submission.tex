@@ -1,0 +1,79 @@
+\documentclass[10pt,twocolumn,letterpaper,twoside]{article}%
+\usepackage[T1]{fontenc}%
+\usepackage[utf8]{inputenc}%
+\usepackage{lmodern}%
+\usepackage{textcomp}%
+\usepackage{lastpage}%
+\usepackage[applications]{wacv}%
+\usepackage{times}%
+\usepackage{epsfig}%
+\usepackage{graphicx}%
+\usepackage{amsmath}%
+\usepackage{amssymb}%
+\usepackage{booktabs}%
+\usepackage{multirow}%
+\usepackage{subcaption}%
+\usepackage[pagebackref=true,breaklinks=true,colorlinks,bookmarks=false]{hyperref}%
+%
+\def\wacvPaperID{****}%
+\def\confName{WACV}%
+\def\confYear{2025}%
+\graphicspath{{images/}}%
+\title{PetNet: A Lightweight Curriculum Learning Framework for Fine-Grained Pet Recognition on Edge Devices}%
+\author{Haoyi Wang \\ GaTech\\hwang3200@gatech.edu}%
+%
+\begin{document}%
+\normalsize%
+\maketitle%
+\begin{abstract}%
+\input{sections/00\_abstract}%
+\end{abstract}%
+\section{Introduction}%
+\label{sec:Introduction}%
+\input{sections/01\_introduction}
+
+%
+\section{Related Work}%
+\label{sec:RelatedWork}%
+\input{sections/02\_related\_work}
+
+%
+\section{Methodology}%
+\label{sec:Methodology}%
+\input{sections/03\_method\_arch}%
+\subsection{Keypoint{-}Guided LDRE}%
+\label{subsec:Keypoint{-}GuidedLDRE}%
+\input{sections/03\_method\_ldre}
+
+%
+\subsection{Progressive Optimization Strategy}%
+\label{subsec:ProgressiveOptimizationStrategy}%
+\input{sections/03\_method\_strategy}
+
+%
+\section{Experiments}%
+\label{sec:Experiments}%
+\input{sections/04\_exp\_setup}%
+\subsection{Ablation Study \& Strategy Analysis}%
+\label{subsec:AblationStudyStrategyAnalysis}%
+\input{sections/04\_exp\_ablation}
+
+%
+\subsection{Comparison with SOTA}%
+\label{subsec:ComparisonwithSOTA}%
+\input{sections/04\_exp\_sota}
+
+%
+\subsection{Qualitative Analysis}%
+\label{subsec:QualitativeAnalysis}%
+\input{sections/04\_exp\_vis}
+
+%
+\section{Conclusion}%
+\label{sec:Conclusion}%
+\input{sections/05\_conclusion}
+
+%
+\bibliographystyle{ieeetr}%
+\bibliography{references}%
+\end{document}

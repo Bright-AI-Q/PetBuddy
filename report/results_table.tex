@@ -1,0 +1,34 @@
+
+\begin{table}[h]
+    \centering
+    \caption{Performance Comparison with SOTA and Ablation Studies.}
+    \label{tab:main_results}
+    \resizebox{\linewidth}{!}{
+    \begin{tabular}{lcc}
+        \toprule
+        \textbf{Method / Configuration} & \textbf{Accuracy (\%)} & \textbf{Gain} \\
+        \midrule
+        \multicolumn{3}{l}{\textit{State-of-the-Art Baselines}} \\
+        MobileNetV2 (Baseline) & 70.04 & - \\
+        EfficientNet-B0 & 76.88 & +6.84\% \\
+        MobileOne-S0 & 67.82 & -2.22\% \\
+        \midrule
+        \multicolumn{3}{l}{\textit{PetNet Module Ablation}} \\
+        + Attention & 77.32 & +7.28\% \\
+        + Attn + SelfKD & 79.32 & +9.28\% \\
+        \midrule
+        \multicolumn{3}{l}{\textit{LDRE Innovation (Std vs. Enh)}} \\
+        + Standard LDRE & 78.67 & +8.63\% \\
+        + Enhanced LDRE (Ours) & 79.07 & +9.03\% \\
+        \midrule
+        \multicolumn{3}{l}{\textit{Synergy with MixUp}} \\
+        + MixUp Only & 81.65 & +11.61\% \\
+        + MixUp + Std LDRE & 81.73 & +11.69\% \\
+        \midrule
+        \multicolumn{3}{l}{\textit{Curriculum Learning (Final)}} \\
+        Ours (Stage 1: MixUp) & 81.62 & +11.58\% \\
+        \textbf{Ours (Stage 2: LDRE Fine-tune)} & \textbf{83.69} & \textbf{+13.65\%} \\
+        \bottomrule
+    \end{tabular}
+    }
+\end{table}

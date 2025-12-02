@@ -67,7 +67,7 @@ class PetDataset(Dataset):
 
         if not self.root_dir.is_absolute():
             project_root = Path(__file__).parent.parent
-            self.root_dir = project_root / "data" / self.root_dir
+            self.root_dir = project_root / self.root_dir
 
         split_dir = self.root_dir / split
         if not split_dir.exists():

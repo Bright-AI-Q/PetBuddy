@@ -1,3 +1,23 @@
+#!/usr/bin/env python3
+"""
+Project: PetBuddy
+Author: Bright Wang
+File: enhanced_ldre.py
+====================================
+Enhanced LDRE (Keypoint-guided Local Dropout for Regularization Enhancement) Module
+
+Purpose:
+- Provide keypoint-guided region dropping for improved regularization
+- Enhance model robustness by focusing on semantically important regions
+- Support adaptive dropout based on keypoint importance
+
+Features:
+1. Keypoint-Guided: Utilizes keypoint information to guide dropout regions
+2. Adaptive Dropout: Dynamically adjusts dropout regions based on input
+3. Performance Optimized: Efficient implementation for training speed
+4. Configurable: Adjustable grid size and dropout ratio
+5. Integration Ready: Seamlessly integrates with PetNet architecture
+"""
 import numpy as np
 import random
 
@@ -43,7 +63,7 @@ class EnhancedLDRETransform:
 
             grid_x = min(int(x // cell_w), self.grid_size - 1)
             grid_y = min(int(y // cell_h), self.grid_size - 1)
-
+            print(f"Img Shape: {image_shape}, KP: ({x}, {y}) -> Grid: ({grid_x}, {grid_y})")
             score_map[grid_y, grid_x] += score
 
         return score_map

@@ -43,9 +43,9 @@ data:
   test_split: 0.1
   ldre_cfg:
     enable: true
-    prob: 0.5
+    prob: 0.6
     grid_size: 16
-    drop_count: 2
+    drop_count: 50
     enhanced_mode: true  # Enhanced mode switch
     top_k_ratio: 0.3
 
