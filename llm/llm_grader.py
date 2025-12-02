@@ -224,7 +224,7 @@ if __name__ == "__main__":
         base_model, base_tokenizer = load_finedtuned_model(args.model_name)
 
     if args.use_rag:
-        rag = rag_engine.DogBreedRAG("./pet_knowlege/dog_database/")
+        rag = rag_engine.DogBreedRAG("./pet_knowlege/pet_database/")
 
     for item in qa_data:
         if args.use_rag:
