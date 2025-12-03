@@ -6,6 +6,7 @@
 \usepackage{graphicx}
 \usepackage{amsmath}
 \usepackage{amssymb}
+\usepackage{subcaption}
 
 % Include other packages here, before hyperref.
 
@@ -82,9 +83,9 @@ If we are successful, we would be able to help pet owners to take better care of
 
 We use a combination of the Stanford dogs dataset\cite{khosla2011novel} and the Oxford pets dataset\cite{6248092}. The Stanford dogs dataset includes 20,580 annotated images of dogs belonging to 120 breeds. Each image is annotated with a bounding box and object class label. Each breed contains 150-200 images. The Oxford pets dataset on the other hand includes 7390 images of cats and dogs of 37 different breeds. 25 are dogs and 12 are cats. The Oxford dogs dataset contains about 200 images for each breed.
 
-Our combined dataset contains 27,970 annotated images of cats and dogs belonging to 144 breeds. Of those, 136 are dogs and 12 are cats. The number of cat breeds are much less than dogs, but each cat breed contains 150-200 images so it is still sufficient for our vision model to learn a good representation for cats. We then split the images into training, validation, and test set in a 8:1:1 ratio.
+Our combined dataset contains 27,970 annotated images of cats and dogs belonging to 144 breeds. Of those, 136 are dogs and 12 are cats. The number of cat breeds are much less than dogs, but each cat breed contains 150-200 images so it is still sufficient for our vision model to learn a good representation for cats. We then split the images into training, validation, and test set in a 8:1:1 ratio. We will name this our composite dataset for pet classification.
 
-We also use the Ap-10k\cite{yu2021ap} and the StanfordExtra dog\cite{biggs2020left} dataset to estimate keypoints such as body, tail, and fur patterns in our Landmark-Driven Region Erasing (LDRE) method. This is a data augmentation method that will be further elaborated in the next section.
+We also use the Ap-10k\cite{yu2021ap}, Animal Pose\cite{Cao_2019_ICCV}, and the StanfordExtra dog\cite{biggs2020left} dataset to finetune YOLOv8-pose pretrained weights provdied by Ultralytics in order to accurately detect 5 keypoints of pets. Namely left eye, right eye, left ear, right ear, and nose. This will be used in our Landmark-Driven Region Erasing (LDRE) method which is a data augmentation method that will be further elaborated in the next section. We will name this as our composite dataset for animal pose.
 
 %-------------------------------------------------------------------------
 %------------------------------------------------------------------------
@@ -92,10 +93,10 @@ We also use the Ap-10k\cite{yu2021ap} and the StanfordExtra dog\cite{biggs2020le
 
 (10 points) What did you do exactly? How did you solve the problem? Why did you think it would be successful? Is anything new in your approach?
 
-We separate our project into 2 parts. First is the vision model, where we perform multi-class classification and assign one label to the image. We did not do multi-label classification since the majority of our training data contains only 1 pet breed per image. Second is the language model, where we generate pet care instructions based on the specific breed of the pet.
+We separate our project into 2 parts. First is the vision model, where we perform multi-class classification and assign one label to the image. Second is the language model, where we generate pet care instructions based on the specific breed of the pet.
 
 \subsection{Vision model}
-We use MobileNetV2\cite{sandler2018mobilenetv2} as the backbone architecture with pretrained weights as our starting network. We then added several modifications to the architecture in an attempt to improve it.
+We use MobileNetV2\cite{sandler2018mobilenetv2} as the backbone architecture with pretrained weights as our starting network. We then added several modifications to the architecture in an attempt to improve it. For a particular image, object detection is first done using YOLOv8 pretrained weights\cite{10533619} provided by Ultralytics without finetuning to generate bounding boxes around cats and dogs. Then, the bounding boxes containing either cats or dogs will be fed to our custom PetNet architecture to perform classification.
 
 \subsubsection{Dual attention mechanism}
 2 attention mechanisms are added after the Inverted Residual Block (IRB) layers in the original MobileNetV2 architecture. Firstly, Efficient Channel Attention (ECA) from ECA-net introduced by Wang et al.\cite{Wang_2020_CVPR} is used as the first attention mechanism. Secondly, learnable 2D positional encodings introduced by DEtection TRansformers (DETR)\cite{carion2020end} are added to our image features. To handle varying input resolutions without training, the dynamic interpolation strategy introduced in Vision Transformers (ViT)\cite{dosovitskiy2020image} is used to resize our learnable positional encodings to match the current dimensions of the image features.
@@ -105,17 +106,24 @@ A self KD strategy inspired by Zhang et al.\cite{zhang2019your} is implemented, 
 \begin{equation}
     \mathcal{L}_{KD} = \sum_{i \in \{2,3\}} \alpha_i \cdot T^2 \cdot \mathcal{KL} \left( \sigma \left( \frac{z_t}{T} \right), \sigma \left( \frac{z_{s_i}}{T} \right) \right)
 \end{equation}
-Where $\alpha_i$ is the weight of the loss of the particular stage, $T$ is the temperature, which is a scalar used to scale output probabilities, $z_t$ are the teacher's logits, and $z_{s_i}$ are the student's logits.
+Where $i$ is the index of the stage starting from 1, $\alpha_i$ is the weight of the loss of the particular stage, $T$ is the temperature, which is a scalar used to scale output probabilities, $z_t$ are the teacher's logits, and $z_{s_i}$ are the student's logits.
 
 \subsubsection{Landmark-Driven Random Erasing (LDRE)}
-This is a data augmentation technique devised by Bright Wang built on top of the Random Erasing method introduced by Zhong et al.\cite{zhong2020random}. The Grid-based dropping mechanism is inspired by GridMask\cite{chen2020gridmask}. This method is similar to the one introduced by Kumar et al.\cite{kumar2017hide} but instead of random grid masking, LDRE explicitly targets semantic regions such as the head and body to force the model to learn robust features rather than memorizing noise. Instead of random occlusion, LDRE is performing semantic occlusion. YOLOv8-pose\cite{10533619} pretrained weights are used to identify anatomical keypoints. The pose model is finetuned on the AP-10k dataset before it is used to identify keypoints for the images in our composite dataset.
+This is a data augmentation technique devised by Bright Wang built on top of the Random Erasing method introduced by Zhong et al.\cite{zhong2020random}. The Grid-based dropping mechanism is inspired by GridMask\cite{chen2020gridmask}. This method is similar to the one introduced by Kumar et al.\cite{kumar2017hide} but instead of random grid masking, LDRE explicitly targets semantic regions such as the head and body to force the model to learn robust features rather than memorizing noise. Instead of random occlusion, LDRE is performing semantic occlusion.
 
-First, the image is divided into a fixed size grid of 16x16. Then, a saliency score $S_{i,j}$ is calculated for each grid cell based on keypoint confidence and proximity as shown in the following equation. (Elaborate further)
+YOLOv8-pose\cite{10533619} pretrained weights by Ultralytics are used to identify 5 key anatomical keypoints of pets: left eye, right eye, left ear, right ear, and nose. However, YOLOv8-pose is initially trained for identifying keypoints in humans instead of dogs and cats. This lead to low accuracy in identify keypoints in dogs and cats. Which is why we finetuned the YOLOv8-pose model with the composite dataset of AP-10k\cite{yu2021ap}, Stanford Extra\cite{biggs2020left}, and the Animal Pose\cite{Cao_2019_ICCV} dataset.
+
+First, the image is divided into a fixed size grid of 16x16. Then, a saliency score $S_{i,j}$ is calculated for each grid cell based on keypoint confidence and whether the keypoint exists in the particular grid cell as shown in the following equation.
 
 \begin{equation}
-    \mathcal{L}_{KD} = \sum_{i \in \{2,3\}} \alpha_i \cdot T^2 \cdot \mathcal{KL} \left( \sigma \left( \frac{z_t}{T} \right), \sigma \left( \frac{z_{s_i}}{T} \right) \right)
+    S_{i,j} = \sum_{k \in K} c_k \cdot \text{dist}(k, \text{cell}_{i,j})
 \end{equation}
+Where $i$ is the index of the row, $j$ is the index of the column, $k$ is the particular keypoint in the set of keypoints $K$, $c_k$ is the confidence of the keypoint, specifically the probability associated with detecting the keypoint. $cell_{i,j}$ is the center of the particular grid. Currently, the $dist$ function determines whether the keypoint belongs to a particular cell, outputting 1 if it is and 0 otherwise.
 
+Next, we identify top-k highest scoring cells and mask them. The idea is that this method acts as a regularizer and forces the model to learn from the body, tail, and fur patterns rather than just the face.
+
+\subsubsection{Data augmentation}
+CutMix\cite{yun2019cutmix} will be incorporated during training to improve the generalization of the model.
 
 \subsection{Language model}
 
@@ -124,9 +132,9 @@ We use Qwen\cite{bai2023qwen} as our LLM and finetune using the QLoRA\cite{dettm
 (5 points) What problems did you anticipate? What problems did you encounter? Did the very first thing you tried work?
 
 \subsection{Problems}
-We anticipate that there would mainly be problems with hardware resources, particularly GPU resources. In practice, this was the main problem that we faced too. We made use of the PACE ICE clusters for GPU resources. Each training run takes about 1-2 hours ranging from 120-200 training epochs.
+We anticipate that there would be mainly problems with hardware resources, particularly GPU resources. In practice, this was the main problem that we faced too. We made use of the PACE ICE clusters for GPU resources. Each training run takes about 1-2 hours ranging from 120-200 training epochs.
 
-The first thing we tried, which is simply using MobileNetV2's pretrained backbone did work as it provided a good baseline for our model. We went on to try several different techniques in order to improve the existing MobileNetV2 backbone.
+The first thing we tried, which is simply using MobileNetV2's pretrained backbone did work as it provided a good baseline for our model. We then tried several different techniques to improve the existing MobileNetV2 backbone.
 
 \textbf{Important: Mention any code repositories (with citations) or other sources that you used, and specifically what changes you made to them for your project. }
 
@@ -135,35 +143,64 @@ The first thing we tried, which is simply using MobileNetV2's pretrained backbon
 (10 points) How did you measure success? What experiments were used? What were the results, both quantitative and qualitative? Did you succeed? Did you fail? Why? Justify your reasons with arguments supported by evidence and data.
 
 \subsection{Vision model}
-We measured success by the validation accuracy of our vision model (PetNet) along with the number of parameters of the model. We aim to have a high validation accuracy while keeping the number of parameters of our model small. The loss function we used was Cross-Entropy with the model's predicted label probabilities compared with the actual label. Refer to table \ref{tab:petnet} for information on how different modules affect the performance of PetNet. (Add in more sections with how each module improves the model)
-
-\subsubsection{CutMix + FixMatch}
-\subsubsection{Dual attention mechanism}
-\subsubsection{Inverted Residual Block (IRB)}
-\subsubsection{Self Knowledge Distillation (KD)}
+We measured success by the validation accuracy of our vision model (PetNet) along with the number of parameters of the model. We aim to have a high validation accuracy while keeping the number of parameters of our model small. The loss function we used was Cross-Entropy with the model's predicted label probabilities compared with the actual label. We compare the validation accuracy of PetNet compared to other neural network architectures.
 
 \subsubsection{Hyperparameter tuning}
-We optimized our model by running hyperparameter tuning using Optuna created by Akiba et al\cite{akiba2019optuna}. We run the Optuna script with the following hyperparameters along with their ranges shown in the table below (TODO: add table). The Optuna script is ran on the PACE ICE cluster along with using local GPUs for training. The Optuna script is ran in a distributed manner with a SQLite file as the database with Write-ahead logging. A combination of V100, A100, and L40S is used as the GPU depending on their availability. The batch size is chosen such that it makes full use of the GPU's VRAM (as high as the VRAM allows).
+We optimized our model by running hyperparameter tuning using Optuna created by Akiba et al\cite{akiba2019optuna}. We run the Optuna script with the following hyperparameters along with their ranges shown in the table below (TODO: add table). The Optuna script is ran on the PACE ICE cluster along with using local GPUs for training. The Optuna script is ran in a distributed manner with a SQLite file as the database with Write-ahead logging. A combination of V100, A100, and L40S is used as the GPU depending on their availability. The batch size is chosen such that it makes full use of the GPU's VRAM (as high as the VRAM allows). A sweep from 1e-6 to 1e-2 for learning rate, optimizer choice of AdamW or SGD, and weight decay from 1e-6 to 1e-2 is inputted into Optuna for hyperparameter tuning.
+
+\subsubsection{Comparison with baselines}
+We use the pretrained weights for MobileNetV2\cite{sandler2018mobilenetv2} acquired from torchvision\cite{marcel2010torchvision}. This is finetuned on our composite dataset for pet classification for 30 epochs with a learning rate of 1e-4 which acts as our baseline. The performance of this baseline can be seen in table \ref{tab:petnet}. 30 epochs was chosen because validation accuracy, even though there doesn't appear to be overfitting yet.
+
+\subsubsection{Dual attention}
+The addition of attention mechanisms did not increase validation accuracy. As we see in figure \ref{fig:attn_train_loss}, even though the training loss continues to decrease, the validation loss in figure \ref{fig:attn_val_loss} plateaus, indicating overfitting. The validation accuracy in figure \ref{fig:attn_val_acc} is also steadily increasing, but ultimately it did not exceed the validation accuracy of our baseline.
+
+\subsubsection{Self KD}
+The addition of self KD to our attention mechanism lead to an increase in validation accuracy. As we see in figure \ref{fig:attn_train_loss}, the training loss is steadily decreasing. Compared with the validation loss curve in figure \ref{fig:attn_val_loss}, the model does not overfit and is learning and generalizing well. The validation accuracy in figure \ref{fig:attn_val_acc} is steadily increasing and performs better than our baseline + attention.
+
+\subsubsection{LDRE}
 
 \begin{table*}
 \begin{center}
-\begin{tabular}{|l|c|p{2cm}|}
+\begin{tabular}{|l|l|l|l|l|}
 \hline
-Model & Mean accuracy & Params (M) \\
+Method / Configuration & Tr. loss & Val. loss & Val. accuracy(\%) & Gain (val acc, \%) \\
 \hline\hline
-Base PetNet & xx & xx \\
-With dual attention & xx & xx \\
-With self KD & xx & xx \\
-With LDRE & xx & xx \\
-With enhanced LDRE & xx & xx \\
-With CutMix + FixMatch & xx & xx \\
-With all modules & xx & xx \\
+MobileNetV2 (Finetuned) & 1.339 & 0.8042 & 80.31 & -\\
++ Attention & 0.9515 & 0.9939 & 77.32 & xx\\
++ Attn + SelfKD & 1.5542 & 0.9244 & 79.32 & xx\\
++ Standard LDRE & 1.566 & 0.9849 & 78.67 & xx\\
++ Enhanced LDRE & 1.5546 & 0.94 & 79.18 & xx\\
++ MixUp & 2.279 & 0.8348 & 81.65 & xx\\
++ MixUp + Std. LDRE & 2.282 & 0.8489 & 81.73 & xx\\
++ MixUp + Enh. LDRE & 2.1294 & 0.9789 & 78.81 & xx\\
+Curriculum Learning & 1.047 & 0.7296 & 83.69 & xx\\
 \hline
 \end{tabular}
 \end{center}
-\caption{PetNet performance after adding ablation modules.}
+\caption{PetNet performance with different configurations}
 \label{tab:petnet}
 \end{table*}
+
+\begin{figure*}
+    \centering
+    \begin{subfigure}[b]{0.3\textwidth}
+        \includegraphics[width=\textwidth]{latex/images/attn_train_loss.png}
+        \caption{Training loss for attention}
+        \label{fig:attn_train_loss}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.3\textwidth}
+        \includegraphics[width=\textwidth]{latex/images/attn_val_loss.png}
+        \caption{Validation loss for attention}
+        \label{fig:attn_val_loss}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.3\textwidth}
+        \includegraphics[width=\textwidth]{latex/images/attn_val_acc.png}
+        \caption{Validation accuracy for attention}
+        \label{fig:attn_val_acc}
+    \end{subfigure}
+\end{figure*}
 
 \subsection{Language Model}
 We used Bertscore introduced by Zhang et al.\cite{zhang2019bertscore} as our loss function while training our QLoRA.
