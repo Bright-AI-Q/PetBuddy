@@ -86,6 +86,8 @@ Our combined dataset contains 27,970 annotated images of cats and dogs belonging
 
 We also use the Ap-10k\cite{yu2021ap} and the StanfordExtra dog\cite{biggs2020left} dataset to estimate keypoints such as body, tail, and fur patterns in our Landmark-Driven Region Erasing (LDRE) method. This is a data augmentation method that will be further elaborated in the next section.
 
+For the pet knowledge database used for the LLM part, the data is scraped from pet breeds information websites \cite{dog-breeds-net} \cite{wisdom-panel-cat}. This data is organized into individual file for each breed and further divided into subsections based on the relevant headings. The pet knowledge database contains information on general breed overview, care instructions, grooming, exercise, health, temperament, family suitability, training and diet. Data that are missing on these categories are added using Gemini 2.5 \cite{gemini2.5}. 
+
 %-------------------------------------------------------------------------
 %------------------------------------------------------------------------
 \section{Approach}
@@ -118,6 +120,15 @@ First, the image is divided into a fixed size grid of 16x16. Then, a saliency sc
 
 
 \subsection{Language model}
+There are two approaches explored to improve the LLM performance in the pet knowledge domain. The first is to do a fine-tuning of the backbone Qwen\cite{bai2023qwen} using QLoRA\cite{dettmers2023qlora} and the second is to implement a RAG (Retrieval-Augmented Generation)\cite{lewis2020rag} by accessing the relevant information in the pet knowledge database during the generation process. 
+
+\subsubsection{Fine-tuning of Qwen using QLoRA}
+
+The training data are model question-answer pairs generated from the pet knowledge database. For each information section, 2 to 3 questions are generated. Each data sample consists of a single question as the "instruction", the breed name as the "input" and the corresponding database information as the "output". In total, the generated conversation dataset contains 2187 training samples and 548 validation samples.
+
+
+
+\subsubsection{RAG implementation}
 
 We use Qwen\cite{bai2023qwen} as our LLM and finetune using the QLoRA\cite{dettmers2023qlora} approach.
 
