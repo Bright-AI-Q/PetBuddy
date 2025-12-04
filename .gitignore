@@ -31,7 +31,6 @@ experiment_summary.json
 # Images and documents
 *.jpg
 *.jpeg
-*.png
 *.pdf
 
 # DVC/parameter files (if not needed for collaboration)
