@@ -154,11 +154,10 @@ There are two approaches explored to improve the LLM performance in the pet know
 
 \subsubsection{Fine-tuning of Qwen using QLoRA}
 
-The training data are model question-answer pairs generated from the pet knowledge database. For each information section, 2 to 3 questions are generated. Each data sample consists of a single question as the "instruction", the breed name as the "input" and the corresponding database information as the "output". In total, the generated conversation dataset contains 2187 training samples and 548 validation samples.
-
-
+The training data are model question-answer pairs generated from the pet knowledge database. For each information section, 2 to 3 questions are generated. We also tried to generate the dataset for cats by giving the questions to Gemini and taking its responses as the model answers. Each data sample consists of a single question as the "instruction", the breed name as the "input" and the corresponding database information as the "output". In total, the generated conversation dataset contains 2187 training samples and 548 validation samples. This dataset is used to train Qwen.
 
 \subsubsection{RAG implementation}
+Regex is used to extract the breed name from the question prompt. The contents of the database for the corresponding breed is loaded and included in the prompt to the LLM. By storing the information of each breed in a different file and organizing the content into sectioned headings, the LLM can quickly find which information is relevant.
 
 We use Qwen\cite{bai2023qwen} as our LLM and finetune using the QLoRA\cite{dettmers2023qlora} approach.
 
@@ -306,7 +305,43 @@ Integrating MixUp / FixMatch gave a modest boost of 1.42\% in validation accurac
 In our previous section, we found that combining MixUp / FixMatch and LDRE does not yield good results compared to using MixUp / FixMatch only. Therefore, we experimented with a curriculum learning\cite{bengio2009curriculum} approach. We train the first 100 epochs with attention, self KD, and MixUp, then, we train the remaining 20 epochs with attention, self KD, and enhanced LDRE (MixUp is disable). In practice, we finetuned from the best model configuration we get so far, which is the attention, self KD, and MixUp setup, then we run finetuning with MixUp disabled and enhanced LDRE enabled. From the training loss curve in figure \ref{fig:cur_lr_train_loss} and the validation loss curve in figure \ref{fig:cur_lr_val_loss}, we see that both loss curve descends steadily, petnet\_fine\_tune is our label for curriculum learning. The loss for the curriculum learning method is smaller than the baseline and the setup with attention, self KD, and MixUp. In the validation accuracy curve in figure \ref{fig:cur_lr_val_acc}, we see that the curriculum learning method has the best validation accuracy, achieving a 3.38\% improvement compared to the baseline. (accuracy values are taken from the best accuracy instead of last epoch)
 
 \subsection{Language Model}
-We used Bertscore introduced by Zhang et al.\cite{zhang2019bertscore} as our loss function while training our QLoRA.
+For our  evaluation of the language model performance, we used the LLM-as-a-judge method with Gemini 2.5 Flash \cite{gemini2.5}.  This method is used to evaluate the performance of four possible combinations: the Qwen2.5 base model itself, the Qwen2.5 base model with RAG, the fine-tuned Qwen2.5 base model, and the fine-tuned Qwen2.5 base model with RAG. The scores from each method are as the following table.
+\begin{table}[h!]
+\centering
+\begin{tabular}{l c c | c c | c c c}
+\hline
+ & \multicolumn{2}{c|}{\textbf{Score}} 
+ & \multicolumn{2}{c|}{\textbf{Improvement}} 
+ & \multicolumn{3}{c}{\textbf{Win/Loss Record}} \\
+\textbf{Model} & \textbf{Mean} & $\pm$ 
+ & \textbf{Point} & \textbf{Percentage}
+ & \textbf{Wins} & \textbf{Loss} & \textbf{Ties} \\
+\hline
+Base Model 
+  & 9.73 & 3.19 
+  & -- & -- 
+  & -- & -- & -- \\
+
+Base Model + RAG 
+  & 11.72 & 2.61 
+  & 1.99 & 20.50\% 
+  & 58\% & 24\% & 18\% \\
+
+Fine-tuned Model 
+  & 9.45 & 3.37 
+  & -0.28 & -2.90\% 
+  & 45\% & 44\% & 11\% \\
+
+Fine-tuned Model + RAG 
+  & 11.02 & 2.79 
+  & 1.29 & 13.30\%
+  & 57\% & 31\% & 12\% \\
+\hline
+\end{tabular}
+\caption{LLM Performance Summary}
+\end{table}
+
+From these results, it can be observed that the base model + RAG variant is the most successful, with a 20.50\% improvement of the LLM score, with the highest win rate against the base model. It is notably better at providing more accurate information. The fine-tuned model, in contrast, saw a couple of major score drops when it outputs the wrong information, or sometimes even the information of another breed. This is indicative of the LLM not being able to retain specific information about each breed distinctly. This can be due to flaws in the training dataset itself. It is too small and contains too little variation in phrasings and sentences. Furthemore, since the conversations are automatically created from the sections of the pet knowledge database, the model answer often contains extraneous data that is not needed to asnwer the question. This results in the fine-tuned model's answers being long-winded and includes irrelevant information. Overall, the breed specific pet knowledge contains complex and highly specific data, which makes it more suited for RAG implementation than fine tuning. 
 
 \textbf{Important: This section should be rigorous and thorough. Present detailed information about decision you made, why you made them, and any evidence/experimentation to back them up. This is especially true if you leveraged existing architectures, pre-trained models, and code (i.e. do not just show results of fine-tuning a pre-trained model without any analysis, claims/evidence, and conclusions, as that tends to not make a strong project). }
 
@@ -322,6 +357,7 @@ Student Name & Contributed Aspects & Details \\
 Team Member 1 & Data Creation and Implementation & Scraped the dataset for this project and trained the CNN of the encoder. Implemented attention mechanism to improve results. \\
 Team Member 2 & Implementation and Analysis & Trained the LSTM of the encoder and analyzed the results. Analyzed effect of number of nodes in hidden state.  Implemented Convolutional LSTM. \\
 Hwaai Kang Kee & Tuning, Analysis, Report Writing & Run hyperparamter tuning on PACE using Optuna, modified the training script for distributed training, analyzed experiment results and wrote the experiments and results section in the report. \\
+Cindy Josephine Surjadi & Data Creation, Implementation, Analysis & Scraped the dataset for the RAG pet knowledge database, generated conversation dataset from pet database, implemented RAG with Qwen to improve LLM performance, analyzed LLM experiment results. \\
 \hline
 \end{tabular}
 \end{center}
