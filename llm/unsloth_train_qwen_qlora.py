@@ -63,41 +63,43 @@ from trl import SFTTrainer
 from transformers import TrainingArguments
 
 trainer = SFTTrainer(
-    model = model,
-    tokenizer = tokenizer,
-    train_dataset = train_dataset,
-    eval_dataset = val_dataset,
-    dataset_text_field = "text",
-    max_seq_length = 1024,
-    dataset_num_proc = 2,
-    packing = True, # Can make training 5x faster for short sequences.
-    args = TrainingArguments(
-        eval_strategy = "epoch", #Evaluation is done at the end of each epoch.
-        save_strategy = "epoch", #Save is done at the end of each epoch.
-        gradient_checkpointing = False, #If True, use gradient checkpointing to save memory at the expense of slower backward pass.
-
+    model=model,
+    tokenizer=tokenizer,
+    train_dataset=train_dataset,
+    eval_dataset=val_dataset,
+    dataset_text_field="text",
+    max_seq_length=1024,
+    dataset_num_proc=2,
+    packing=True,  # Can make training 5x faster for short sequences.
+    args=TrainingArguments(
+        eval_strategy="epoch",  # Evaluation is done at the end of each epoch.
+        save_strategy="epoch",  # Save is done at the end of each epoch.
+        gradient_checkpointing=False,  # If True, use gradient checkpointing to save memory at the expense of slower backward pass.
         # Unsloth: Model is in bfloat16 precision but you want to use float16 precision.
-        fp16 = False,
-        bf16 = True,
-
-        seed = 42, # Default
-        per_device_train_batch_size = 4,
-        per_device_eval_batch_size = 4,
-        gradient_accumulation_steps = 4, #It's okay. RTX 5060 TI has 16GB VRAM.
-
-        label_smoothing_factor = 0.05, # To improve generalization.
-
-        load_best_model_at_end = True,
-        warmup_steps = 5,
-        learning_rate = 2e-4,
-        logging_steps = 1,
-        optim = "paged_adamw_8bit",
-        weight_decay = 0.01,
-        # https://huggingface.co/docs/transformers/main/en/main_classes/optimizer_schedules#transformers.SchedulerType 
-        lr_scheduler_type = "cosine",
-        output_dir = "qwen-petnet-final/unsloth",
-        num_train_epochs = 20
+        fp16=False,
+        bf16=True,
+        seed=42,  # Default
+        per_device_train_batch_size=4,
+        per_device_eval_batch_size=4,
+        gradient_accumulation_steps=4,  # It's okay. RTX 5060 TI has 16GB VRAM.
+        label_smoothing_factor=0.05,  # To improve generalization.
+        load_best_model_at_end=True,
+        warmup_steps=5,
+        learning_rate=2e-4,
+        logging_steps=1,
+        optim="paged_adamw_8bit",
+        weight_decay=0.01,
+        # https://huggingface.co/docs/transformers/main/en/main_classes/optimizer_schedules#transformers.SchedulerType
+        lr_scheduler_type="cosine",
+        output_dir="qwen-petnet-final/unsloth",
+        num_train_epochs=20,
     ),
+)
+
+from unsloth.chat_templates import train_on_responses_only
+
+trainer = train_on_responses_only(
+    trainer, instruction_part="### Instruction:\n", response_part="### Response:\n", tokenizer=tokenizer
 )
 
 trainer.train()
