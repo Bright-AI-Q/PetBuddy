@@ -58,8 +58,10 @@ Georgia Institute of Technology\\
 \section{Introduction/Background/Motivation}
 
 (5 points) What did you try to do? What problem did you try to solve? Articulate your objectives using absolutely no jargon.\\
+\subsection{Problem}
 The main problem we are trying to solve is multiclass pet breed classification on resource constrained environments such as mobile phones. Multiclass breed classification is a challenging problem because there are many similarities between breeds. The differences between breeds are very subtle, often relying on differences such as ear position or snout shape. Oftentimes, the appearance of the same breed could appear wildly different due to fur pattern and color, as well as the grooming of the pet. However, the current literature on the approaches to this problem is focused on larger neural network architectures. Inference time and hardware requirements make these approaches infeasible for local inference in mobile devices.
 
+\subsection{Current practice}
 (5 points) How is it done today, and what are the limits of current practice?\\
 The problem of classifying pet breeds using a model has been attempted multiple times by different researchers. In 2012, Parkhi et al. approached dog and cat breed classification using Support Vector Machines (SVM) and Gaussian Mixture Models (GMM) among other models and provided a comparison between them\cite{6248092}. The authors provided comprehensive reports on the performance of different models in this paper.
 
@@ -69,25 +71,28 @@ Subsequently, deep learning methods became popular, and there were multiple atte
 
 In 2021, the same group of authors attempted the problem again\cite{borwarnginn2021knowing}, but they worked on the entire Columbia dogs with parts dataset\cite{10.1007/978-3-642-33718-5_13} instead of a subset of it. This time, the authors evaluated the performance of 3 different pretrained CNNs with various data augmentation settings. The 3 CNN architectures used are NASNet\cite{qin2019nasnet}, InceptionV3\cite{szegedy2016rethinking}, and MobileNetV2\cite{sandler2018mobilenetv2}. The authors were able to achieve the highest accuracy of 89.92\% using the NASNet architecture. In our paper, we attempt to build on top of the MobileNetV2 architecture since our goal is to run local inference on resource constrained devices such as mobile phones.
 
+\subsubsection{Limits}
 The limits of the current practice are that the current work focuses on larger neural network architectures which are infeasible to run in a mobile device. We aim to create a model that can run local inference in a reasonable amount of time.
 
+\subsection{Target audience}
 (5 points) Who cares? If you are successful, what difference will it make?
-
-% In 2011, Khosla et al. introduced a novel dataset for fine-grained image categorization which they named Stanford dogs\cite{khosla2011novel}. In the introduction, the authors explained why this problem of breed classification is challenging. First, since it is a fine-grained categorization problem, there is little inter-class variation. For example, the basset hound and bloodhound share very similar facial characteristics but differ significantly in their color, while the Japanese spaniel and papillion share very similar color but greatly differ in their facial characteristics. Second, there is very large intra-class variation. The images show that dogs within a class could have different ages (e.g. beagle), poses (e.g. blenheim spaniel), occlusion/self-occlusion and even color (e.g. Shih-tzu).
-
 Pet owners that care about breed specific pet care instruction would care about this problem. Some pet breeds are harder to care for and might need different environments to thrive. Before owning a pet, potential pet owners could take a photo of the pet they are interested in, then our program would generate detailed pet care instructions for the specific breed. The potential pet owners would have more information on whether they could properly care for their pet, and decide whether they are up to the task of taking good care of it.
 
 If we are successful, we would be able to help pet owners to take better care of their pets. Similarly, we would be tackling the challenging problem of fine-grained image categorization as detailed in the original Stanford dogs paper\cite{khosla2011novel}. Solving this problem could let us understand the specific issues with fine-grained image classification in resource constrained environments.
 
+\subsection{Dataset}
 (5 points) What data did you use? Provide details about your data, specifically choose the most important aspects of your data mentioned \href{https://arxiv.org/abs/1803.09010}{here}. You don’t have to choose all of them, just the most relevant.
 
+\subsubsection{Classification dataset}
 We use a combination of the Stanford dogs dataset\cite{khosla2011novel} and the Oxford pets dataset\cite{6248092}. The Stanford dogs dataset includes 20,580 annotated images of dogs belonging to 120 breeds. Each image is annotated with a bounding box and object class label. Each breed contains 150-200 images. The Oxford pets dataset on the other hand includes 7390 images of cats and dogs of 37 different breeds. 25 are dogs and 12 are cats. The Oxford dogs dataset contains about 200 images for each breed.
 
 Our combined dataset contains 27,970 annotated images of cats and dogs belonging to 144 breeds. Of those, 136 are dogs and 12 are cats. The number of cat breeds are much less than dogs, but each cat breed contains 150-200 images so it is still sufficient for our vision model to learn a good representation for cats. We then split the images into training, validation, and test set in a 8:1:1 ratio. We will name this our composite dataset for pet classification.
 
-We also use the Ap-10k\cite{yu2021ap}, Animal Pose\cite{Cao_2019_ICCV}, and the StanfordExtra dog\cite{biggs2020left} dataset to finetune YOLOv8-pose pretrained weights provdied by Ultralytics in order to accurately detect 5 keypoints of pets. Namely left eye, right eye, left ear, right ear, and nose. This will be used in our Landmark-Driven Region Erasing (LDRE) method which is a data augmentation method that will be further elaborated in the next section. We will name this as our composite dataset for animal pose.
+\subsubsection{Pose dataset}
+The Ap-10k\cite{yu2021ap}, Animal Pose\cite{Cao_2019_ICCV}, and the StanfordExtra dog\cite{biggs2020left} datasets are used to finetune YOLOv8-pose pretrained weights provided by Ultralytics in order to accurately detect 5 keypoints of pets. Namely left eye, right eye, left ear, right ear, and nose. This will be used in our Landmark-Driven Region Erasing (LDRE) method which is a data augmentation method that will be further elaborated in the next section. This will be our composite dataset for animal pose.
 
-For the pet knowledge database used for the LLM part, the data is scraped from pet breeds information websites \cite{dog-breeds-net} \cite{wisdom-panel-cat}. This data is organized into individual file for each breed and further divided into subsections based on the relevant headings. The pet knowledge database contains information on general breed overview, care instructions, grooming, exercise, health, temperament, family suitability, training and diet. Data that are missing on these categories are added using Gemini 2.5 \cite{gemini2.5}. 
+\subsubsection{Pet knowledge database}
+For the pet knowledge database used for the LLM part, the data is scraped from pet breeds information websites \cite{dog-breeds-net} \cite{wisdom-panel-cat}. This data is organized into individual file for each breed and further divided into subsections based on the relevant headings. The pet knowledge database contains information on general breed overview, care instructions, grooming, exercise, health, temperament, family suitability, training and diet. Data that are missing on these categories are added using Gemini 2.5 \cite{gemini2.5}.
 
 %-------------------------------------------------------------------------
 %------------------------------------------------------------------------
@@ -111,7 +116,7 @@ A self KD strategy inspired by Zhang et al.\cite{zhang2019your} is implemented, 
 Where $i$ is the index of the stage starting from 1, $\alpha_i$ is the weight of the loss of the particular stage, $T$ is the temperature, which is a scalar used to scale output probabilities, $z_t$ are the teacher's logits, and $z_{s_i}$ are the student's logits.
 
 \subsubsection{Landmark-Driven Random Erasing (LDRE)}
-This is a data augmentation technique devised by Bright Wang built on top of the Random Erasing method introduced by Zhong et al.\cite{zhong2020random}. The Grid-based dropping mechanism is inspired by GridMask\cite{chen2020gridmask}. This method is similar to the one introduced by Kumar et al.\cite{kumar2017hide} but instead of random grid masking, LDRE explicitly targets semantic regions such as the head and body to force the model to learn robust features rather than memorizing noise. Instead of random occlusion, LDRE is performing semantic occlusion.
+This is a new data augmentation technique devised by Bright Wang built on top of the Random Erasing method introduced by Zhong et al.\cite{zhong2020random}. The Grid-based dropping mechanism is inspired by GridMask\cite{chen2020gridmask}. This method is similar to the one introduced by Kumar et al.\cite{kumar2017hide} but instead of random grid masking, LDRE explicitly targets semantic regions such as the head and body to force the model to learn robust features rather than memorizing noise. Instead of random occlusion, LDRE is performing semantic occlusion.
 
 YOLOv8-pose\cite{10533619} pretrained weights by Ultralytics are used to identify 5 key anatomical keypoints of pets: left eye, right eye, left ear, right ear, and nose. However, YOLOv8-pose is initially trained for identifying keypoints in humans instead of dogs and cats. This lead to low accuracy in identifying keypoints in dogs and cats. Which is why we finetuned the YOLOv8-pose model with the composite dataset of AP-10k\cite{yu2021ap}, Stanford Extra\cite{biggs2020left}, and the Animal Pose\cite{Cao_2019_ICCV} dataset.
 
