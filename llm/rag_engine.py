@@ -30,44 +30,77 @@ class DogBreedRAG:
         Normalize text for better matching:
         - Convert to lowercase
         - Remove plural 's' at word boundaries
-        - Handle common variations
+        - Handle common variations (Saint to st)
         """
+        text = re.sub(r'\bst\.?\b', 'Saint', text, flags=re.IGNORECASE)
+
         text = text.lower()
-        # Remove plural 's' (e.g., "huskies" -> "husky", "terriers" -> "terrier")
-        text = re.sub(r'\b(\w+)ies\b', r'\1y', text)  # huskies -> husky
-        text = re.sub(r'\b(\w+)s\b', r'\1', text)     # terriers -> terrier
+
+        # Remove punctuation
+        text = re.sub(r'[^\w\s]', ' ', text)
+
+        # Plural normalization
+        text = re.sub(r'\b(\w+)ies\b', r'\1y', text)  # huskies → husky
+        text = re.sub(r'\b(\w+)s\b', r'\1', text)     # terriers → terrier
+
+        # Collapse multiple spaces
+        text = re.sub(r'\s+', ' ', text).strip()
+
         return text
 
     def identify_breed(self, query):
         """
-        Improved keyword search to find the breed in the user's query.
-        Handles plurals and partial matches.
+        Identify dog breed from user query.
+        Handles:
+        - plurals
+        - spacing variations (bullmastiff, bull mastiff)
+        - St. / Saint variations
+        - partial subset matching
         """
-        query_normalized = self._normalize_text(query)
-        # sort by length descending to match "Cavalier King Charles" before "King Charles"
+        query_norm = self._normalize_text(query)
+        query_nospace = query_norm.replace(" ", "")
+
+        # Sort long breeds first so "cavalier king charles spaniel"
+        # matches before "king charles"
         sorted_breeds = sorted(self.breed_index.keys(), key=len, reverse=True)
-        
+
         for breed_name in sorted_breeds:
-            breed_normalized = self._normalize_text(breed_name)
-            
-            # Exact match after normalization
-            if breed_normalized in query_normalized:
+            breed_norm = self._normalize_text(breed_name)
+            breed_nospace = breed_norm.replace(" ", "")
+
+            # Case 1: Exact normalized match
+            if breed_norm in query_norm:
                 return self.breed_index[breed_name]
-        
-        # Fallback: Try partial matching for compound breed names
-        # e.g., "wheaten terrier" should match "soft coated wheaten terrier"
-        query_words = set(query_normalized.split())
-        
+
+            # Case 2: Concatenated match
+            # handles: "bullmastiff" and "bull mastiff"
+            if breed_nospace in query_nospace:
+                return self.breed_index[breed_name]
+
+        # Case 3: Partial match by shared words (minimum 2)
+        query_words = set(query_norm.split())
+
         for breed_name in sorted_breeds:
-            breed_normalized = self._normalize_text(breed_name)
-            breed_words = set(breed_normalized.split())
-            
-            # If query words are a subset of breed words (at least 2 words match)
-            matching_words = query_words & breed_words
-            if len(matching_words) >= 2:
+            breed_norm = self._normalize_text(breed_name)
+            breed_words = set(breed_norm.split())
+
+            # two or more shared words → good match
+            matching = query_words & breed_words
+            if len(matching) >= 2:
                 return self.breed_index[breed_name]
-        
+            
+        # Case 4 : Partial match by one shared word
+        for breed_name in sorted_breeds:
+            breed_norm = self._normalize_text(breed_name)
+            breed_words = set(breed_norm.split())
+
+            # one shared word as last resort
+            matching = query_words & breed_words
+            if len(matching) >= 1:
+                return self.breed_index[breed_name]
+
         return None
+
 
     def format_json_to_context(self, json_data):
         """
