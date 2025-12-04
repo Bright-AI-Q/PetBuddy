@@ -117,6 +117,23 @@ YOLOv8-pose\cite{10533619} pretrained weights by Ultralytics are used to identif
 
 First, the image is divided into a fixed size grid of 16x16. Then, we calculate the score of each cell based on different criteria. For standard LDRE, our scoring function is the number of keypoints present in a cell, regardless of the keypoint's confidence. For enhanced LDRE, a saliency score $S_{i,j}$ is calculated for each grid cell based on keypoint confidence and whether the keypoint exists in the particular grid cell as shown in the following equation.
 
+An example of LDRE can be seen in figure \ref{fig:ldre_example}, enhanced LDRE is depicted in \ref{fig:enhanced_ldre_example}.
+
+\begin{figure}
+    \centering
+    \begin{subfigure}[b]{0.3\textwidth}
+        \includegraphics[width=\textwidth]{latex/images/ldre_example.png}
+        \caption{LDRE example}
+        \label{fig:ldre_example}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.3\textwidth}
+        \includegraphics[width=\textwidth]{latex/images/enhanced_ldre_example.png}
+        \caption{Enhanced LDRE, note the ears and beginning of the legs are not masked with Gaussian noise}
+        \label{fig:enhanced_ldre_example}
+    \end{subfigure}
+\end{figure}
+
 \begin{equation}
     S_{i,j} = \sum_{k \in K} c_k \cdot \text{dist}(k, \text{cell}_{i,j})
 \end{equation}
@@ -159,25 +176,7 @@ We measured success by the validation accuracy of our vision model (PetNet) alon
 \subsubsection{Hyperparameter tuning}
 We optimized our model by running hyperparameter tuning using Optuna created by Akiba et al\cite{akiba2019optuna}. We run the Optuna script with the following hyperparameters along with their ranges shown in the table below (TODO: add table). The Optuna script is ran on the PACE ICE cluster along with using local GPUs for training. The Optuna script is ran in a distributed manner with a SQLite file as the database with Write-ahead logging. A combination of V100, A100, and L40S is used as the GPU depending on their availability. The batch size is chosen such that it makes full use of the GPU's VRAM (as high as the VRAM allows). A sweep from 1e-6 to 1e-2 for learning rate, optimizer choice of AdamW or SGD, and weight decay from 1e-6 to 1e-2 is inputted into Optuna for hyperparameter tuning.
 
-\subsubsection{Comparison with baselines}
-We use the pretrained weights for MobileNetV2\cite{sandler2018mobilenetv2} acquired from torchvision\cite{marcel2010torchvision}. This is finetuned on our composite dataset for pet classification for 30 epochs with a learning rate of 1e-4 which acts as our baseline. The performance of this baseline can be seen in table \ref{tab:petnet}. 30 epochs was chosen because validation accuracy, even though there doesn't appear to be overfitting yet.
-
-\subsubsection{Dual attention}
-The addition of attention mechanisms did not increase validation accuracy. As we see in figure \ref{fig:attn_train_loss}, even though the training loss continues to decrease, the validation loss in figure \ref{fig:attn_val_loss} plateaus, indicating overfitting. The validation accuracy in figure \ref{fig:attn_val_acc} is also steadily increasing, but ultimately it did not exceed the validation accuracy of our baseline. Intuitively, this might be due to us using pretrained weights in our training, resulting in unstable training. The results might be better if we have different learning rates for pretrained layers (lower lr) vs the new attention layers (higher lr), but we did not have time to explore this further.
-
-\subsubsection{Self KD}
-We attempt to add self KD in order to address the overfitting issue after adding attention layers. The addition of self KD to our attention mechanism lead to an increase in validation accuracy. As we see in figure \ref{fig:attn_train_loss}, the training loss is steadily decreasing. Compared with the validation loss curve in figure \ref{fig:attn_val_loss}, the model does not overfit and is learning and generalizing well. The validation accuracy in figure \ref{fig:attn_val_acc} is steadily increasing and performs better than our baseline + attention. But it still did not beat the baseline.
-
-\subsubsection{LDRE}
-Both standard and enhanced LDRE is then added to our model in order to experiment with this new method. From table \ref{tab:petnet} we see that training loss for both versions of LDRE is much higher than the training loss for base configuration + attention (1.55~ vs 0.9515). This suggests that LDRE is able to act as a regularizer. However, if we compare the training loss curve in figure \ref{fig:ldre_train_loss} of the 3 configs (attn + skd, + ldre, + en ldre), we see that the loss curve looks almost identical. The validation loss curve in figure \ref{fig:ldre_val_loss} and validation accuracy curve in figure \ref{fig:ldre_val_acc} also looks similar, which might suggest that LDRE did not have much impact on increasing the model's ability to generalize. Intuitively, this might be due to self KD already acting as a strong enough regularizer, decreasing the impact of LDRE as a regularizer.
-
-\subsubsection{MixUp / FixMatch}
-Integrating MixUp / FixMatch gave a modest boost of 1.42\% in validation accuracy compared to our baseline. From the training loss curve in figure \ref{fig:mup_train_loss}, we see that the training loss curve for MixUp / FixMatch and MixUp / FixMatch + standard LDRE to be almost identical, suggesting that standard LDRE might not act as a good regularizer for the model. However, we see that training loss curve is lower + decreases smooth for the MixUp / FixMatch + enhanced LDRE case, which is counterintuitive since it is supposed to act as a regularizer. From the validation loss curve in figure \ref{fig:mup_val_loss}, the curves for MixUp / FixMatch and MixUp / FixMatch + standard LDRE again look identical. The curve for the enhanced LDRE setup has higher loss values compared to the other 2 setups. There is no overfitting here since both training and validation loss curve decreases smoothly, and training loss did not continue decreasing while validation loss plateaus. From the validation accuracy curve in figure \ref{fig:mup_val_acc}, we see that both MixUp / FixMatch and MixUp / FixMatch + standard LDRE performs slightly better than our baseline, validation accuracy does not appear to be plateauing yet, so training with higher epochs may improve our validation accuracy even further.
-
-\subsubsection{Curriculum learning}
-In our previous section, we found that combining MixUp / FixMatch and LDRE does not yield good results compared to using MixUp / FixMatch only. Therefore, we experimented with a curriculum learning\cite{bengio2009curriculum} approach. We train the first 100 epochs with attention, self KD, and MixUp, then, we train the remaining 20 epochs with attention, self KD, and enhanced LDRE (MixUp is disable). In practice, we finetuned from the best model configuration we get so far, which is the attention, self KD, and MixUp setup, then we run finetuning with MixUp disabled and enhanced LDRE enabled. From the training loss curve in figure \ref{fig:cur_lr_train_loss} and the validation loss curve in figure \ref{fig:cur_lr_val_loss}, we see that both loss curve descends steadily, petnet\_fine\_tune is our label for curriculum learning. The loss for the curriculum learning method is smaller than the baseline and the setup with attention, self KD, and MixUp. In the validation accuracy curve in figure \ref{fig:cur_lr_val_acc}, we see that the curriculum learning method has the best validation accuracy, achieving a 3.38\% improvement compared to the baseline. (accuracy values are taken from the best accuracy instead of last epoch)
-
-\begin{table*}
+\begin{table*}[h]
 \begin{center}
 \begin{tabular}{|l|l|l|l|l|}
 \hline
@@ -199,89 +198,107 @@ Curriculum Learning & 1.047 & 0.7296 & 83.69 & 3.38\\
 \label{tab:petnet}
 \end{table*}
 
-\begin{figure*}
+\subsubsection{Comparison with baselines}
+We use the pretrained weights for MobileNetV2\cite{sandler2018mobilenetv2} acquired from torchvision\cite{marcel2010torchvision}. This is finetuned on our composite dataset for pet classification for 30 epochs with a learning rate of 1e-4 which acts as our baseline. The performance of this baseline can be seen in table \ref{tab:petnet}. 30 epochs was chosen because validation accuracy, even though there doesn't appear to be overfitting yet.
+
+\begin{figure*}[h]
     \centering
-    \begin{subfigure}[b]{0.3\textwidth}
+    \begin{subfigure}[p]{0.3\textwidth}
         \includegraphics[width=\textwidth]{latex/images/attn_train_loss.png}
         \caption{Training loss for attention}
         \label{fig:attn_train_loss}
     \end{subfigure}
     \hfill
-    \begin{subfigure}[b]{0.3\textwidth}
+    \begin{subfigure}[p]{0.3\textwidth}
         \includegraphics[width=\textwidth]{latex/images/attn_val_loss.png}
         \caption{Validation loss for attention}
         \label{fig:attn_val_loss}
     \end{subfigure}
     \hfill
-    \begin{subfigure}[b]{0.3\textwidth}
+    \begin{subfigure}[p]{0.3\textwidth}
         \includegraphics[width=\textwidth]{latex/images/attn_val_acc.png}
         \caption{Validation accuracy for attention}
         \label{fig:attn_val_acc}
     \end{subfigure}
 \end{figure*}
 
-\begin{figure*}
+\subsubsection{Dual attention}
+The addition of attention mechanisms did not increase validation accuracy. As we see in figure \ref{fig:attn_train_loss}, even though the training loss continues to decrease, the validation loss in figure \ref{fig:attn_val_loss} plateaus, indicating overfitting. The validation accuracy in figure \ref{fig:attn_val_acc} is also steadily increasing, but ultimately it did not exceed the validation accuracy of our baseline. Intuitively, this might be due to us using pretrained weights in our training, resulting in unstable training. The results might be better if we have different learning rates for pretrained layers (lower lr) vs the new attention layers (higher lr), but we did not have time to explore this further.
+
+\subsubsection{Self KD}
+We attempt to add self KD in order to address the overfitting issue after adding attention layers. The addition of self KD to our attention mechanism lead to an increase in validation accuracy. As we see in figure \ref{fig:attn_train_loss}, the training loss is steadily decreasing. Compared with the validation loss curve in figure \ref{fig:attn_val_loss}, the model does not overfit and is learning and generalizing well. The validation accuracy in figure \ref{fig:attn_val_acc} is steadily increasing and performs better than our baseline + attention. But it still did not beat the baseline.
+
+\begin{figure*}[h]
     \centering
-    \begin{subfigure}[b]{0.3\textwidth}
+    \begin{subfigure}[p]{0.3\textwidth}
         \includegraphics[width=\textwidth]{latex/images/ldre_train_loss.png}
         \caption{Training loss for LDRE}
         \label{fig:ldre_train_loss}
     \end{subfigure}
     \hfill
-    \begin{subfigure}[b]{0.3\textwidth}
+    \begin{subfigure}[p]{0.3\textwidth}
         \includegraphics[width=\textwidth]{latex/images/ldre_val_loss.png}
         \caption{Validation loss for LDRE}
         \label{fig:ldre_val_loss}
     \end{subfigure}
     \hfill
-    \begin{subfigure}[b]{0.3\textwidth}
+    \begin{subfigure}[p]{0.3\textwidth}
         \includegraphics[width=\textwidth]{latex/images/ldre_val_acc.png}
         \caption{Validation accuracy for LDRE}
         \label{fig:ldre_val_acc}
     \end{subfigure}
 \end{figure*}
 
-\begin{figure*}
+\subsubsection{LDRE}
+Both standard and enhanced LDRE is then added to our model in order to experiment with this new method. From table \ref{tab:petnet} we see that training loss for both versions of LDRE is much higher than the training loss for base configuration + attention (1.55~ vs 0.9515). This suggests that LDRE is able to act as a regularizer. However, if we compare the training loss curve in figure \ref{fig:ldre_train_loss} of the 3 configs (attn + skd, + ldre, + en ldre), we see that the loss curve looks almost identical. The validation loss curve in figure \ref{fig:ldre_val_loss} and validation accuracy curve in figure \ref{fig:ldre_val_acc} also looks similar, which might suggest that LDRE did not have much impact on increasing the model's ability to generalize. Intuitively, this might be due to self KD already acting as a strong enough regularizer, decreasing the impact of LDRE as a regularizer.
+
+\begin{figure*}[h]
     \centering
-    \begin{subfigure}[b]{0.3\textwidth}
+    \begin{subfigure}[p]{0.3\textwidth}
         \includegraphics[width=\textwidth]{latex/images/mup_train_loss.png}
         \caption{Training loss for MixUp / FixMatch}
         \label{fig:mup_train_loss}
     \end{subfigure}
     \hfill
-    \begin{subfigure}[b]{0.3\textwidth}
+    \begin{subfigure}[p]{0.3\textwidth}
         \includegraphics[width=\textwidth]{latex/images/mup_val_loss.png}
         \caption{Validation loss for MixUp / FixMatch}
         \label{fig:mup_val_loss}
     \end{subfigure}
     \hfill
-    \begin{subfigure}[b]{0.3\textwidth}
+    \begin{subfigure}[p]{0.3\textwidth}
         \includegraphics[width=\textwidth]{latex/images/mup_val_acc.png}
         \caption{Validation accuracy for MixUp / FixMatch}
         \label{fig:mup_val_acc}
     \end{subfigure}
 \end{figure*}
 
-\begin{figure*}
+\subsubsection{MixUp / FixMatch}
+Integrating MixUp / FixMatch gave a modest boost of 1.42\% in validation accuracy compared to our baseline. From the training loss curve in figure \ref{fig:mup_train_loss}, we see that the training loss curve for MixUp / FixMatch and MixUp / FixMatch + standard LDRE to be almost identical, suggesting that standard LDRE might not act as a good regularizer for the model. However, we see that training loss curve is lower + decreases smooth for the MixUp / FixMatch + enhanced LDRE case, which is counterintuitive since it is supposed to act as a regularizer. From the validation loss curve in figure \ref{fig:mup_val_loss}, the curves for MixUp / FixMatch and MixUp / FixMatch + standard LDRE again look identical. The curve for the enhanced LDRE setup has higher loss values compared to the other 2 setups. There is no overfitting here since both training and validation loss curve decreases smoothly, and training loss did not continue decreasing while validation loss plateaus. From the validation accuracy curve in figure \ref{fig:mup_val_acc}, we see that both MixUp / FixMatch and MixUp / FixMatch + standard LDRE performs slightly better than our baseline, validation accuracy does not appear to be plateauing yet, so training with higher epochs may improve our validation accuracy even further.
+
+\begin{figure*}[h]
     \centering
-    \begin{subfigure}[b]{0.3\textwidth}
+    \begin{subfigure}[p]{0.3\textwidth}
         \includegraphics[width=\textwidth]{latex/images/cur_lr_train_loss.png}
         \caption{Training loss for curriculum learning}
         \label{fig:cur_lr_train_loss}
     \end{subfigure}
     \hfill
-    \begin{subfigure}[b]{0.3\textwidth}
+    \begin{subfigure}[p]{0.3\textwidth}
         \includegraphics[width=\textwidth]{latex/images/cur_lr_val_loss.png}
         \caption{Validation loss for curriculum learning}
         \label{fig:cur_lr_val_loss}
     \end{subfigure}
     \hfill
-    \begin{subfigure}[b]{0.3\textwidth}
+    \begin{subfigure}[p]{0.3\textwidth}
         \includegraphics[width=\textwidth]{latex/images/cur_lr_val_acc.png}
         \caption{Validation accuracy for curriculum learning}
         \label{fig:cur_lr_val_acc}
     \end{subfigure}
 \end{figure*}
+
+\subsubsection{Curriculum learning}
+In our previous section, we found that combining MixUp / FixMatch and LDRE does not yield good results compared to using MixUp / FixMatch only. Therefore, we experimented with a curriculum learning\cite{bengio2009curriculum} approach. We train the first 100 epochs with attention, self KD, and MixUp, then, we train the remaining 20 epochs with attention, self KD, and enhanced LDRE (MixUp is disable). In practice, we finetuned from the best model configuration we get so far, which is the attention, self KD, and MixUp setup, then we run finetuning with MixUp disabled and enhanced LDRE enabled. From the training loss curve in figure \ref{fig:cur_lr_train_loss} and the validation loss curve in figure \ref{fig:cur_lr_val_loss}, we see that both loss curve descends steadily, petnet\_fine\_tune is our label for curriculum learning. The loss for the curriculum learning method is smaller than the baseline and the setup with attention, self KD, and MixUp. In the validation accuracy curve in figure \ref{fig:cur_lr_val_acc}, we see that the curriculum learning method has the best validation accuracy, achieving a 3.38\% improvement compared to the baseline. (accuracy values are taken from the best accuracy instead of last epoch)
 
 \subsection{Language Model}
 We used Bertscore introduced by Zhang et al.\cite{zhang2019bertscore} as our loss function while training our QLoRA.
@@ -291,7 +308,7 @@ We used Bertscore introduced by Zhang et al.\cite{zhang2019bertscore} as our los
 %-------------------------------------------------------------------------
 \section{Other Sections}
 
-\begin{table*}
+\begin{table*}[h]
 \begin{center}
 \begin{tabular}{|l|c|p{8cm}|}
 \hline
@@ -307,28 +324,28 @@ Hwaai Kang Kee & Tuning, Analysis, Report Writing & Run hyperparamter tuning on 
 \label{tab:contributions}
 \end{table*}
 
-You are welcome to introduce additional sections or subsections, if required, to address the following questions in detail. 
+You are welcome to introduce additional sections or subsections, if required, to address the following questions in detail.
 
-(5 points) Appropriate use of figures / tables / visualizations. Are the ideas presented with appropriate illustration? Are the results presented clearly; are the important differences illustrated? 
+(5 points) Appropriate use of figures / tables / visualizations. Are the ideas presented with appropriate illustration? Are the results presented clearly; are the important differences illustrated?
 
-(5 points) Overall clarity. Is the manuscript self-contained? Can a peer who has also taken Deep Learning understand all of the points addressed above? Is sufficient detail provided? 
+(5 points) Overall clarity. Is the manuscript self-contained? Can a peer who has also taken Deep Learning understand all of the points addressed above? Is sufficient detail provided?
 
-(5 points) Finally, points will be distributed based on your understanding of how your project relates to Deep Learning. Here are some questions to think about: 
+(5 points) Finally, points will be distributed based on your understanding of how your project relates to Deep Learning. Here are some questions to think about:
 
-What was the structure of your problem? How did the structure of your model reflect the structure of your problem? 
+What was the structure of your problem? How did the structure of your model reflect the structure of your problem?
 
-What parts of your model had learned parameters (e.g., convolution layers) and what parts did not (e.g., post-processing classifier probabilities into decisions)? 
+What parts of your model had learned parameters (e.g., convolution layers) and what parts did not (e.g., post-processing classifier probabilities into decisions)?
 
 What representations of input and output did the neural network expect? How was the data pre/post-processed?
-What was the loss function? 
+What was the loss function?
 
-Did the model overfit? How well did the approach generalize? 
+Did the model overfit? How well did the approach generalize?
 
-What hyperparameters did the model have? How were they chosen? How did they affect performance? What optimizer was used? 
+What hyperparameters did the model have? How were they chosen? How did they affect performance? What optimizer was used?
 
-What Deep Learning framework did you use? 
+What Deep Learning framework did you use?
 
-What existing code or models did you start with and what did those starting points provide? 
+What existing code or models did you start with and what did those starting points provide?
 
 Briefly discuss potential future work that the research community could focus on to make improvements in the direction of your project's topic.
 
@@ -623,7 +640,6 @@ of the use of color in your document.
 %------------------------------------------------------------------------
 
 %-------------------------------------------------------------------------
-
 
 {\small
 \bibliographystyle{ieee_fullname}
