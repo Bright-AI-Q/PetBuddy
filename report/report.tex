@@ -27,7 +27,7 @@
 %%%%%%%%% TITLE
 \title{PetBuddy: A Pet Breed Recognition and Care Advisor\\CS 7643\\https://github.com/Bright-AI-Q/PetBuddy}
 
-\author{Hwaai Kang Kee*, Bright Wang*, Cindy Surjadi*, Jinyang Deng\\
+\author{Hwaai Kang Kee*, Bright Wang*, Cindy Surjadi*, Jinyang Deng*\\
 Georgia Institute of Technology\\
 {\tt\small hkee7@gatech.edu}\\
 {\tt\small hwang3200@gatech.edu}\\
@@ -56,13 +56,10 @@ Georgia Institute of Technology\\
 
 %%%%%%%%% BODY TEXT
 \section{Introduction/Background/Motivation}
-
-(5 points) What did you try to do? What problem did you try to solve? Articulate your objectives using absolutely no jargon.\\
 \subsection{Problem}
 The main problem we are trying to solve is multiclass pet breed classification on resource constrained environments such as mobile phones. Multiclass breed classification is a challenging problem because there are many similarities between breeds. The differences between breeds are very subtle, often relying on differences such as ear position or snout shape. Oftentimes, the appearance of the same breed could appear wildly different due to fur pattern and color, as well as the grooming of the pet. However, the current literature on the approaches to this problem is focused on larger neural network architectures. Inference time and hardware requirements make these approaches infeasible for local inference in mobile devices.
 
 \subsection{Current practice}
-(5 points) How is it done today, and what are the limits of current practice?\\
 The problem of classifying pet breeds using a model has been attempted multiple times by different researchers. In 2012, Parkhi et al. approached dog and cat breed classification using Support Vector Machines (SVM) and Gaussian Mixture Models (GMM) among other models and provided a comparison between them\cite{6248092}. The authors provided comprehensive reports on the performance of different models in this paper.
 
 Similarly, in 2012, Jiongxin et al. introduced a method called parts localization in dog breeds\cite{10.1007/978-3-642-33718-5_13}. The authors built examplar-based geometric and appearance models of dog breeds and their face parts along with localizing different parts of a dog such as ears or faces in order to improve classification of the model.
@@ -75,14 +72,11 @@ In 2021, the same group of authors attempted the problem again\cite{borwarnginn2
 The limits of the current practice are that the current work focuses on larger neural network architectures which are infeasible to run in a mobile device. We aim to create a model that can run local inference in a reasonable amount of time.
 
 \subsection{Target audience}
-(5 points) Who cares? If you are successful, what difference will it make?
 Pet owners that care about breed specific pet care instruction would care about this problem. Some pet breeds are harder to care for and might need different environments to thrive. Before owning a pet, potential pet owners could take a photo of the pet they are interested in, then our program would generate detailed pet care instructions for the specific breed. The potential pet owners would have more information on whether they could properly care for their pet, and decide whether they are up to the task of taking good care of it.
 
 If we are successful, we would be able to help pet owners to take better care of their pets. Similarly, we would be tackling the challenging problem of fine-grained image categorization as detailed in the original Stanford dogs paper\cite{khosla2011novel}. Solving this problem could let us understand the specific issues with fine-grained image classification in resource constrained environments.
 
 \subsection{Dataset}
-(5 points) What data did you use? Provide details about your data, specifically choose the most important aspects of your data mentioned \href{https://arxiv.org/abs/1803.09010}{here}. You don’t have to choose all of them, just the most relevant.
-
 \subsubsection{Classification dataset}
 We use a combination of the Stanford dogs dataset\cite{khosla2011novel} and the Oxford pets dataset\cite{6248092}. The Stanford dogs dataset includes 20,580 annotated images of dogs belonging to 120 breeds. Each image is annotated with a bounding box and object class label. Each breed contains 150-200 images. The Oxford pets dataset on the other hand includes 7390 images of cats and dogs of 37 different breeds. 25 are dogs and 12 are cats. The Oxford dogs dataset contains about 200 images for each breed.
 
@@ -97,8 +91,6 @@ For the pet knowledge database used for the LLM part, the data is scraped from p
 %-------------------------------------------------------------------------
 %------------------------------------------------------------------------
 \section{Approach}
-
-(10 points) What did you do exactly? How did you solve the problem? Why did you think it would be successful? Is anything new in your approach?
 
 We separate our project into 2 parts. First is the vision model, where we perform multi-class classification and assign one label to the image. Second is the language model, where we generate pet care instructions based on the specific breed of the pet.
 
@@ -168,11 +160,7 @@ We anticipate that there would be mainly problems with hardware resources, parti
 
 The first thing we tried, which is simply using MobileNetV2's pretrained backbone did work as it provided a good baseline for our model. We then tried several different techniques to improve the existing MobileNetV2 backbone.
 
-\textbf{Important: Mention any code repositories (with citations) or other sources that you used, and specifically what changes you made to them for your project. }
-
 \section{Experiments and Results}
-
-(10 points) How did you measure success? What experiments were used? What were the results, both quantitative and qualitative? Did you succeed? Did you fail? Why? Justify your reasons with arguments supported by evidence and data.
 
 \subsection{Vision model}
 We measured success by the validation accuracy of our vision model (PetNet) along with the number of parameters of the model. We aim to have a high validation accuracy while keeping the number of parameters of our model small. The loss function we used was Cross-Entropy with the model's predicted label probabilities compared with the actual label. We compare the validation accuracy of PetNet compared to other neural network architectures.
@@ -284,13 +272,13 @@ From the training loss curve in figure \ref{fig:mup_train_loss}, we see that the
 
 \begin{figure}[h]
     \centering
-    \begin{subfigure}[b]{0.4\textwidth}
+    \begin{subfigure}[b]{0.3\textwidth}
         \includegraphics[width=\textwidth]{latex/images/fig_curriculum_jump.png}
         \caption{Validation accuracy curriculum learning}
         \label{fig:curriculum_jump}
     \end{subfigure}
     \hfill
-    \begin{subfigure}[b]{0.4\textwidth}
+    \begin{subfigure}[b]{0.3\textwidth}
         \includegraphics[width=\textwidth]{latex/images/fig_sota_comparison.png}
         \caption{Our final model, compared with popular baselines}
         \label{fig:sota_comparison}
@@ -301,7 +289,7 @@ From the training loss curve in figure \ref{fig:mup_train_loss}, we see that the
 In our previous section, we found that combining MixUp / FixMatch and LDRE did not have much impact to validation accuracy. Therefore, we experimented with a curriculum learning\cite{bengio2009curriculum} approach. We train the first 100 epochs with attention, self KD, and MixUp. Then, we train the remaining 20 epochs with attention, self KD, and enhanced LDRE (MixUp is disable). In practice, we finetuned from the best model configuration we get so far with the attention, self KD, and MixUp setup, then we run finetuning with MixUp disabled and enhanced LDRE enabled. From figure \ref{fig:curriculum_jump}, we can see that we are able to get a 2.34\% jump in validation accuracy compared to the MixUp only setup. Compared to popular baseline models, our final setup is able to achieve a validation accuracy of 83.69\%. Refer to figure \ref{fig:sota_comparison} to see a comparison of our model to popular baselines.
 
 \subsection{Language Model}
-For our  evaluation of the language model performance, we used the LLM-as-a-judge method with Gemini 2.5 Flash \cite{gemini2.5}.  This method is used to evaluate the performance of four possible combinations: the Qwen2.5 base model itself, the Qwen2.5 base model with RAG, the fine-tuned Qwen2.5 base model, and the fine-tuned Qwen2.5 base model with RAG. The scores from each method are as the following table.
+For our evaluation of the language model performance, we used the LLM-as-a-judge method with Gemini 2.5 Flash \cite{gemini2.5}.  This method is used to evaluate the performance of four possible combinations: the Qwen2.5 base model itself, the Qwen2.5 base model with RAG, the fine-tuned Qwen2.5 base model, and the fine-tuned Qwen2.5 base model with RAG. The scores from each method are as the following table.
 
 \begin{table*}[h!]
 \centering
@@ -340,11 +328,9 @@ Fine-tuned Model + RAG
 
 From these results, it can be observed that the base model + RAG variant is the most successful, with a 20.50\% improvement of the LLM score, with the highest win rate against the base model. It is notably better at providing more accurate information. The fine-tuned model, in contrast, saw a couple of major score drops when it outputs the wrong information, or sometimes even the information of another breed. This is indicative of the LLM not being able to retain specific information about each breed distinctly. This can be due to flaws in the training dataset itself. It is too small and contains too little variation in phrasings and sentences. Furthemore, since the conversations are automatically created from the sections of the pet knowledge database, the model answer often contains extraneous data that is not needed to asnwer the question. This results in the fine-tuned model's answers being long-winded and includes irrelevant information. Overall, the breed specific pet knowledge contains complex and highly specific data, which makes it more suited for RAG implementation than fine tuning.
 
-\textbf{Important: This section should be rigorous and thorough. Present detailed information about decision you made, why you made them, and any evidence/experimentation to back them up. This is especially true if you leveraged existing architectures, pre-trained models, and code (i.e. do not just show results of fine-tuning a pre-trained model without any analysis, claims/evidence, and conclusions, as that tends to not make a strong project). }
-
 %-------------------------------------------------------------------------
-\section{Other Sections}
 
+\clearpage
 \begin{table*}[h]
 \begin{center}
 \begin{tabular}{|l|c|p{8cm}|}
@@ -362,31 +348,6 @@ Cindy Josephine Surjadi & Data Creation, Implementation, Analysis & Scraped the 
 \label{tab:contributions}
 \end{table*}
 
-You are welcome to introduce additional sections or subsections, if required, to address the following questions in detail.
-
-(5 points) Appropriate use of figures / tables / visualizations. Are the ideas presented with appropriate illustration? Are the results presented clearly; are the important differences illustrated?
-
-(5 points) Overall clarity. Is the manuscript self-contained? Can a peer who has also taken Deep Learning understand all of the points addressed above? Is sufficient detail provided?
-
-(5 points) Finally, points will be distributed based on your understanding of how your project relates to Deep Learning. Here are some questions to think about:
-
-What was the structure of your problem? How did the structure of your model reflect the structure of your problem?
-
-What parts of your model had learned parameters (e.g., convolution layers) and what parts did not (e.g., post-processing classifier probabilities into decisions)?
-
-What representations of input and output did the neural network expect? How was the data pre/post-processed?
-What was the loss function?
-
-Did the model overfit? How well did the approach generalize?
-
-What hyperparameters did the model have? How were they chosen? How did they affect performance? What optimizer was used?
-
-What Deep Learning framework did you use?
-
-What existing code or models did you start with and what did those starting points provide?
-
-Briefly discuss potential future work that the research community could focus on to make improvements in the direction of your project's topic.
-
 %-------------------------------------------------------------------------
 
 \clearpage
@@ -394,5 +355,58 @@ Briefly discuss potential future work that the research community could focus on
 \bibliographystyle{ieee_fullname}
 \bibliography{egbib}
 }
+
+\clearpage
+\section{Appendix}
+\subsection{GradCAM visualizations}
+\begin{figure}[h]
+    \centering
+    \begin{subfigure}[p]{0.4\textwidth}
+        \includegraphics[width=\textwidth]{latex/images/gradcam_efficientnet_b0.jpg}
+        \caption{EfficientNet-B0 GradCAM}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[p]{0.4\textwidth}
+        \includegraphics[width=\textwidth]{latex/images/gradcam_mobileone_s0.jpg}
+        \caption{MobileOne-S0 GradCAM}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[p]{0.4\textwidth}
+        \includegraphics[width=\textwidth]{latex/images/gradcam_petnet_mobilenet_baseline.jpg}
+        \caption{MobileNetV2 baseline GradCAM}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[p]{0.4\textwidth}
+        \includegraphics[width=\textwidth]{latex/images/gradcam_petnet_att_skd_enldr.jpg}
+        \caption{PetNet w/ attn., self KD, enh. LDRE GradCAM}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[p]{0.4\textwidth}
+        \includegraphics[width=\textwidth]{latex/images/gradcam_petnet_fine_tune.jpg}
+        \caption{final PetNet GradCAM}
+    \end{subfigure}
+\end{figure}
+
+\subsection{Other figures and charts}
+\begin{figure}
+    \centering
+    \includegraphics[width=0.4\textwidth]{latex/images/sota_comparison.png}
+    \caption{PetNet comparison with other popular architectures}
+\end{figure}
+\begin{figure}
+    \centering
+    \includegraphics[width=0.4\textwidth]{latex/images/confusion_petnet_finetune.png}
+    \caption{Confusion matrix for final PetNet model}
+\end{figure}
+\begin{figure}
+    \centering
+    \includegraphics[width=0.4\textwidth]{latex/images/tsne_petnet_fine_tune.png}
+    \caption{T-SNE for final PetNet model}
+\end{figure}
+\begin{figure}
+    \centering
+    \includegraphics[width=0.4\textwidth]{latex/images/llm_model_scores_boxplot.png}
+    \caption{LLM model scores with different configurations}
+\end{figure}
 
 \end{document}
