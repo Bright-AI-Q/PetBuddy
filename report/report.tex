@@ -57,32 +57,32 @@ Georgia Institute of Technology\\
 %%%%%%%%% BODY TEXT
 \section{Introduction/Background/Motivation}
 \subsection{Problem}
-The main problem we are trying to solve is multiclass pet breed classification on resource constrained environments such as mobile phones. Multiclass breed classification is a challenging problem because there are many similarities between breeds. The differences between breeds are very subtle, often relying on differences such as ear position or snout shape. Oftentimes, the appearance of the same breed could appear wildly different due to fur pattern and color, as well as the grooming of the pet.
+The main problem we are trying to solve is the multiclass classification of pet breeds in resource constrained environments such as mobile phones. Classifying pet breeds is a challenging problem because there are many similarities between breeds. The differences between breeds are very subtle, often relying on differences such as ear position or snout shape. Oftentimes, the appearance of the same breed could appear wildly different due to fur pattern and color, as well as the grooming of the pet.
 
 \subsection{Current practice}
-The current literature on approaches to this problem is focused on larger neural network architectures. In 2019, Borwarnginn et al. compared the performance of conventional approaches based on Local Binary Pattern (LBP) and Histogram of Oriented Gradient (HOG), as well as the deep learning based approach using Convolutional Neural Networks (CNN) with transfer learning\cite{8929955}. In this paper, they worked on a subset of the Columbia dogs with parts dataset\cite{10.1007/978-3-642-33718-5_13}. They selected 20 out of 133 dog breeds with the constraint that each breed has more than 60 images. For each breed, 40 images are used for training and 20 images are used for testing. They were able to achieve a 96.75\% accuracy using CNNs compared to 79.25\% using HOG descriptors.
+The current literature on approaches to this problem is focused on larger neural network architectures. In 2019, Borwarnginn et al. compared the performance of conventional approaches based on Local Binary Pattern (LBP) and Histogram of Oriented Gradient (HOG), as well as the deep learning based approach using Convolutional Neural Networks (CNN) with transfer learning\cite{8929955}. In this paper, they worked on a subset of the Columbia dogs with parts dataset\cite{10.1007/978-3-642-33718-5_13}. They selected 20/133 dog breeds with the constraint that each breed has more than 60 images. For each breed, 40 images are used for training and 20 images are used for testing. They were able to achieve 96.75\% accuracy using CNNs compared to 79.25\% using HOG descriptors.
 
-In 2021, the same group of authors attempted the problem again\cite{borwarnginn2021knowing}, but they worked on the entire Columbia dogs with parts dataset\cite{10.1007/978-3-642-33718-5_13} instead of a subset of it. This time, the authors evaluated the performance of 3 different pretrained CNNs with various data augmentation settings. The 3 CNN architectures used are NASNet\cite{qin2019nasnet}, InceptionV3\cite{szegedy2016rethinking}, and MobileNetV2\cite{sandler2018mobilenetv2}. The authors were able to achieve the highest accuracy of 89.92\% using the NASNet architecture.
+In 2021, the same group of authors attempted the problem again\cite{borwarnginn2021knowing} with the entire Columbia dogs with parts dataset\cite{10.1007/978-3-642-33718-5_13} instead of a subset of it. This time, the authors evaluated the performance of 3 different pretrained CNNs with various data augmentation settings. The 3 CNN architectures used are NASNet\cite{qin2019nasnet}, InceptionV3\cite{szegedy2016rethinking}, and MobileNetV2\cite{sandler2018mobilenetv2}. The authors were able to achieve the highest accuracy of 89.92\% using the NASNet architecture.
 
 \subsubsection{Limits}
 Inference time and hardware requirements make the current practice infeasible for local inference in mobile devices. In our paper, we attempt to build on top of the MobileNetV2 architecture since our goal is to run local inference on resource constrained devices such as mobile phones with reasonable inference times.
 
 \subsection{Target audience}
-Our target audience for this application are pet owners which want to take better care of their pets. We aim for this application to be simple to use such that the user doesn't need to scour the web for breed specific care instructions.
+Our target audience for this application are pet owners who want to take better care of their pets. We aim for this application to be simple to use such that the user doesn't need to scour the web for breed specific care instructions.
 
-From a deep learning perspective, this project tackles a few different problems. Namely, fine grained image classification, small models running on resource constrained hardware, and LLM training with limited hardware. If we are successful, we would be able to gain a better understanding on these problems and improve the current approaches to these problems.
+From a deep learning perspective, this project tackles a few different problems. Namely, fine grained image classification, small models running on resource constrained hardware, and LLM training with limited hardware. If we are successful, we would be able to better understand these problems and improve current approaches to these problems.
 
 \subsection{Dataset}
 \subsubsection{Classification dataset}
-We used a combination of the Stanford dogs dataset\cite{khosla2011novel} and the Oxford pets dataset\cite{6248092}. The Stanford dogs dataset includes 20,580 annotated images of dogs belonging to 120 breeds. Each image is annotated with a bounding box and object class label. Each breed contains 150-200 images. The Oxford pets dataset on the other hand includes 7390 images of cats and dogs of 37 different breeds. 25 are dogs and 12 are cats. The Oxford dogs dataset contains about 200 images for each breed.
+We used a combination of the Stanford dogs dataset\cite{khosla2011novel} and the Oxford pets dataset\cite{6248092}. The Stanford dogs dataset includes 20,580 annotated images of dogs belonging to 120 breeds. Each image is annotated with a bounding box and a class label. Each breed contains 150-200 images. The Oxford pets dataset, on the other hand, includes 7390 images of cats and dogs of 37 different breeds. 25 are dogs and 12 are cats. The Oxford dogs dataset contains about 200 images for each breed.
 
-Our combined dataset contains 27,970 annotated images of cats and dogs belonging to 144 breeds. Of those, 136 are dogs and 12 are cats. The number of cat breeds are much less than dogs, but each cat breed contains 150-200 images so it is still sufficient for our vision model to learn a good representation for cats. We then split the images into training, validation, and test set in a 8:1:1 ratio. We will name this our composite dataset for pet classification.
+Our combined dataset contains 27,970 annotated images of cats and dogs belonging to 144 breeds. Of these, 136 are dogs and 12 are cats. The number of cat breeds is much less than that of dogs, but each cat breed contains 150-200 images, so it is still sufficient for our vision model to learn a good representation for cats. We then split the images into training, validation, and test set in a 8:1:1 ratio. We will name this our composite dataset for pet classification.
 
 \subsubsection{Pose dataset}
-The Ap-10k\cite{yu2021ap}, Animal Pose\cite{Cao_2019_ICCV}, and the StanfordExtra dog\cite{biggs2020left} datasets are used to finetune YOLOv8-pose pretrained weights provided by Ultralytics in order to accurately detect 5 keypoints of pets. Namely left eye, right eye, left ear, right ear, and nose. This will be used in our Landmark-Driven Region Erasing (LDRE) method which is a data augmentation method that will be further elaborated in the next section. This will be our composite dataset for animal pose.
+The Ap-10k\cite{yu2021ap}, Animal Pose\cite{Cao_2019_ICCV}, and StanfordExtra dog\cite{biggs2020left} datasets are used to finetune YOLOv8-pose. This pose model uses pretrained weights provided by Ultralytics to accurately detect 5 keypoints of pets. That is, left eye, right eye, left ear, right ear, and nose. This will be used in our Landmark-Driven Region Erasing (LDRE) method, which is a data augmentation method that will be further elaborated in the next section. This will be our composite dataset for animal pose.
 
 \subsubsection{Pet knowledge database}
-For the pet knowledge database used for the LLM part, the data is scraped from pet breeds information websites \cite{dog-breeds-net} \cite{wisdom-panel-cat}. This data is organized into individual file for each breed and further divided into subsections based on the relevant headings. The pet knowledge database contains information on general breed overview, care instructions, grooming, exercise, health, temperament, family suitability, training and diet. Data which is missing on these categories are added using Gemini 2.5\cite{gemini2.5}.
+For the pet knowledge database used for the LLM part, the data is scraped from pet breed information websites \cite{dog-breeds-net} \cite{wisdom-panel-cat}. This data is organized into individual file for each breed and further divided into subsections based on the relevant headings. The pet knowledge database contains information on general breed overview, care instructions, grooming, exercise, health, temperament, family suitability, training, and diet. Data missing in these categories are added using Gemini 2.5\cite{gemini2.5}.
 
 %-------------------------------------------------------------------------
 %------------------------------------------------------------------------
@@ -91,7 +91,7 @@ For the pet knowledge database used for the LLM part, the data is scraped from p
 We separate our project into 2 parts. First, the vision model, where we perform multi-class classification and assign one label to the image. Second, the language model, where we generate pet care instructions based on the specific breed of the pet.
 
 \subsection{Vision model}
-We use MobileNetV2\cite{sandler2018mobilenetv2} as the backbone architecture with pretrained weights as our starting network. We then added several modifications to the architecture in an attempt to improve it. For a particular image, object detection is first done using YOLOv8 pretrained weights\cite{10533619} provided by Ultralytics without finetuning to generate bounding boxes around cats and dogs. Then, the bounding boxes that contains cats or dogs will be fed to our custom PetNet architecture to perform classification.
+We use MobileNetV2\cite{sandler2018mobilenetv2} as the backbone architecture with pretrained weights as our starting network. We then added several modifications to the architecture in an attempt to improve it. For a particular image, object detection is first done using YOLOv8 pretrained weights\cite{10533619} provided by Ultralytics without finetuning to generate bounding boxes around cats and dogs. Then, the bounding boxes that contain cats or dogs will be fed to our custom PetNet architecture to perform classification.
 
 \subsubsection{Dual attention mechanism}
 2 attention mechanisms are added after the Inverted Residual Block (IRB) layers in the original MobileNetV2 architecture. First, Efficient Channel Attention (ECA) from ECA-net\cite{Wang_2020_CVPR} is used as the first attention mechanism. Second, learnable 2D positional encodings introduced by DEtection TRansformers (DETR)\cite{carion2020end} are added to our image features. To handle varying input resolutions without training, the dynamic interpolation strategy introduced in Vision Transformers (ViT)\cite{dosovitskiy2020image} is used to resize our learnable positional encodings to match the current dimensions of the image features.
@@ -117,21 +117,13 @@ Where $i$ is the index of the row, $j$ is the index of the column, $k$ is the pa
 
 Next, we identify the top-k highest scoring cells and mask them. The idea is that this method acts as a regularizer and forces the model to learn from the patterns of the body, tail, and fur rather than just the face.
 
-An example of LDRE can be seen in figure \ref{fig:ldre_example}, enhanced LDRE is depicted in \ref{fig:enhanced_ldre_example}.
+An example of LDRE can be seen in figure \ref{fig:ldre_example}. The enhanced version does the same masking with Gaussian noise, but with different selection criteria of cells.
 
-\begin{figure}
+\begin{figure}[h]
     \centering
-    \begin{subfigure}[b]{0.3\textwidth}
-        \includegraphics[width=\textwidth]{latex/images/ldre_example.png}
-        \caption{LDRE example}
-        \label{fig:ldre_example}
-    \end{subfigure}
-    \hfill
-    \begin{subfigure}[b]{0.3\textwidth}
-        \includegraphics[width=\textwidth]{latex/images/enhanced_ldre_example.png}
-        \caption{Enhanced LDRE, note the ears and beginning of the legs are not masked with Gaussian noise}
-        \label{fig:enhanced_ldre_example}
-    \end{subfigure}
+    \includegraphics[width=0.3\textwidth]{latex/images/ldre_example.png}
+    \caption{LDRE example, note the ears and beginning of legs are masked with Gaussian noise}
+    \label{fig:ldre_example}
 \end{figure}
 
 \subsubsection{Data augmentation}
@@ -148,11 +140,11 @@ The training data are model question-answer pairs generated from the pet knowled
 Regex is used to extract the breed name from the question prompt. The contents of the database for the corresponding breed are loaded and included in the LLM prompt. By storing the information for each breed in a different file and organizing the content into sectioned headings, the LLM can quickly find relevant information.
 
 \subsection{Problems}
-The problems we anticipate are the performance of smaller neural network models. Smaller neural network models might not achieve high validation accuracy which would decrease the usability of this application. Another problem we anticipate would be whether adding different modules to our model would actually lead to an increase in validation accuracy.
+The problems we anticipate are the performance of smaller neural network models. Smaller neural network models might not achieve high validation accuracy, which would decrease the usability of this application. Another problem we anticipate would be whether adding different modules to our model would actually lead to an increase in validation accuracy.
 
 The problems we encountered are mainly related to hardware resources. Training the model with L40S GPU on the PACE ICE cluster still took 1 hour for each training run. Testing the different configurations took a lot of time. Some of the modules that we added did not appear to have an impact on validation accuracy at first glance, such as the addition of LDRE to MixUp. However, with a different approach to train the model (curriculum learning\cite{bengio2009curriculum}), we were able to achieve an increase in validation accuracy. This will be elaborated on in the experiments section.
 
-The first thing we tried, which is simply using MobileNetV2's pretrained backbone did work as it provided a good baseline for our model. We then tried several different techniques to improve the existing MobileNetV2 backbone.
+The first thing we tried, which is simply using MobileNetV2's pretrained backbone did work, as it provided a good baseline for our model. We then tried several different techniques to improve the existing MobileNetV2 backbone.
 
 \section{Experiments and Results}
 
@@ -181,7 +173,7 @@ Curriculum Learning & 1.047 & 0.7296 & 83.69 & 13.65\\
 \end{table*}
 
 \subsection{Vision model}
-We measured success by comparing the validation accuracy of our vision model (PetNet) to 3 different baselines. We aim to have a high validation accuracy while keeping the number of parameters of our model small. We experimented with different configurations of our model to determine which configuration performs the best. Our final configuration (curriculum learning) has 3.06M (million) learnable parameters. The loss function we used was Cross-Entropy with the model's predicted label probabilities compared with the actual label. We compare the validation accuracy of PetNet compared to other neural network architectures in table \ref{tab:petnet}. Overall, we would deem this project as a success.
+We measured success by comparing the validation accuracy of our vision model (PetNet) to 3 different baselines. We aim to have a high validation accuracy while keeping the number of parameters of our model small. We experimented with different configurations of our model to determine which configuration performs the best. Our final configuration (curriculum learning) has 3.06M (million) learnable parameters. The loss function we used was Cross-Entropy with the model's predicted label probabilities compared with the actual label. We compare the validation accuracy of PetNet compared to other neural network architectures in table \ref{tab:petnet}. In general, we would consider this project a success.
 
 \subsubsection{Comparison with baselines}
 Pretrained weights for MobileNetV2\cite{sandler2018mobilenetv2}, EfficientNet-BO\cite{tan2019efficientnet}, and MobileOne-S0\cite{vasu2023mobileone} with finetuning are used as our baseline for comparison. The weights for MobileNetV2 were acquired from torchvision\cite{marcel2010torchvision}. The weights for the other 2 models were acquired from PyTorch Image Models (timm)\cite{rw2019timm}. These models are finetuned on our composite dataset for pet classification with the same hyperparameters. The performance of this baseline can be seen in table \ref{tab:petnet}.
@@ -240,29 +232,8 @@ Next, we tried adding self KD to act as a regularizer and to improve the model's
 \subsubsection{LDRE}
 Both standard and enhanced LDRE is then added to our model in order to experiment with this new method. From table \ref{tab:petnet} we see that training loss for both versions of LDRE is much higher than the training loss for base configuration + attention (1.55~ vs 0.9515). This suggests that LDRE can act as a regularizer. However, if we compare the training loss curve in figure \ref{fig:ldre_train_loss} of the 3 configurations (attn + skd, + ldre, + en ldre), we see that the loss curve looks almost identical. The validation loss curve in figure \ref{fig:ldre_val_loss} and the validation accuracy curve in figure \ref{fig:ldre_val_acc} also looks similar, which might suggest that LDRE did not have much impact on increasing the model's ability to generalize. Intuitively, this might be due to self KD already acting as a strong enough regularizer, decreasing the impact of LDRE as a regularizer.
 
-\begin{figure*}[h]
-    \centering
-    \begin{subfigure}[p]{0.3\textwidth}
-        \includegraphics[width=\textwidth]{latex/images/fig_mup_train_loss.png}
-        \caption{Training loss for MixUp / FixMatch}
-        \label{fig:mup_train_loss}
-    \end{subfigure}
-    \hfill
-    \begin{subfigure}[p]{0.3\textwidth}
-        \includegraphics[width=\textwidth]{latex/images/fig_mup_val_loss.png}
-        \caption{Validation loss for MixUp / FixMatch}
-        \label{fig:mup_val_loss}
-    \end{subfigure}
-    \hfill
-    \begin{subfigure}[p]{0.3\textwidth}
-        \includegraphics[width=\textwidth]{latex/images/fig_mup_val_acc.png}
-        \caption{Validation acc. for MixUp / FixMatch}
-        \label{fig:mup_val_acc}
-    \end{subfigure}
-\end{figure*}
-
 \subsubsection{MixUp / FixMatch}
-From the training loss curve in figure \ref{fig:mup_train_loss}, we see that the training loss curve for the 3 MixUp + LDRE configurations looks similar, steadily decreasing. This is the same as the validation loss curve in figure \ref{fig:mup_val_loss}. Under / overfitting does not appear to be happening with these 3 configurations. From the validation accuracy curve in figure \ref{fig:mup_val_acc}, we see that all 3 configurations do not differ too much, suggesting that the regularizing effect of LDRE might be similar to the regularizing effect that MixUp provides, thus the effect on validation accuracy is not that apparent.
+Training loss curve for the 3 MixUp + LDRE configurations looks similar, steadily decreasing. This is the same as the validation loss curve. Under / overfitting does not appear to be happening with these 3 configurations. From the validation accuracy curve, we see that all 3 configurations do not differ too much, suggesting that the regularizing effect of LDRE might be similar to the regularizing effect that MixUp provides. Figures are available in the appendix but left out in the main pages due to the page limit.
 
 \begin{figure}[h]
     \centering
@@ -282,7 +253,20 @@ From the training loss curve in figure \ref{fig:mup_train_loss}, we see that the
 \subsubsection{Curriculum learning}
 In our previous section, we found that combining MixUp / FixMatch and LDRE did not have much impact on validation accuracy. Therefore, we experimented with a curriculum learning approach\cite{bengio2009curriculum}. We train the first 100 epochs with attention, self KD, and MixUp. Then, we train the remaining 20 epochs with attention, self KD, and enhanced LDRE (MixUp is disable). In practice, we finetuned from the best model configuration we get so far with the attention, self KD, and MixUp setup, then we run finetuning with MixUp disabled and enhanced LDRE enabled. From figure \ref{fig:curriculum_jump}, we can see that we are able to get a 2.34\% jump in validation accuracy compared to the MixUp only setup. Compared to popular baseline models, our final setup is able to achieve a validation accuracy of 83.69\%. Refer to figure \ref{fig:sota_comparison} to see a comparison of our model to popular baselines.
 
-\begin{table*}[h!]
+\begin{figure}[h]
+    \centering
+    \begin{subfigure}[p]{0.4\textwidth}
+        \includegraphics[width=\textwidth]{latex/images/gradcam_petnet_mobilenet_baseline.jpg}
+        \caption{MobileNetV2 baseline GradCAM, note the focus on the entire face}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[p]{0.4\textwidth}
+        \includegraphics[width=\textwidth]{latex/images/gradcam_petnet_fine_tune.jpg}
+        \caption{final PetNet GradCAM, note the focus on the bottom part of the face}
+    \end{subfigure}
+\end{figure}
+
+\begin{table*}[h]
 \centering
 \begin{tabular}{l c c | c c | c c c}
 \hline
@@ -319,7 +303,7 @@ Fine-tuned Model + RAG
 \end{table*}
 
 \subsection{Language Model}
-For our evaluation of language model performance, we used the LLM-as-a-judge method with Gemini 2.5 Flash \cite{gemini2.5}. This method is used to evaluate the performance of four possible combinations: the Qwen2.5 base model itself, the Qwen2.5 base model with RAG, the fine-tuned Qwen2.5 base model, and the fine-tuned Qwen2.5 base model with RAG. The scores of each method are shown in table \ref{tab:llm_performance}.
+For our evaluation of language model performance, we used the LLM-as-a-judge method with Gemini 2.5 Flash\cite{gemini2.5}. This method is used to evaluate the performance of four possible combinations: the Qwen2.5 base model itself, the Qwen2.5 base model with RAG, the fine-tuned Qwen2.5 base model, and the fine-tuned Qwen2.5 base model with RAG. The scores of each method are shown in table \ref{tab:llm_performance}.
 
 From these results, it can be observed that the base model + RAG variant is the most successful, with a 20.50\% improvement in the LLM score, with the highest win rate against the base model. It is notably better at providing more accurate information. The fine-tuned model, in contrast, saw a couple of major score drops when it outputs the wrong information, or sometimes even the information of another breed. This is indicative of the LLM not being able to retain specific information about each breed distinctly. This may be due to flaws in the training dataset itself. It is too small and contains too little variation in phrasings and sentences. Furthermore, since conversations are automatically created from sections of the pet knowledge database, the model answer often contains extraneous data that are not needed to answer the question. This results in the fine-tuned model's answers being long-winded and including irrelevant information. Overall, breed specific pet knowledge contains complex and highly specific data, which makes it more suited for RAG implementation than fine tuning.
 
@@ -352,57 +336,69 @@ Cindy Josephine Surjadi & Data Creation, Implementation, Analysis & Scraped the 
 \bibliography{egbib}
 }
 
-\clearpage
-\section{Appendix}
-\subsection{GradCAM visualizations}
-\begin{figure}[h]
-    \centering
-    \begin{subfigure}[p]{0.4\textwidth}
-        \includegraphics[width=\textwidth]{latex/images/gradcam_efficientnet_b0.jpg}
-        \caption{EfficientNet-B0 GradCAM}
-    \end{subfigure}
-    \hfill
-    \begin{subfigure}[p]{0.4\textwidth}
-        \includegraphics[width=\textwidth]{latex/images/gradcam_mobileone_s0.jpg}
-        \caption{MobileOne-S0 GradCAM}
-    \end{subfigure}
-    \hfill
-    \begin{subfigure}[p]{0.4\textwidth}
-        \includegraphics[width=\textwidth]{latex/images/gradcam_petnet_mobilenet_baseline.jpg}
-        \caption{MobileNetV2 baseline GradCAM}
-    \end{subfigure}
-    \hfill
-    \begin{subfigure}[p]{0.4\textwidth}
-        \includegraphics[width=\textwidth]{latex/images/gradcam_petnet_att_skd_enldr.jpg}
-        \caption{PetNet w/ attn., self KD, enh. LDRE GradCAM}
-    \end{subfigure}
-    \hfill
-    \begin{subfigure}[p]{0.4\textwidth}
-        \includegraphics[width=\textwidth]{latex/images/gradcam_petnet_fine_tune.jpg}
-        \caption{final PetNet GradCAM}
-    \end{subfigure}
-\end{figure}
+% \clearpage
+% \section{Appendix}
+% \subsection{GradCAM visualizations}
+% \begin{figure}[h]
+%     \centering
+%     \begin{subfigure}[p]{0.4\textwidth}
+%         \includegraphics[width=\textwidth]{latex/images/gradcam_efficientnet_b0.jpg}
+%         \caption{EfficientNet-B0 GradCAM}
+%     \end{subfigure}
+%     \hfill
+%     \begin{subfigure}[p]{0.4\textwidth}
+%         \includegraphics[width=\textwidth]{latex/images/gradcam_mobileone_s0.jpg}
+%         \caption{MobileOne-S0 GradCAM}
+%     \end{subfigure}
+%     \hfill
+%     \begin{subfigure}[p]{0.4\textwidth}
+%         \includegraphics[width=\textwidth]{latex/images/gradcam_petnet_att_skd_enldr.jpg}
+%         \caption{PetNet w/ attn., self KD, enh. LDRE GradCAM}
+%     \end{subfigure}
+% \end{figure}
 
-\subsection{Other figures and charts}
-\begin{figure}
-    \centering
-    \includegraphics[width=0.4\textwidth]{latex/images/sota_comparison.png}
-    \caption{PetNet comparison with other popular architectures}
-\end{figure}
-\begin{figure}
-    \centering
-    \includegraphics[width=0.4\textwidth]{latex/images/confusion_petnet_finetune.png}
-    \caption{Confusion matrix for final PetNet model}
-\end{figure}
-\begin{figure}
-    \centering
-    \includegraphics[width=0.4\textwidth]{latex/images/tsne_petnet_fine_tune.png}
-    \caption{T-SNE for final PetNet model}
-\end{figure}
-\begin{figure}
-    \centering
-    \includegraphics[width=0.4\textwidth]{latex/images/llm_model_scores_boxplot.png}
-    \caption{LLM model scores with different configurations}
-\end{figure}
+% \begin{figure*}[h]
+%     \centering
+%     \begin{subfigure}[p]{0.3\textwidth}
+%         \includegraphics[width=\textwidth]{latex/images/fig_mup_train_loss.png}
+%         \caption{Training loss for MixUp / FixMatch}
+%         \label{fig:mup_train_loss}
+%     \end{subfigure}
+%     \hfill
+%     \begin{subfigure}[p]{0.3\textwidth}
+%         \includegraphics[width=\textwidth]{latex/images/fig_mup_val_loss.png}
+%         \caption{Validation loss for MixUp / FixMatch}
+%         \label{fig:mup_val_loss}
+%     \end{subfigure}
+%     \hfill
+%     \begin{subfigure}[p]{0.3\textwidth}
+%         \includegraphics[width=\textwidth]{latex/images/fig_mup_val_acc.png}
+%         \caption{Validation acc. for MixUp / FixMatch}
+%         \label{fig:mup_val_acc}
+%     \end{subfigure}
+% \end{figure*}
+
+% \subsection{Other figures and charts}
+% \begin{figure}
+%     \centering
+%     \includegraphics[width=0.4\textwidth]{latex/images/sota_comparison.png}
+%     \caption{PetNet comparison with other popular architectures}
+% \end{figure}
+% \begin{figure}
+%     \centering
+%     \includegraphics[width=0.4\textwidth]{latex/images/confusion_petnet_finetune.png}
+%     \caption{Confusion matrix for final PetNet model}
+% \end{figure}
+% \begin{figure}
+%     \centering
+%     \includegraphics[width=0.4\textwidth]{latex/images/tsne_petnet_fine_tune.png}
+%     \caption{T-SNE for final PetNet model}
+% \end{figure}
+% \begin{figure}[h]
+%     \centering
+%     \includegraphics[width=0.4\textwidth]{latex/images/llm_model_scores_boxplot.png}
+%     \caption{LLM model scores with different configurations}
+% \end{figure}
+
 
 \end{document}
