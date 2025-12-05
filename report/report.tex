@@ -57,28 +57,24 @@ Georgia Institute of Technology\\
 %%%%%%%%% BODY TEXT
 \section{Introduction/Background/Motivation}
 \subsection{Problem}
-The main problem we are trying to solve is multiclass pet breed classification on resource constrained environments such as mobile phones. Multiclass breed classification is a challenging problem because there are many similarities between breeds. The differences between breeds are very subtle, often relying on differences such as ear position or snout shape. Oftentimes, the appearance of the same breed could appear wildly different due to fur pattern and color, as well as the grooming of the pet. However, the current literature on the approaches to this problem is focused on larger neural network architectures. Inference time and hardware requirements make these approaches infeasible for local inference in mobile devices.
+The main problem we are trying to solve is multiclass pet breed classification on resource constrained environments such as mobile phones. Multiclass breed classification is a challenging problem because there are many similarities between breeds. The differences between breeds are very subtle, often relying on differences such as ear position or snout shape. Oftentimes, the appearance of the same breed could appear wildly different due to fur pattern and color, as well as the grooming of the pet.
 
 \subsection{Current practice}
-The problem of classifying pet breeds using a model has been attempted multiple times by different researchers. In 2012, Parkhi et al. approached dog and cat breed classification using Support Vector Machines (SVM) and Gaussian Mixture Models (GMM) among other models and provided a comparison between them\cite{6248092}. The authors provided comprehensive reports on the performance of different models in this paper.
+The current literature on approaches to this problem is focused on larger neural network architectures. In 2019, Borwarnginn et al. compared the performance of conventional approaches based on Local Binary Pattern (LBP) and Histogram of Oriented Gradient (HOG), as well as the deep learning based approach using Convolutional Neural Networks (CNN) with transfer learning\cite{8929955}. In this paper, they worked on a subset of the Columbia dogs with parts dataset\cite{10.1007/978-3-642-33718-5_13}. They selected 20 out of 133 dog breeds with the constraint that each breed has more than 60 images. For each breed, 40 images are used for training and 20 images are used for testing. They were able to achieve a 96.75\% accuracy using CNNs compared to 79.25\% using HOG descriptors.
 
-Similarly, in 2012, Jiongxin et al. introduced a method called parts localization in dog breeds\cite{10.1007/978-3-642-33718-5_13}. The authors built examplar-based geometric and appearance models of dog breeds and their face parts along with localizing different parts of a dog such as ears or faces in order to improve classification of the model.
-
-Subsequently, deep learning methods became popular, and there were multiple attempts to apply deep learning methods to the classification of pet breeds. In 2019, Borwarnginn et al. compared the performance of conventional based approaches using Local Binary Pattern (LBP) and Histogram of Oriented Gradient (HOG), as well as the deep learning based approach using Convolutional Neural Networks (CNN) with transfer learning\cite{8929955}. In this paper, they worked on a subset of the Columbia dogs with parts dataset\cite{10.1007/978-3-642-33718-5_13}. They selected 20 out of 133 dog breeds with the constraint that each breed has more than 60 images. For each breed, 40 images are used for training and 20 images are used for testing. They were able to achieve a 96.75\% accuracy using CNNs compared to 79.25\% using HOG descriptors.
-
-In 2021, the same group of authors attempted the problem again\cite{borwarnginn2021knowing}, but they worked on the entire Columbia dogs with parts dataset\cite{10.1007/978-3-642-33718-5_13} instead of a subset of it. This time, the authors evaluated the performance of 3 different pretrained CNNs with various data augmentation settings. The 3 CNN architectures used are NASNet\cite{qin2019nasnet}, InceptionV3\cite{szegedy2016rethinking}, and MobileNetV2\cite{sandler2018mobilenetv2}. The authors were able to achieve the highest accuracy of 89.92\% using the NASNet architecture. In our paper, we attempt to build on top of the MobileNetV2 architecture since our goal is to run local inference on resource constrained devices such as mobile phones.
+In 2021, the same group of authors attempted the problem again\cite{borwarnginn2021knowing}, but they worked on the entire Columbia dogs with parts dataset\cite{10.1007/978-3-642-33718-5_13} instead of a subset of it. This time, the authors evaluated the performance of 3 different pretrained CNNs with various data augmentation settings. The 3 CNN architectures used are NASNet\cite{qin2019nasnet}, InceptionV3\cite{szegedy2016rethinking}, and MobileNetV2\cite{sandler2018mobilenetv2}. The authors were able to achieve the highest accuracy of 89.92\% using the NASNet architecture.
 
 \subsubsection{Limits}
-The limits of the current practice are that the current work focuses on larger neural network architectures which are infeasible to run in a mobile device. We aim to create a model that can run local inference in a reasonable amount of time.
+Inference time and hardware requirements make the current practice infeasible for local inference in mobile devices. In our paper, we attempt to build on top of the MobileNetV2 architecture since our goal is to run local inference on resource constrained devices such as mobile phones with reasonable inference times.
 
 \subsection{Target audience}
-Pet owners that care about breed specific pet care instruction would care about this problem. Some pet breeds are harder to care for and might need different environments to thrive. Before owning a pet, potential pet owners could take a photo of the pet they are interested in, then our program would generate detailed pet care instructions for the specific breed. The potential pet owners would have more information on whether they could properly care for their pet, and decide whether they are up to the task of taking good care of it.
+Our target audience for this application are pet owners which want to take better care of their pets. We aim for this application to be simple to use such that the user doesn't need to scour the web for breed specific care instructions.
 
-If we are successful, we would be able to help pet owners to take better care of their pets. Similarly, we would be tackling the challenging problem of fine-grained image categorization as detailed in the original Stanford dogs paper\cite{khosla2011novel}. Solving this problem could let us understand the specific issues with fine-grained image classification in resource constrained environments.
+From a deep learning perspective, this project tackles a few different problems. Namely, fine grained image classification, small models running on resource constrained hardware, and LLM training with limited hardware. If we are successful, we would be able to gain a better understanding on these problems and improve the current approaches to these problems.
 
 \subsection{Dataset}
 \subsubsection{Classification dataset}
-We use a combination of the Stanford dogs dataset\cite{khosla2011novel} and the Oxford pets dataset\cite{6248092}. The Stanford dogs dataset includes 20,580 annotated images of dogs belonging to 120 breeds. Each image is annotated with a bounding box and object class label. Each breed contains 150-200 images. The Oxford pets dataset on the other hand includes 7390 images of cats and dogs of 37 different breeds. 25 are dogs and 12 are cats. The Oxford dogs dataset contains about 200 images for each breed.
+We used a combination of the Stanford dogs dataset\cite{khosla2011novel} and the Oxford pets dataset\cite{6248092}. The Stanford dogs dataset includes 20,580 annotated images of dogs belonging to 120 breeds. Each image is annotated with a bounding box and object class label. Each breed contains 150-200 images. The Oxford pets dataset on the other hand includes 7390 images of cats and dogs of 37 different breeds. 25 are dogs and 12 are cats. The Oxford dogs dataset contains about 200 images for each breed.
 
 Our combined dataset contains 27,970 annotated images of cats and dogs belonging to 144 breeds. Of those, 136 are dogs and 12 are cats. The number of cat breeds are much less than dogs, but each cat breed contains 150-200 images so it is still sufficient for our vision model to learn a good representation for cats. We then split the images into training, validation, and test set in a 8:1:1 ratio. We will name this our composite dataset for pet classification.
 
@@ -86,33 +82,40 @@ Our combined dataset contains 27,970 annotated images of cats and dogs belonging
 The Ap-10k\cite{yu2021ap}, Animal Pose\cite{Cao_2019_ICCV}, and the StanfordExtra dog\cite{biggs2020left} datasets are used to finetune YOLOv8-pose pretrained weights provided by Ultralytics in order to accurately detect 5 keypoints of pets. Namely left eye, right eye, left ear, right ear, and nose. This will be used in our Landmark-Driven Region Erasing (LDRE) method which is a data augmentation method that will be further elaborated in the next section. This will be our composite dataset for animal pose.
 
 \subsubsection{Pet knowledge database}
-For the pet knowledge database used for the LLM part, the data is scraped from pet breeds information websites \cite{dog-breeds-net} \cite{wisdom-panel-cat}. This data is organized into individual file for each breed and further divided into subsections based on the relevant headings. The pet knowledge database contains information on general breed overview, care instructions, grooming, exercise, health, temperament, family suitability, training and diet. Data that are missing on these categories are added using Gemini 2.5 \cite{gemini2.5}.
+For the pet knowledge database used for the LLM part, the data is scraped from pet breeds information websites \cite{dog-breeds-net} \cite{wisdom-panel-cat}. This data is organized into individual file for each breed and further divided into subsections based on the relevant headings. The pet knowledge database contains information on general breed overview, care instructions, grooming, exercise, health, temperament, family suitability, training and diet. Data which is missing on these categories are added using Gemini 2.5\cite{gemini2.5}.
 
 %-------------------------------------------------------------------------
 %------------------------------------------------------------------------
 \section{Approach}
 
-We separate our project into 2 parts. First is the vision model, where we perform multi-class classification and assign one label to the image. Second is the language model, where we generate pet care instructions based on the specific breed of the pet.
+We separate our project into 2 parts. First, the vision model, where we perform multi-class classification and assign one label to the image. Second, the language model, where we generate pet care instructions based on the specific breed of the pet.
 
 \subsection{Vision model}
-We use MobileNetV2\cite{sandler2018mobilenetv2} as the backbone architecture with pretrained weights as our starting network. We then added several modifications to the architecture in an attempt to improve it. For a particular image, object detection is first done using YOLOv8 pretrained weights\cite{10533619} provided by Ultralytics without finetuning to generate bounding boxes around cats and dogs. Then, the bounding boxes containing either cats or dogs will be fed to our custom PetNet architecture to perform classification.
+We use MobileNetV2\cite{sandler2018mobilenetv2} as the backbone architecture with pretrained weights as our starting network. We then added several modifications to the architecture in an attempt to improve it. For a particular image, object detection is first done using YOLOv8 pretrained weights\cite{10533619} provided by Ultralytics without finetuning to generate bounding boxes around cats and dogs. Then, the bounding boxes that contains cats or dogs will be fed to our custom PetNet architecture to perform classification.
 
 \subsubsection{Dual attention mechanism}
-2 attention mechanisms are added after the Inverted Residual Block (IRB) layers in the original MobileNetV2 architecture. Firstly, Efficient Channel Attention (ECA) from ECA-net introduced by Wang et al.\cite{Wang_2020_CVPR} is used as the first attention mechanism. Secondly, learnable 2D positional encodings introduced by DEtection TRansformers (DETR)\cite{carion2020end} are added to our image features. To handle varying input resolutions without training, the dynamic interpolation strategy introduced in Vision Transformers (ViT)\cite{dosovitskiy2020image} is used to resize our learnable positional encodings to match the current dimensions of the image features.
+2 attention mechanisms are added after the Inverted Residual Block (IRB) layers in the original MobileNetV2 architecture. First, Efficient Channel Attention (ECA) from ECA-net\cite{Wang_2020_CVPR} is used as the first attention mechanism. Second, learnable 2D positional encodings introduced by DEtection TRansformers (DETR)\cite{carion2020end} are added to our image features. To handle varying input resolutions without training, the dynamic interpolation strategy introduced in Vision Transformers (ViT)\cite{dosovitskiy2020image} is used to resize our learnable positional encodings to match the current dimensions of the image features.
 
 \subsubsection{Self Knowledge Distillation (KD)}
-A self KD strategy inspired by Zhang et al.\cite{zhang2019your} is implemented, where auxiliary heads at intermediate stages are trained to mimic the final classification layer's soft prediction. Auxiliary classifiers are added to stage 2 and stage 3 of the MobileNetV2 architecture, which acts as the student. While the last classifier (stage 4) acts as the teacher. We compute this loss as the KL divergence between the student and the teacher logits with the following equation. This loss is added to our cross entropy loss for classification.
+A self KD strategy inspired by Zhang et al.\cite{zhang2019your} is implemented, where auxiliary heads at intermediate stages are trained to mimic the final classification layer's soft prediction. Auxiliary classifiers are added to stage 2 and stage 3 of the MobileNetV2 architecture, which acts as a student. The last classifier (stage 4) acts as the teacher. We compute this loss as the KL divergence between the student and the teacher logits with the following equation. This loss is added to our cross entropy loss for classification.
 \begin{equation}
     \mathcal{L}_{KD} = \sum_{i \in \{2,3\}} \alpha_i \cdot T^2 \cdot \mathcal{KL} \left( \sigma \left( \frac{z_t}{T} \right), \sigma \left( \frac{z_{s_i}}{T} \right) \right)
 \end{equation}
-Where $i$ is the index of the stage starting from 1, $\alpha_i$ is the weight of the loss of the particular stage, $T$ is the temperature, which is a scalar used to scale output probabilities, $z_t$ are the teacher's logits, and $z_{s_i}$ are the student's logits.
+Where $i$ is the index of the stage starting from 1, $\alpha_i$ is the weight of the loss of the stage, $T$ is the temperature, which is a scalar used to scale the output probabilities, $z_t$ are the teacher's logits, and $z_{s_i}$ are the student's logits.
 
 \subsubsection{Landmark-Driven Random Erasing (LDRE)}
-This is a new data augmentation technique devised by Bright Wang built on top of the Random Erasing method introduced by Zhong et al.\cite{zhong2020random}. The Grid-based dropping mechanism is inspired by GridMask\cite{chen2020gridmask}. This method is similar to the one introduced by Kumar et al.\cite{kumar2017hide} but instead of random grid masking, LDRE explicitly targets semantic regions such as the head and body to force the model to learn robust features rather than memorizing noise. Instead of random occlusion, LDRE is performing semantic occlusion.
+This is a new data augmentation technique devised by Bright Wang built on top of Random Erasing\cite{zhong2020random}. The Grid-based dropping mechanism is inspired by GridMask\cite{chen2020gridmask}. This method is similar to the one introduced by Kumar et al.\cite{kumar2017hide} but instead of random grid masking, LDRE explicitly targets semantic regions such as the head and body to force the model to not rely too heavily on certain semantic features of the model. Instead of random occlusion, LDRE performs semantic occlusion.
 
-YOLOv8-pose\cite{10533619} pretrained weights by Ultralytics are used to identify 5 key anatomical keypoints of pets: left eye, right eye, left ear, right ear, and nose. However, YOLOv8-pose is initially trained for identifying keypoints in humans instead of dogs and cats. This lead to low accuracy in identifying keypoints in dogs and cats. Which is why we finetuned the YOLOv8-pose model with the composite dataset of AP-10k\cite{yu2021ap}, Stanford Extra\cite{biggs2020left}, and the Animal Pose\cite{Cao_2019_ICCV} dataset.
+Ultralytics\cite{yolov8_ultralytics} pretrained weights for YOLOv8-pose is used to identify 5 key anatomical keypoints of pets: left eye, right eye, left ear, right ear, and nose. However, YOLOv8-pose is initially trained to identify keypoints in humans instead of dogs and cats. This leads to low accuracy in identifying keypoints in dogs and cats. That is why we finetuned the YOLOv8-pose model with the composite dataset for animal pose.
 
-First, the image is divided into a fixed size grid of 16x16. Then, we calculate the score of each cell based on different criteria. For standard LDRE, our scoring function is the number of keypoints present in a cell, regardless of the keypoint's confidence. For enhanced LDRE, a saliency score $S_{i,j}$ is calculated for each grid cell based on keypoint confidence and whether the keypoint exists in the particular grid cell as shown in the following equation.
+First, the image is divided into a 16x16 fixed size grid. Then, we calculate the score of each cell based on different criteria. For standard LDRE, our scoring function is the number of keypoints present in a cell, regardless of the keypoint's confidence. For enhanced LDRE, a saliency score $S_{i,j}$ is calculated for each grid cell based on keypoint confidence and whether the keypoint exists in the particular grid cell, as shown in the following equation.
+
+\begin{equation}
+    S_{i,j} = \sum_{k \in K} c_k \cdot \text{dist}(k, \text{cell}_{i,j})
+\end{equation}
+Where $i$ is the index of the row, $j$ is the index of the column, $k$ is the particular keypoint in the set of keypoints $K$, $c_k$ is the confidence of the keypoint, specifically the probability associated with detecting the keypoint from our pose model. $cell_{i,j}$ is the center of the particular grid. Currently, the $dist$ function determines whether the keypoint belongs to a particular cell, outputting 1 if it is and 0 otherwise.
+
+Next, we identify the top-k highest scoring cells and mask them. The idea is that this method acts as a regularizer and forces the model to learn from the patterns of the body, tail, and fur rather than just the face.
 
 An example of LDRE can be seen in figure \ref{fig:ldre_example}, enhanced LDRE is depicted in \ref{fig:enhanced_ldre_example}.
 
@@ -131,42 +134,27 @@ An example of LDRE can be seen in figure \ref{fig:ldre_example}, enhanced LDRE i
     \end{subfigure}
 \end{figure}
 
-\begin{equation}
-    S_{i,j} = \sum_{k \in K} c_k \cdot \text{dist}(k, \text{cell}_{i,j})
-\end{equation}
-Where $i$ is the index of the row, $j$ is the index of the column, $k$ is the particular keypoint in the set of keypoints $K$, $c_k$ is the confidence of the keypoint, specifically the probability associated with detecting the keypoint from our pose model. $cell_{i,j}$ is the center of the particular grid. Currently, the $dist$ function determines whether the keypoint belongs to a particular cell, outputting 1 if it is and 0 otherwise.
-
-Next, we identify top-k highest scoring cells and mask them. The idea is that this method acts as a regularizer and forces the model to learn from the body, tail, and fur patterns rather than just the face.
-
 \subsubsection{Data augmentation}
-CutMix\cite{yun2019cutmix} and MixUp\cite{zhang2017mixup} will be randomly applied with each having a 50\% chance during training to act as regularization and improve the generalization of the model.
+CutMix\cite{yun2019cutmix} and MixUp\cite{zhang2017mixup} will be randomly applied with a 50\% chance during training to act as a regularizer and improve the generalization of the model.
 
 \subsection{Language model}
-There are two approaches explored to improve the LLM performance in the pet knowledge domain. The first is to do a fine-tuning of the backbone Qwen\cite{bai2023qwen} using QLoRA\cite{dettmers2023qlora} and the second is to implement a RAG (Retrieval-Augmented Generation)\cite{lewis2020rag} by accessing the relevant information in the pet knowledge database during the generation process.
+There are two approaches explored to improve LLM performance in the pet knowledge domain. First, fine-tuning of the Qwen backbone\cite{bai2023qwen} using QLoRA\cite{dettmers2023qlora}. Second, implement a RAG (Retrieval-Augmented Generation)\cite{lewis2020rag} by accessing the relevant information in the pet knowledge database during the generation process.
 
 \subsubsection{Fine-tuning of Qwen using QLoRA}
 
-The training data are model question-answer pairs generated from the pet knowledge database. For each information section, 2 to 3 questions are generated. We also tried to generate the dataset for cats by giving the questions to Gemini and taking its responses as the model answers. Each data sample consists of a single question as the "instruction", the breed name as the "input" and the corresponding database information as the "output". In total, the generated conversation dataset contains 2187 training samples and 548 validation samples. This dataset is used to train Qwen.
+The training data are model question-answer pairs generated from the pet knowledge database. For each information section, 2 to 3 questions are generated. We also tried to generate the dataset for cats by giving the questions to Gemini and taking its responses as the model answers. Each data sample consists of a single question as the "instruction", the breed name as the "input", and the corresponding database information as the "output". In total, the generated conversation dataset contains 2187 training samples and 548 validation samples. This dataset is used to train Qwen.
 
 \subsubsection{RAG implementation}
-Regex is used to extract the breed name from the question prompt. The contents of the database for the corresponding breed is loaded and included in the prompt to the LLM. By storing the information of each breed in a different file and organizing the content into sectioned headings, the LLM can quickly find which information is relevant.
-
-We use Qwen\cite{bai2023qwen} as our LLM and finetune using the QLoRA\cite{dettmers2023qlora} approach.
-
-(5 points) What problems did you anticipate? What problems did you encounter? Did the very first thing you tried work?
+Regex is used to extract the breed name from the question prompt. The contents of the database for the corresponding breed are loaded and included in the LLM prompt. By storing the information for each breed in a different file and organizing the content into sectioned headings, the LLM can quickly find relevant information.
 
 \subsection{Problems}
-We anticipate that there would be mainly problems with hardware resources, particularly GPU resources. In practice, this was the main problem that we faced too. We made use of the PACE ICE clusters for GPU resources. Each training run takes about 1-2 hours ranging from 120-200 training epochs.
+The problems we anticipate are the performance of smaller neural network models. Smaller neural network models might not achieve high validation accuracy which would decrease the usability of this application. Another problem we anticipate would be whether adding different modules to our model would actually lead to an increase in validation accuracy.
+
+The problems we encountered are mainly related to hardware resources. Training the model with L40S GPU on the PACE ICE cluster still took 1 hour for each training run. Testing the different configurations took a lot of time. Some of the modules that we added did not appear to have an impact on validation accuracy at first glance, such as the addition of LDRE to MixUp. However, with a different approach to train the model (curriculum learning\cite{bengio2009curriculum}), we were able to achieve an increase in validation accuracy. This will be elaborated on in the experiments section.
 
 The first thing we tried, which is simply using MobileNetV2's pretrained backbone did work as it provided a good baseline for our model. We then tried several different techniques to improve the existing MobileNetV2 backbone.
 
 \section{Experiments and Results}
-
-\subsection{Vision model}
-We measured success by the validation accuracy of our vision model (PetNet) along with the number of parameters of the model. We aim to have a high validation accuracy while keeping the number of parameters of our model small. The loss function we used was Cross-Entropy with the model's predicted label probabilities compared with the actual label. We compare the validation accuracy of PetNet compared to other neural network architectures.
-
-\subsubsection{Hyperparameter tuning}
-We optimized our model by running hyperparameter tuning using Optuna created by Akiba et al\cite{akiba2019optuna}. We run the Optuna script with the following hyperparameters along with their ranges shown in the table below (TODO: add table). The Optuna script is ran on the PACE ICE cluster along with using local GPUs for training. The Optuna script is ran in a distributed manner with a SQLite file as the database with Write-ahead logging. A combination of V100, A100, and L40S is used as the GPU depending on their availability. The batch size is chosen such that it makes full use of the GPU's VRAM (as high as the VRAM allows). A sweep from 1e-6 to 1e-2 for learning rate, optimizer choice of AdamW or SGD, and weight decay from 1e-6 to 1e-2 is inputted into Optuna for hyperparameter tuning.
 
 \begin{table*}[h]
 \begin{center}
@@ -180,7 +168,7 @@ MobileOne-S0 & 2.7805 & 1.2654 & 67.82 & -2.22\\
 + Attention & 0.9515 & 0.9939 & 77.32 & 7.28\\
 + Attn + SelfKD & 1.5542 & 0.9244 & 79.32 & 9.28\\
 + Standard LDRE & 1.566 & 0.9849 & 78.67 & 8.63\\
-+ Enhanced LDRE & 1.5546 & 0.94 & 79.18 & 9.03\\
++ Enhanced LDRE & 1.5546 & 0.94 & 79.18 & 9.14\\
 + MixUp / FixMatch & 2.279 & 0.8348 & 81.65 & 11.61\\
 + MixUp / FixMatch + Std. LDRE & 2.282 & 0.8489 & 81.73 & 11.69\\
 + MixUp / FixMatch + Enh. LDRE & 2.1294 & 0.9789 & 81.25 & 11.21\\
@@ -192,8 +180,14 @@ Curriculum Learning & 1.047 & 0.7296 & 83.69 & 13.65\\
 \label{tab:petnet}
 \end{table*}
 
+\subsection{Vision model}
+We measured success by comparing the validation accuracy of our vision model (PetNet) to 3 different baselines. We aim to have a high validation accuracy while keeping the number of parameters of our model small. We experimented with different configurations of our model to determine which configuration performs the best. Our final configuration (curriculum learning) has 3.06M (million) learnable parameters. The loss function we used was Cross-Entropy with the model's predicted label probabilities compared with the actual label. We compare the validation accuracy of PetNet compared to other neural network architectures in table \ref{tab:petnet}. Overall, we would deem this project as a success.
+
 \subsubsection{Comparison with baselines}
-Pretrained weights for MobileNetV2\cite{sandler2018mobilenetv2}, EfficientNet-BO\cite{tan2019efficientnet}, and MobileOne-S0\cite{vasu2023mobileone} with finetuning is used as our baseline for comparison. Weights for MobileNetV2 are acquired from torchvision\cite{marcel2010torchvision}. Weights for the other 2 models are acquired from PyTorch Image Models (timm)\cite{rw2019timm}. These models are finetuned on our composite dataset for pet classification with the same hyperparameters. The performance of this baseline can be seen in table \ref{tab:petnet}.
+Pretrained weights for MobileNetV2\cite{sandler2018mobilenetv2}, EfficientNet-BO\cite{tan2019efficientnet}, and MobileOne-S0\cite{vasu2023mobileone} with finetuning are used as our baseline for comparison. The weights for MobileNetV2 were acquired from torchvision\cite{marcel2010torchvision}. The weights for the other 2 models were acquired from PyTorch Image Models (timm)\cite{rw2019timm}. These models are finetuned on our composite dataset for pet classification with the same hyperparameters. The performance of this baseline can be seen in table \ref{tab:petnet}.
+
+\subsubsection{Hyperparameter tuning}
+We optimized our model by running hyperparameter tuning using Optuna\cite{akiba2019optuna}. The Optuna script is ran on the PACE ICE cluster along with using local GPUs for training in a distributed manner with a SQLite file as the database with Write-ahead logging. A combination of V100, A100, and L40S is used as the GPU depending on their availability. The batch size is chosen such that it makes full use of the GPU's VRAM (as high as the VRAM allows). A sweep from 1e-6 to 1e-2 for learning rate, optimizer choice of AdamW or SGD, and weight decay from 1e-6 to 1e-2 are inputted into Optuna for hyperparameter tuning.
 
 \begin{figure*}[h]
     \centering
@@ -217,10 +211,10 @@ Pretrained weights for MobileNetV2\cite{sandler2018mobilenetv2}, EfficientNet-BO
 \end{figure*}
 
 \subsubsection{Dual attention}
-The addition of attention mechanisms increased validation accuracy. As we see in figure \ref{fig:attn_train_loss}, training loss decreases smoothly and steadily. As shown in figure \ref{fig:attn_val_loss}, the validation loss also decreases steadily although not as smoothly as the training loss curve. There is no underfitting since both loss curves are decreasing steadily and loss values are not high. There is no overfitting since training loss did not continue decreasing while validation loss plateaus. The validation accuracy in figure \ref{fig:attn_val_acc} is also steadily increasing, surpassing the baseline around epoch 65. Intuitively, this might be due to attention layers increasing the ability of the model and lead the model to generalize better to unseen validation data.
+The addition of attention mechanisms increased validation accuracy. As seen in figure \ref{fig:attn_train_loss}, training loss decreases smoothly and steadily. As shown in figure \ref{fig:attn_val_loss}, the validation loss also decreases steadily, although not as smoothly as the training loss curve. There is no underfitting since both loss curves are decreasing steadily and the loss values are not high. There is no overfitting since the training loss did not continue to decrease while the validation loss plateaus. The validation accuracy in figure \ref{fig:attn_val_acc} is also steadily increasing, surpassing the baseline around epoch 65. Intuitively, this might be due to attention layers increasing the capacity of the model. This enables the model to generalize better to unseen validation data.
 
 \subsubsection{Self KD}
-Next, we tried adding self KD to act as a regularizer and to improve the model's ability to generalize. Still looking at figure \ref{fig:attn_train_loss}, compared to the training loss curve for attention only, adding self KD increases the training loss, although the curve still decreases steadily. Which makes sense because self KD makes training harder with a regularizing effect. As seen in figure \ref{fig:attn_val_loss}, the curve looks similar to the one with attention only, but the validation loss is lower after adding self KD. This correlates to our validation accuracy curve in figure \ref{fig:attn_val_acc}, where the 2 curves look similar, but ultimately adding self KD increased the model's validation accuracy. No underfitting or overfitting is observed in this case too. This lead to a great increase in validation accuracy of 9.28\% as shown in table \ref{tab:petnet}.
+Next, we tried adding self KD to act as a regularizer and to improve the model's ability to generalize. As seen in figure \ref{fig:attn_train_loss}, compared to the training loss curve for attention only, adding self KD increases the training loss, although the curve still decreases steadily. This makes sense because self KD makes training harder with a regularizing effect. As seen in figure \ref{fig:attn_val_loss}, the curve looks similar to the one with attention only, but the validation loss is lower after adding self KD. This correlates to our validation accuracy curve in figure \ref{fig:attn_val_acc}, where the 2 curves look similar, but ultimately adding self KD increased the model's validation accuracy. In this case, no underfitting or overfitting is observed. This led to a great increase in validation accuracy of 9.28\% compared to the baseline, as shown in table \ref{tab:petnet}.
 
 \begin{figure*}[h]
     \centering
@@ -244,7 +238,7 @@ Next, we tried adding self KD to act as a regularizer and to improve the model's
 \end{figure*}
 
 \subsubsection{LDRE}
-Both standard and enhanced LDRE is then added to our model in order to experiment with this new method. From table \ref{tab:petnet} we see that training loss for both versions of LDRE is much higher than the training loss for base configuration + attention (1.55~ vs 0.9515). This suggests that LDRE is able to act as a regularizer. However, if we compare the training loss curve in figure \ref{fig:ldre_train_loss} of the 3 configs (attn + skd, + ldre, + en ldre), we see that the loss curve looks almost identical. The validation loss curve in figure \ref{fig:ldre_val_loss} and validation accuracy curve in figure \ref{fig:ldre_val_acc} also looks similar, which might suggest that LDRE did not have much impact on increasing the model's ability to generalize. Intuitively, this might be due to self KD already acting as a strong enough regularizer, decreasing the impact of LDRE as a regularizer.
+Both standard and enhanced LDRE is then added to our model in order to experiment with this new method. From table \ref{tab:petnet} we see that training loss for both versions of LDRE is much higher than the training loss for base configuration + attention (1.55~ vs 0.9515). This suggests that LDRE can act as a regularizer. However, if we compare the training loss curve in figure \ref{fig:ldre_train_loss} of the 3 configurations (attn + skd, + ldre, + en ldre), we see that the loss curve looks almost identical. The validation loss curve in figure \ref{fig:ldre_val_loss} and the validation accuracy curve in figure \ref{fig:ldre_val_acc} also looks similar, which might suggest that LDRE did not have much impact on increasing the model's ability to generalize. Intuitively, this might be due to self KD already acting as a strong enough regularizer, decreasing the impact of LDRE as a regularizer.
 
 \begin{figure*}[h]
     \centering
@@ -268,7 +262,7 @@ Both standard and enhanced LDRE is then added to our model in order to experimen
 \end{figure*}
 
 \subsubsection{MixUp / FixMatch}
-From the training loss curve in figure \ref{fig:mup_train_loss}, we see that the training loss curve for the 3 MixUp + LDRE configurations looks similar, steadily decreasing. This is the same with the validation loss curve in figure \ref{fig:mup_val_loss}. Under / overfitting does not appear to be happening with these 3 configurations. From the validation accuracy curve in figure \ref{fig:mup_val_acc}, we see that all 3 configurations does not differ too much, suggesting that the regularizing effect of LDRE might be similar to the regularizing effect that MixUp provides, thus the effect on validation accuracy is not that apparent.
+From the training loss curve in figure \ref{fig:mup_train_loss}, we see that the training loss curve for the 3 MixUp + LDRE configurations looks similar, steadily decreasing. This is the same as the validation loss curve in figure \ref{fig:mup_val_loss}. Under / overfitting does not appear to be happening with these 3 configurations. From the validation accuracy curve in figure \ref{fig:mup_val_acc}, we see that all 3 configurations do not differ too much, suggesting that the regularizing effect of LDRE might be similar to the regularizing effect that MixUp provides, thus the effect on validation accuracy is not that apparent.
 
 \begin{figure}[h]
     \centering
@@ -286,10 +280,7 @@ From the training loss curve in figure \ref{fig:mup_train_loss}, we see that the
 \end{figure}
 
 \subsubsection{Curriculum learning}
-In our previous section, we found that combining MixUp / FixMatch and LDRE did not have much impact to validation accuracy. Therefore, we experimented with a curriculum learning\cite{bengio2009curriculum} approach. We train the first 100 epochs with attention, self KD, and MixUp. Then, we train the remaining 20 epochs with attention, self KD, and enhanced LDRE (MixUp is disable). In practice, we finetuned from the best model configuration we get so far with the attention, self KD, and MixUp setup, then we run finetuning with MixUp disabled and enhanced LDRE enabled. From figure \ref{fig:curriculum_jump}, we can see that we are able to get a 2.34\% jump in validation accuracy compared to the MixUp only setup. Compared to popular baseline models, our final setup is able to achieve a validation accuracy of 83.69\%. Refer to figure \ref{fig:sota_comparison} to see a comparison of our model to popular baselines.
-
-\subsection{Language Model}
-For our evaluation of the language model performance, we used the LLM-as-a-judge method with Gemini 2.5 Flash \cite{gemini2.5}.  This method is used to evaluate the performance of four possible combinations: the Qwen2.5 base model itself, the Qwen2.5 base model with RAG, the fine-tuned Qwen2.5 base model, and the fine-tuned Qwen2.5 base model with RAG. The scores from each method are as the following table.
+In our previous section, we found that combining MixUp / FixMatch and LDRE did not have much impact on validation accuracy. Therefore, we experimented with a curriculum learning approach\cite{bengio2009curriculum}. We train the first 100 epochs with attention, self KD, and MixUp. Then, we train the remaining 20 epochs with attention, self KD, and enhanced LDRE (MixUp is disable). In practice, we finetuned from the best model configuration we get so far with the attention, self KD, and MixUp setup, then we run finetuning with MixUp disabled and enhanced LDRE enabled. From figure \ref{fig:curriculum_jump}, we can see that we are able to get a 2.34\% jump in validation accuracy compared to the MixUp only setup. Compared to popular baseline models, our final setup is able to achieve a validation accuracy of 83.69\%. Refer to figure \ref{fig:sota_comparison} to see a comparison of our model to popular baselines.
 
 \begin{table*}[h!]
 \centering
@@ -324,9 +315,13 @@ Fine-tuned Model + RAG
 \hline
 \end{tabular}
 \caption{LLM Performance Summary}
+\label{tab:llm_performance}
 \end{table*}
 
-From these results, it can be observed that the base model + RAG variant is the most successful, with a 20.50\% improvement of the LLM score, with the highest win rate against the base model. It is notably better at providing more accurate information. The fine-tuned model, in contrast, saw a couple of major score drops when it outputs the wrong information, or sometimes even the information of another breed. This is indicative of the LLM not being able to retain specific information about each breed distinctly. This can be due to flaws in the training dataset itself. It is too small and contains too little variation in phrasings and sentences. Furthemore, since the conversations are automatically created from the sections of the pet knowledge database, the model answer often contains extraneous data that is not needed to asnwer the question. This results in the fine-tuned model's answers being long-winded and includes irrelevant information. Overall, the breed specific pet knowledge contains complex and highly specific data, which makes it more suited for RAG implementation than fine tuning.
+\subsection{Language Model}
+For our evaluation of language model performance, we used the LLM-as-a-judge method with Gemini 2.5 Flash \cite{gemini2.5}. This method is used to evaluate the performance of four possible combinations: the Qwen2.5 base model itself, the Qwen2.5 base model with RAG, the fine-tuned Qwen2.5 base model, and the fine-tuned Qwen2.5 base model with RAG. The scores of each method are shown in table \ref{tab:llm_performance}.
+
+From these results, it can be observed that the base model + RAG variant is the most successful, with a 20.50\% improvement in the LLM score, with the highest win rate against the base model. It is notably better at providing more accurate information. The fine-tuned model, in contrast, saw a couple of major score drops when it outputs the wrong information, or sometimes even the information of another breed. This is indicative of the LLM not being able to retain specific information about each breed distinctly. This may be due to flaws in the training dataset itself. It is too small and contains too little variation in phrasings and sentences. Furthermore, since conversations are automatically created from sections of the pet knowledge database, the model answer often contains extraneous data that are not needed to answer the question. This results in the fine-tuned model's answers being long-winded and including irrelevant information. Overall, breed specific pet knowledge contains complex and highly specific data, which makes it more suited for RAG implementation than fine tuning.
 
 %-------------------------------------------------------------------------
 
@@ -339,7 +334,8 @@ Student Name & Contributed Aspects & Details \\
 \hline\hline
 Team Member 1 & Data Creation and Implementation & Scraped the dataset for this project and trained the CNN of the encoder. Implemented attention mechanism to improve results. \\
 Team Member 2 & Implementation and Analysis & Trained the LSTM of the encoder and analyzed the results. Analyzed effect of number of nodes in hidden state.  Implemented Convolutional LSTM. \\
-Hwaai Kang Kee & Tuning, Analysis, Report Writing & Run hyperparamter tuning on PACE using Optuna, modified the training script for distributed training, analyzed experiment results and wrote the experiments and results section in the report. \\
+Bright Wang & Data creation, Implementation, Experimentation & Gathered and created the composite dataset for breed classification + animal pose. Proposed and implemented the LDRE method. Implemented the majority of PetNet and pose model. Experimented with different configurations for PetNet.\\
+Hwaai Kang Kee & Tuning, Analysis, Report Writing & Run hyperparamter tuning on PACE using Optuna, modified the training script for distributed training, analyzed experiment results and wrote the majority of the report excluding the LLM part. \\
 Cindy Josephine Surjadi & Data Creation, Implementation, Analysis & Scraped the dataset for the RAG pet knowledge database, generated conversation dataset from pet database, implemented RAG with Qwen to improve LLM performance, analyzed LLM experiment results. \\
 \hline
 \end{tabular}
