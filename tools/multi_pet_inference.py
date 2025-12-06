@@ -328,8 +328,8 @@ class MultiPetDetector:
 def main():
     parser = argparse.ArgumentParser(description='PetBuddy Multi-Pet Inference')
     parser.add_argument('--image', type=str, required=True, help='Path to input image')
-    parser.add_argument('--classifier', type=str, required=True, help='Path to PetNet weights (.pt)')
-    parser.add_argument('--detector', type=str, default='yolov8n.pt', help='Path to YOLO weights')
+    parser.add_argument('--classifier', type=str, default='runs/petnet_fine_tune/best.pt', help='Path to PetNet weights (.pt)')
+    parser.add_argument('--detector', type=str, default='yolov11n.pt', help='Path to YOLO weights')
 
     #
     parser.add_argument('--output_dir', type=str, default='.',

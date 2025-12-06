@@ -50,13 +50,26 @@ pip install -r requirements.txt
 
 ## 🎮 Quick Start
 
-```python
-from app.backend import PetBuddyPipeline
-
-pipeline = PetBuddyPipeline()
-result = pipeline.process_image("your_pet_photo.jpg")
-print(result)
+```bash
+# Use multi_pet_inference.py for pet detection and classification
+python tools/multi_pet_inference.py \
+    --image "your_pet_photo.jpg" \
+    --classifier "path/to/your/petnet/weights.pt" \
+    --detector "yolov8n.pt" \
+    --det_conf 0.2 \
+    --cls_conf 0.1 \
+    --save
 ```
+
+Parameter Description:
+- `--image`: Input image path
+- `--classifier`: PetNet classifier weights file path (.pt)
+- `--detector`: YOLO detector weights file path (default: yolov8n.pt)
+- `--det_conf`: YOLO detection confidence threshold (default: 0.2)
+- `--cls_conf`: PetNet classification confidence threshold (default: 0.1)
+- `--save`: Save visualization result image
+- `--output_dir`: Output directory (default: current directory)
+- `--img_size`: Inference image size (default: 224)
 
 ## 📁 Project Structure
 
