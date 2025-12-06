@@ -9,7 +9,7 @@ api_key = "your-api-key-here"
 client = genai.Client(api_key=api_key)
 
 # Folder with JSON files
-input_dir = "dog_database"
+input_dir = "pet_database"
 output_train = "dataset_train.jsonl"
 output_val = "dataset_val.jsonl"
 

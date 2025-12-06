@@ -6,7 +6,7 @@ import re
 import os
 
 # Data is outputed to dog_databse directory
-os.makedirs("dog_database", exist_ok=True)
+os.makedirs("pet_database", exist_ok=True)
 
 breed_url = {
     'Affenpinscher':"https://www.dog-breeds.net/affenpinscher/",
@@ -258,7 +258,7 @@ if __name__ == "__main__":
 
         # --- Save to file ---
         filename = safe_filename(breed) + ".json"
-        filepath = os.path.join("dog_database", filename)
+        filepath = os.path.join("pet_database", filename)
 
         with open(filepath, "w", encoding="utf-8") as f:
             json.dump(data, f, ensure_ascii=False, indent=2)

@@ -3,7 +3,7 @@ import json
 import re
 
 # CONFIGURATION
-DB_PATH = "./pet_knowlege/dog_database/"
+DB_PATH = "./pet_knowlege/pet_database/"
 
 class DogBreedRAG:
     def __init__(self, db_path):
