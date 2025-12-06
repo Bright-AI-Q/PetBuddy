@@ -6,6 +6,7 @@
 \usepackage{graphicx}
 \usepackage{amsmath}
 \usepackage{amssymb}
+\usepackage{subcaption}
 
 % Include other packages here, before hyperref.
 
@@ -24,9 +25,9 @@
 \begin{document}
 
 %%%%%%%%% TITLE
-\title{PetBuddy: A Pet Recognition and AI Feeding Advisor\\CS 7643}
+\title{PetBuddy: A Pet Breed Recognition and Care Advisor\\CS 7643\\https://github.com/Bright-AI-Q/PetBuddy}
 
-\author{Hwaai Kang Kee*, Bright Wang*, Cindy Surjadi*, Jinyang Deng\\
+\author{Hwaai Kang Kee*, Bright Wang*, Cindy Surjadi*, Jinyang Deng*\\
 Georgia Institute of Technology\\
 {\tt\small hkee7@gatech.edu}\\
 {\tt\small hwang3200@gatech.edu}\\
@@ -50,126 +51,266 @@ Georgia Institute of Technology\\
 
 %%%%%%%%% ABSTRACT
 \begin{abstract}
-   There are approximately 200 - 350 breeds of dogs and 45 - 70 breeds of cats. Different types of breeds can have different care instructions. Thus, it can be difficult for pet owners to keep track of the best ways to care for their pets. This project aims to create a product that will generate personalized pet care instructions based on an image of the pet. We introduce our own multiclass pet breed classifier called PetNet, which is based on MobileNetV2's architecture~\cite{sandler2018mobilenetv2}. We aim for this to be a lightweight network that could be used in resource constrained environments such as mobile devices. Together with Qwen~\cite{bai2023qwen} as the LLM component to generate pet care instructions.
+   There are approximately 200 - 350 breeds of dogs and 45 - 70 breeds of cats. Different types of breeds can have different care instructions. Thus, it can be difficult for pet owners to keep track of the best ways to care for their pets. This project aims to create an application that will generate breed specific pet care instructions based on an image of the pet. We introduce our own multiclass pet breed classifier called PetNet, which is based on MobileNetV2's architecture~\cite{sandler2018mobilenetv2}. We aim for this to be a lightweight network that could be used in resource constrained environments such as mobile devices. There is also a language model component, we would use Qwen~\cite{bai2023qwen} to generate breed specific pet care instructions.
 \end{abstract}
 
 %%%%%%%%% BODY TEXT
 \section{Introduction/Background/Motivation}
+\subsection{Problem}
+The main problem we are trying to solve is the multiclass classification of pet breeds in resource constrained environments such as mobile phones. Classifying pet breeds is a challenging problem because there are many similarities between breeds. The differences between breeds are very subtle, often relying on differences such as ear position or snout shape. Oftentimes, the appearance of the same breed could appear wildly different due to fur pattern and color, as well as the grooming of the pet.
 
-(5 points) What did you try to do? What problem did you try to solve? Articulate your objectives using absolutely no jargon.\\
-The main problem we are trying to solve is multiclass pet breed classification on resource constrained environments such as mobile phones. Multiclass breed classification is a challenging problem because there are many similarities between breeds. The differences between breeds are very subtle, often relying on differences such as ear position or snout shape. Oftentimes, the appearance of the same breed could appear wildly different due to fur pattern and color, as well as the grooming of the pet. However, the current literature on the approaches to this problem is focused on larger neural network architectures. Inference time and hardware requirements make these approaches infeasible for local inference in mobile devices.
+\subsection{Current practice}
+The current literature on approaches to this problem is focused on larger neural network architectures. In 2019, Borwarnginn et al. compared the performance of conventional approaches based on Local Binary Pattern (LBP) and Histogram of Oriented Gradient (HOG), as well as the deep learning based approach using Convolutional Neural Networks (CNN) with transfer learning\cite{8929955}. In this paper, they worked on a subset of the Columbia dogs with parts dataset\cite{10.1007/978-3-642-33718-5_13}. They selected 20/133 dog breeds with the constraint that each breed has more than 60 images. For each breed, 40 images are used for training and 20 images are used for testing. They were able to achieve 96.75\% accuracy using CNNs compared to 79.25\% using HOG descriptors.
 
-(5 points) How is it done today, and what are the limits of current practice?\\
-The problem of classifying pet breeds using a model has been attempted multiple times by different researchers. In 2012, Parkhi et al. approached dog and cat breed classification using Support Vector Machines (SVM) and Gaussian Mixture Models (GMM) among other models and provided a comparison between them\cite{6248092}. The authors provided comprehensive reports on the performance of different models in this paper.
+In 2021, the same group of authors attempted the problem again\cite{borwarnginn2021knowing} with the entire Columbia dogs with parts dataset\cite{10.1007/978-3-642-33718-5_13} instead of a subset of it. This time, the authors evaluated the performance of 3 different pretrained CNNs with various data augmentation settings. The 3 CNN architectures used are NASNet\cite{qin2019nasnet}, InceptionV3\cite{szegedy2016rethinking}, and MobileNetV2\cite{sandler2018mobilenetv2}. The authors were able to achieve the highest accuracy of 89.92\% using the NASNet architecture.
 
-Similarly, in 2012, Jiongxin et al. introduced a method called parts localization in dog breeds\cite{10.1007/978-3-642-33718-5_13}. The authors built examplar-based geometric and appearance models of dog breeds and their face parts along with localizing different parts of a dog such as ears or faces in order to improve classification of the model.
+\subsubsection{Limits}
+Inference time and hardware requirements make the current practice infeasible for local inference in mobile devices. In our paper, we attempt to build on top of the MobileNetV2 architecture since our goal is to run local inference on resource constrained devices such as mobile phones with reasonable inference times.
 
-Subsequently, deep learning methods became popular, and there were multiple attempts to apply deep learning methods to the classification of pet breeds. In 2019, Borwarnginn et al. compared the performance of conventional based approaches using Local Binary Pattern (LBP) and Histogram of Oriented Gradient (HOG), as well as the deep learning based approach using Convolutional Neural Networks (CNN) with transfer learning\cite{8929955}. In this paper, they worked on a subset of the Columbia dogs with parts dataset\cite{10.1007/978-3-642-33718-5_13}. They selected 20 out of 133 dog breeds with the constraint that each breed has more than 60 images. For each breed, 40 images are used for training and 20 images are used for testing. They were able to achieve a 96.75\% accuracy using CNNs compared to 79.25\% using HOG descriptors.
+\subsection{Target audience}
+Our target audience for this application are pet owners who want to take better care of their pets. We aim for this application to be simple to use such that the user doesn't need to scour the web for breed specific care instructions.
 
-In 2021, the same group of authors attempted the problem again\cite{borwarnginn2021knowing}, but they worked on the entire Columbia dogs with parts dataset\cite{10.1007/978-3-642-33718-5_13} instead of a subset of it. This time, the authors evaluated the performance of 3 different pretrained CNNs with various data augmentation settings. The 3 CNN architectures used are NASNet\cite{qin2019nasnet}, InceptionV3\cite{szegedy2016rethinking}, and MobileNetV2\cite{sandler2018mobilenetv2}. The authors were able to achieve the highest accuracy of 89.92\% using the NASNet architecture. In our paper, we attempt to build on top of the MobileNetV2 architecture since our goal is to run local inference on resource constrained devices such as mobile phones.
+From a deep learning perspective, this project tackles a few different problems. Namely, fine grained image classification, small models running on resource constrained hardware, and LLM training with limited hardware. If we are successful, we would be able to better understand these problems and improve current approaches to these problems.
 
-The limits of the current practice are that the current work focuses on larger neural network architectures which are infeasible to run in a mobile device. We aim to create a model that can run local inference in a reasonable amount of time.
+\subsection{Dataset}
+\subsubsection{Classification dataset}
+We used a combination of the Stanford dogs dataset\cite{khosla2011novel} and the Oxford pets dataset\cite{6248092}. The Stanford dogs dataset includes 20,580 annotated images of dogs belonging to 120 breeds. Each image is annotated with a bounding box and a class label. Each breed contains 150-200 images. The Oxford pets dataset, on the other hand, includes 7390 images of cats and dogs of 37 different breeds. 25 are dogs and 12 are cats. The Oxford dogs dataset contains about 200 images for each breed.
 
-(5 points) Who cares? If you are successful, what difference will it make?
+Our combined dataset contains 27,970 annotated images of cats and dogs belonging to 144 breeds. Of these, 136 are dogs and 12 are cats. The number of cat breeds is much less than that of dogs, but each cat breed contains 150-200 images, so it is still sufficient for our vision model to learn a good representation for cats. We then split the images into training, validation, and test set in a 8:1:1 ratio. We will name this our composite dataset for pet classification.
 
-% In 2011, Khosla et al. introduced a novel dataset for fine-grained image categorization which they named Stanford dogs\cite{khosla2011novel}. In the introduction, the authors explained why this problem of breed classification is challenging. First, since it is a fine-grained categorization problem, there is little inter-class variation. For example, the basset hound and bloodhound share very similar facial characteristics but differ significantly in their color, while the Japanese spaniel and papillion share very similar color but greatly differ in their facial characteristics. Second, there is very large intra-class variation. The images show that dogs within a class could have different ages (e.g. beagle), poses (e.g. blenheim spaniel), occlusion/self-occlusion and even color (e.g. Shih-tzu).
+\subsubsection{Pose dataset}
+The Ap-10k\cite{yu2021ap}, Animal Pose\cite{Cao_2019_ICCV}, and StanfordExtra dog\cite{biggs2020left} datasets are used to finetune YOLOv8-pose. This pose model uses pretrained weights provided by Ultralytics to accurately detect 5 keypoints of pets. That is, left eye, right eye, left ear, right ear, and nose. This will be used in our Landmark-Driven Region Erasing (LDRE) method, which is a data augmentation method that will be further elaborated in the next section. This will be our composite dataset for animal pose.
 
-Pet owners that care about breed specific pet care instruction would care about this problem. Some pet breeds are harder to care for and might need different environments to thrive. Before owning a pet, potential pet owners could take a photo of the pet they are interested in, then our program would generate detailed pet care instructions for the specific breed. The potential pet owners would have more information on whether they could properly care for their pet, and decide whether they are up to the task of taking good care of it.
-
-If we are successful, we would be able to help pet owners to take better care of their pets. Similarly, we would be tackling the challenging problem of fine-grained image categorization as detailed in the original Stanford dogs paper\cite{khosla2011novel}. Solving this problem could let us understand the specific issues with fine-grained image classification in resource constrained environments.
-
-(5 points) What data did you use? Provide details about your data, specifically choose the most important aspects of your data mentioned \href{https://arxiv.org/abs/1803.09010}{here}. You don’t have to choose all of them, just the most relevant.
-
-We use a combination of the Stanford dogs dataset\cite{khosla2011novel} and the Oxford pets dataset\cite{6248092}. The Stanford dogs dataset includes 20,580 annotated images of dogs belonging to 120 breeds. Each image is annotated with a bounding box and object class label. Each breed contains 150-200 images. The Oxford pets dataset on the other hand includes 7390 images of cats and dogs of 37 different breeds. 25 are dogs and 12 are cats. The Oxford dogs dataset contains about 200 images for each breed.
-
-Our combined dataset contains 27,970 annotated images of cats and dogs belonging to 144 breeds. Of those, 136 are dogs and 12 are cats. The number of cat breeds are much less than dogs, but each cat breed contains 150-200 images so it is still sufficient for our vision model to learn a good representation for cats. We then split the images into training, validation, and test set in a 8:1:1 ratio.
-
-
+\subsubsection{Pet knowledge database}
+For the pet knowledge database used for the LLM part, the data is scraped from pet breed information websites \cite{dog-breeds-net} \cite{wisdom-panel-cat}. This data is organized into individual file for each breed and further divided into subsections based on the relevant headings. The pet knowledge database contains information on general breed overview, care instructions, grooming, exercise, health, temperament, family suitability, training, and diet. Data missing in these categories are added using Gemini 2.5\cite{gemini2.5}.
 
 %-------------------------------------------------------------------------
 %------------------------------------------------------------------------
 \section{Approach}
 
-(10 points) What did you do exactly? How did you solve the problem? Why did you think it would be successful? Is anything new in your approach?
-
-We separate our project into 2 parts. First is the vision model, where we perform multi-class classification and assign one label to the image. We did not do multi-label classification since the majority of our training data contains only 1 pet breed per image. Second is the language model, where we generate pet care instructions based on the specific breed of the pet.
-
-\subsection{Data Augmentation}
-\subsubsection{Local Dropout Random Erasing (LDRE)}
-This is a data augmentation technique devised by Bright Wang built on top of the Random Erasing method introduced by Zhong et al.\cite{zhong2020random}. The Grid-based dropping mechanism is inspired by GridMask\cite{chen2020gridmask}. The Enhanced LDRE part which uses keypoints to guide dropping is inspired by the "Hide-and-Seek" paper by Krishna and Yong\cite{kumar2017hide}. (Provide more details here)
-
-\subsubsection{CutMix + FixMatch}
-We randomly apply one of CutMix\cite{yun2019cutmix} or FixMatch\cite{sohn2020fixmatch} to each image in training data to help the model generalize better and increase regularization of the model. (Provide evidence)
+We separate our project into 2 parts. First, the vision model, where we perform multi-class classification and assign one label to the image. Second, the language model, where we generate pet care instructions based on the specific breed of the pet.
 
 \subsection{Vision model}
-We use MobileNetV2\cite{sandler2018mobilenetv2} as the backbone architecture with pretrained weights as our starting network. We then added several modifications to the architecture in an attempt to improve it.
+We use MobileNetV2\cite{sandler2018mobilenetv2} as the backbone architecture with pretrained weights as our starting network. We then added several modifications to the architecture in an attempt to improve it. For a particular image, object detection is first done using YOLOv8 pretrained weights\cite{10533619} provided by Ultralytics without finetuning to generate bounding boxes around cats and dogs. Then, the bounding boxes that contain cats or dogs will be fed to our custom PetNet architecture to perform classification.
 
 \subsubsection{Dual attention mechanism}
-We implemented the dual attention mechanism\cite{fu2019dual} introduced by Fu et al. as one of our modules in PetNet. We found that adding dual attention increased validation accuracy of our model. (Provide evidence)
-
-\subsubsection{Inverted Residual Block (IRB)}
-We used the IRB\cite{sandler2018mobilenetv2} introduced in MobileNetV2 by directly using the torchvision library\cite{marcel2010torchvision}. Adding IRBs increased validation accuracy of our model. (Provide evidence)
+2 attention mechanisms are added after the Inverted Residual Block (IRB) layers in the original MobileNetV2 architecture. First, Efficient Channel Attention (ECA) from ECA-net\cite{Wang_2020_CVPR} is used as the first attention mechanism. Second, learnable 2D positional encodings introduced by DEtection TRansformers (DETR)\cite{carion2020end} are added to our image features. To handle varying input resolutions without training, the dynamic interpolation strategy introduced in Vision Transformers (ViT)\cite{dosovitskiy2020image} is used to resize our learnable positional encodings to match the current dimensions of the image features.
 
 \subsubsection{Self Knowledge Distillation (KD)}
-We used self KD introduced by Yun et al.\cite{Yun_2020_CVPR}. We find that adding self KD helped the model generalize better and increase regularization of the model. (Provide evidence)
+A self KD strategy inspired by Zhang et al.\cite{zhang2019your} is implemented, where auxiliary heads at intermediate stages are trained to mimic the final classification layer's soft prediction. Auxiliary classifiers are added to stage 2 and stage 3 of the MobileNetV2 architecture, which acts as a student. The last classifier (stage 4) acts as the teacher. We compute this loss as the KL divergence between the student and the teacher logits with the following equation. This loss is added to our cross entropy loss for classification.
+\begin{equation}
+    \mathcal{L}_{KD} = \sum_{i \in \{2,3\}} \alpha_i \cdot T^2 \cdot \mathcal{KL} \left( \sigma \left( \frac{z_t}{T} \right), \sigma \left( \frac{z_{s_i}}{T} \right) \right)
+\end{equation}
+Where $i$ is the index of the stage starting from 1, $\alpha_i$ is the weight of the loss of the stage, $T$ is the temperature, which is a scalar used to scale the output probabilities, $z_t$ are the teacher's logits, and $z_{s_i}$ are the student's logits.
+
+\subsubsection{Landmark-Driven Random Erasing (LDRE)}
+This is a new data augmentation technique devised by Bright Wang built on top of Random Erasing\cite{zhong2020random}. The Grid-based dropping mechanism is inspired by GridMask\cite{chen2020gridmask}. This method is similar to the one introduced by Kumar et al.\cite{kumar2017hide} but instead of random grid masking, LDRE explicitly targets semantic regions such as the head and body to force the model to not rely too heavily on certain semantic features of the model. Instead of random occlusion, LDRE performs semantic occlusion.
+
+Ultralytics\cite{yolov8_ultralytics} pretrained weights for YOLOv8-pose is used to identify 5 key anatomical keypoints of pets: left eye, right eye, left ear, right ear, and nose. However, YOLOv8-pose is initially trained to identify keypoints in humans instead of dogs and cats. This leads to low accuracy in identifying keypoints in dogs and cats. That is why we finetuned the YOLOv8-pose model with the composite dataset for animal pose.
+
+First, the image is divided into a 16x16 fixed size grid. Then, we calculate the score of each cell based on different criteria. For standard LDRE, our scoring function is the number of keypoints present in a cell, regardless of the keypoint's confidence. For enhanced LDRE, a saliency score $S_{i,j}$ is calculated for each grid cell based on keypoint confidence and whether the keypoint exists in the particular grid cell, as shown in the following equation.
+
+\begin{equation}
+    S_{i,j} = \sum_{k \in K} c_k \cdot \text{dist}(k, \text{cell}_{i,j})
+\end{equation}
+Where $i$ is the index of the row, $j$ is the index of the column, $k$ is the particular keypoint in the set of keypoints $K$, $c_k$ is the confidence of the keypoint, specifically the probability associated with detecting the keypoint from our pose model. $cell_{i,j}$ is the center of the particular grid. Currently, the $dist$ function determines whether the keypoint belongs to a particular cell, outputting 1 if it is and 0 otherwise.
+
+Next, we identify the top-k highest scoring cells and mask them. The idea is that this method acts as a regularizer and forces the model to learn from the patterns of the body, tail, and fur rather than just the face.
+
+An example of LDRE can be seen in figure \ref{fig:ldre_example}. The enhanced version does the same masking with Gaussian noise, but with different selection criteria of cells.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.3\textwidth]{latex/images/ldre_example.png}
+    \caption{LDRE example, note the ears and beginning of legs are masked with Gaussian noise}
+    \label{fig:ldre_example}
+\end{figure}
+
+\subsubsection{Data augmentation}
+CutMix\cite{yun2019cutmix} and MixUp\cite{zhang2017mixup} will be randomly applied with a 50\% chance during training to act as a regularizer and improve the generalization of the model.
 
 \subsection{Language model}
+There are two approaches explored to improve LLM performance in the pet knowledge domain. First, fine-tuning of the Qwen backbone\cite{bai2023qwen} using QLoRA\cite{dettmers2023qlora}. Second, implement a RAG (Retrieval-Augmented Generation)\cite{lewis2020rag} by accessing the relevant information in the pet knowledge database during the generation process.
 
-We use Qwen\cite{bai2023qwen} as our LLM and finetune using the QLoRA\cite{dettmers2023qlora} approach.
+\subsubsection{Fine-tuning of Qwen using QLoRA}
 
-(5 points) What problems did you anticipate? What problems did you encounter? Did the very first thing you tried work?
+The training data are model question-answer pairs generated from the pet knowledge database. For each information section, 2 to 3 questions are generated. We also tried to generate the dataset for cats by giving the questions to Gemini and taking its responses as the model answers. Each data sample consists of a single question as the "instruction", the breed name as the "input", and the corresponding database information as the "output". In total, the generated conversation dataset contains 2187 training samples and 548 validation samples. This dataset is used to train Qwen.
+
+\subsubsection{RAG implementation}
+Regex is used to extract the breed name from the question prompt. The contents of the database for the corresponding breed are loaded and included in the LLM prompt. By storing the information for each breed in a different file and organizing the content into sectioned headings, the LLM can quickly find relevant information.
 
 \subsection{Problems}
-We anticipate that there would mainly be problems with hardware resources, particularly GPU resources. In practice, this was the main problem that we faced too. We made use of the PACE ICE clusters for GPU resources. Each training run takes about 1-2 hours ranging from 120-200 training epochs.
+The problems we anticipate are the performance of smaller neural network models. Smaller neural network models might not achieve high validation accuracy, which would decrease the usability of this application. Another problem we anticipate would be whether adding different modules to our model would actually lead to an increase in validation accuracy.
 
-The first thing we tried, which is simply using MobileNetV2's pretrained backbone did work as it provided a good baseline for our model. We went on to try several different techniques in order to improve the existing MobileNetV2 backbone.
+The problems we encountered are mainly related to hardware resources. Training the model with L40S GPU on the PACE ICE cluster still took 1 hour for each training run. Testing the different configurations took a lot of time. Some of the modules that we added did not appear to have an impact on validation accuracy at first glance, such as the addition of LDRE to MixUp. However, with a different approach to train the model (curriculum learning\cite{bengio2009curriculum}), we were able to achieve an increase in validation accuracy. This will be elaborated on in the experiments section.
 
-\textbf{Important: Mention any code repositories (with citations) or other sources that you used, and specifically what changes you made to them for your project. }
+The first thing we tried, which is simply using MobileNetV2's pretrained backbone did work, as it provided a good baseline for our model. We then tried several different techniques to improve the existing MobileNetV2 backbone.
 
 \section{Experiments and Results}
 
-(10 points) How did you measure success? What experiments were used? What were the results, both quantitative and qualitative? Did you succeed? Did you fail? Why? Justify your reasons with arguments supported by evidence and data.
-
-\subsection{Vision model}
-We measured success by the validation accuracy of our vision model (PetNet) along with the number of parameters of the model. We aim to have a high validation accuracy while keeping the number of parameters of our model small. The loss function we used was Cross-Entropy with the model's predicted label probabilities compared with the actual label. Refer to table \ref{tab:petnet} for information on how different modules affect the performance of PetNet. (Add in more sections with how each module improves the model)
-
-\subsubsection{CutMix + FixMatch}
-\subsubsection{Dual attention mechanism}
-\subsubsection{Inverted Residual Block (IRB)}
-\subsubsection{Self Knowledge Distillation (KD)}
-
-\subsubsection{Hyperparameter tuning}
-We optimized our model by running hyperparameter tuning using Optuna created by Akiba et al\cite{akiba2019optuna}. We run the Optuna script with the following hyperparameters along with their ranges shown in the table below (TODO: add table). The Optuna script is ran on the PACE ICE cluster along with using local GPUs for training. The Optuna script is ran in a distributed manner with a SQLite file as the database with Write-ahead logging. A combination of V100, A100, and L40S is used as the GPU depending on their availability. The batch size is chosen such that it makes full use of the GPU's VRAM (as high as the VRAM allows).
-
-\begin{table*}
+\begin{table*}[h]
 \begin{center}
-\begin{tabular}{|l|c|p{2cm}|}
+\begin{tabular}{|l|l|l|l|l|}
 \hline
-Model & Mean accuracy & Params (M) \\
+Method / Configuration & Tr. loss & Val. loss & Val. acc(\%) & Gain (val acc, \%) \\
 \hline\hline
-Base PetNet & xx & xx \\
-With dual attention & xx & xx \\
-With self KD & xx & xx \\
-With LDRE & xx & xx \\
-With enhanced LDRE & xx & xx \\
-With CutMix + FixMatch & xx & xx \\
-With all modules & xx & xx \\
+MobileNetV2 (Baseline) & 2.1131 & 1.23 & 70.04 & -\\
+EfficientNet-B0 & 2.4145 & 0.8942 & 76.88 & 6.84\\
+MobileOne-S0 & 2.7805 & 1.2654 & 67.82 & -2.22\\
++ Attention & 0.9515 & 0.9939 & 77.32 & 7.28\\
++ Attn + SelfKD & 1.5542 & 0.9244 & 79.32 & 9.28\\
++ Standard LDRE & 1.566 & 0.9849 & 78.67 & 8.63\\
++ Enhanced LDRE & 1.5546 & 0.94 & 79.18 & 9.14\\
++ MixUp / FixMatch & 2.279 & 0.8348 & 81.65 & 11.61\\
++ MixUp / FixMatch + Std. LDRE & 2.282 & 0.8489 & 81.73 & 11.69\\
++ MixUp / FixMatch + Enh. LDRE & 2.1294 & 0.9789 & 81.25 & 11.21\\
+Curriculum Learning & 1.047 & 0.7296 & 83.69 & 13.65\\
 \hline
 \end{tabular}
 \end{center}
-\caption{PetNet performance after adding ablation modules.}
+\caption{PetNet performance with different configurations}
 \label{tab:petnet}
 \end{table*}
 
-\subsection{Language Model}
-We used Bertscore introduced by Zhang et al.\cite{zhang2019bertscore} as our loss function while training our QLoRA.
+\subsection{Vision model}
+We measured success by comparing the validation accuracy of our vision model (PetNet) to 3 different baselines. We aim to have a high validation accuracy while keeping the number of parameters of our model small. We experimented with different configurations of our model to determine which configuration performs the best. Our final configuration (curriculum learning) has 3.06M (million) learnable parameters. The loss function we used was Cross-Entropy with the model's predicted label probabilities compared with the actual label. We compare the validation accuracy of PetNet compared to other neural network architectures in table \ref{tab:petnet}. In general, we would consider this project a success.
 
-\textbf{Important: This section should be rigorous and thorough. Present detailed information about decision you made, why you made them, and any evidence/experimentation to back them up. This is especially true if you leveraged existing architectures, pre-trained models, and code (i.e. do not just show results of fine-tuning a pre-trained model without any analysis, claims/evidence, and conclusions, as that tends to not make a strong project). }
+\subsubsection{Comparison with baselines}
+Pretrained weights for MobileNetV2\cite{sandler2018mobilenetv2}, EfficientNet-BO\cite{tan2019efficientnet}, and MobileOne-S0\cite{vasu2023mobileone} with finetuning are used as our baseline for comparison. The weights for MobileNetV2 were acquired from torchvision\cite{marcel2010torchvision}. The weights for the other 2 models were acquired from PyTorch Image Models (timm)\cite{rw2019timm}. These models are finetuned on our composite dataset for pet classification with the same hyperparameters. The performance of this baseline can be seen in table \ref{tab:petnet}.
+
+\subsubsection{Hyperparameter tuning}
+We optimized our model by running hyperparameter tuning using Optuna\cite{akiba2019optuna}. The Optuna script is ran on the PACE ICE cluster along with using local GPUs for training in a distributed manner with a SQLite file as the database with Write-ahead logging. A combination of V100, A100, and L40S is used as the GPU depending on their availability. The batch size is chosen such that it makes full use of the GPU's VRAM (as high as the VRAM allows). A sweep from 1e-6 to 1e-2 for learning rate, optimizer choice of AdamW or SGD, and weight decay from 1e-6 to 1e-2 are inputted into Optuna for hyperparameter tuning.
+
+\begin{figure*}[h]
+    \centering
+    \begin{subfigure}[p]{0.3\textwidth}
+        \includegraphics[width=\textwidth]{latex/images/fig_module_ablation_train_loss.png}
+        \caption{Training loss for attention}
+        \label{fig:attn_train_loss}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[p]{0.3\textwidth}
+        \includegraphics[width=\textwidth]{latex/images/fig_module_ablation_val_loss.png}
+        \caption{Validation loss for attention}
+        \label{fig:attn_val_loss}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[p]{0.3\textwidth}
+        \includegraphics[width=\textwidth]{latex/images/fig_module_ablation.png}
+        \caption{Validation accuracy for attention}
+        \label{fig:attn_val_acc}
+    \end{subfigure}
+\end{figure*}
+
+\subsubsection{Dual attention}
+The addition of attention mechanisms increased validation accuracy. As seen in figure \ref{fig:attn_train_loss}, training loss decreases smoothly and steadily. As shown in figure \ref{fig:attn_val_loss}, the validation loss also decreases steadily, although not as smoothly as the training loss curve. There is no underfitting since both loss curves are decreasing steadily and the loss values are not high. There is no overfitting since the training loss did not continue to decrease while the validation loss plateaus. The validation accuracy in figure \ref{fig:attn_val_acc} is also steadily increasing, surpassing the baseline around epoch 65. Intuitively, this might be due to attention layers increasing the capacity of the model. This enables the model to generalize better to unseen validation data.
+
+\subsubsection{Self KD}
+Next, we tried adding self KD to act as a regularizer and to improve the model's ability to generalize. As seen in figure \ref{fig:attn_train_loss}, compared to the training loss curve for attention only, adding self KD increases the training loss, although the curve still decreases steadily. This makes sense because self KD makes training harder with a regularizing effect. As seen in figure \ref{fig:attn_val_loss}, the curve looks similar to the one with attention only, but the validation loss is lower after adding self KD. This correlates to our validation accuracy curve in figure \ref{fig:attn_val_acc}, where the 2 curves look similar, but ultimately adding self KD increased the model's validation accuracy. In this case, no underfitting or overfitting is observed. This led to a great increase in validation accuracy of 9.28\% compared to the baseline, as shown in table \ref{tab:petnet}.
+
+\begin{figure*}[h]
+    \centering
+    \begin{subfigure}[p]{0.3\textwidth}
+        \includegraphics[width=\textwidth]{latex/images/fig_ldre_innovation_train_loss.png}
+        \caption{Training loss for LDRE}
+        \label{fig:ldre_train_loss}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[p]{0.3\textwidth}
+        \includegraphics[width=\textwidth]{latex/images/fig_ldre_innovation_val_loss.png}
+        \caption{Validation loss for LDRE}
+        \label{fig:ldre_val_loss}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[p]{0.3\textwidth}
+        \includegraphics[width=\textwidth]{latex/images/fig_ldre_innovation.png}
+        \caption{Validation accuracy for LDRE}
+        \label{fig:ldre_val_acc}
+    \end{subfigure}
+\end{figure*}
+
+\subsubsection{LDRE}
+Both standard and enhanced LDRE is then added to our model in order to experiment with this new method. From table \ref{tab:petnet} we see that training loss for both versions of LDRE is much higher than the training loss for base configuration + attention (1.55~ vs 0.9515). This suggests that LDRE can act as a regularizer. However, if we compare the training loss curve in figure \ref{fig:ldre_train_loss} of the 3 configurations (attn + skd, + ldre, + en ldre), we see that the loss curve looks almost identical. The validation loss curve in figure \ref{fig:ldre_val_loss} and the validation accuracy curve in figure \ref{fig:ldre_val_acc} also looks similar, which might suggest that LDRE did not have much impact on increasing the model's ability to generalize. Intuitively, this might be due to self KD already acting as a strong enough regularizer, decreasing the impact of LDRE as a regularizer.
+
+\subsubsection{MixUp / FixMatch}
+Training loss curve for the 3 MixUp + LDRE configurations looks similar, steadily decreasing. This is the same as the validation loss curve. Under / overfitting does not appear to be happening with these 3 configurations. From the validation accuracy curve, we see that all 3 configurations do not differ too much, suggesting that the regularizing effect of LDRE might be similar to the regularizing effect that MixUp provides. Figures are available in the appendix but left out in the main pages due to the page limit.
+
+\begin{figure}[h]
+    \centering
+    \begin{subfigure}[b]{0.3\textwidth}
+        \includegraphics[width=\textwidth]{latex/images/fig_curriculum_jump.png}
+        \caption{Validation accuracy curriculum learning}
+        \label{fig:curriculum_jump}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.3\textwidth}
+        \includegraphics[width=\textwidth]{latex/images/fig_sota_comparison.png}
+        \caption{Our final model, compared with popular baselines}
+        \label{fig:sota_comparison}
+    \end{subfigure}
+\end{figure}
+
+\subsubsection{Curriculum learning}
+In our previous section, we found that combining MixUp / FixMatch and LDRE did not have much impact on validation accuracy. Therefore, we experimented with a curriculum learning approach\cite{bengio2009curriculum}. We train the first 100 epochs with attention, self KD, and MixUp. Then, we train the remaining 20 epochs with attention, self KD, and enhanced LDRE (MixUp is disable). In practice, we finetuned from the best model configuration we get so far with the attention, self KD, and MixUp setup, then we run finetuning with MixUp disabled and enhanced LDRE enabled. From figure \ref{fig:curriculum_jump}, we can see that we are able to get a 2.34\% jump in validation accuracy compared to the MixUp only setup. Compared to popular baseline models, our final setup is able to achieve a validation accuracy of 83.69\%. Refer to figure \ref{fig:sota_comparison} to see a comparison of our model to popular baselines.
+
+\begin{figure}[h]
+    \centering
+    \begin{subfigure}[p]{0.4\textwidth}
+        \includegraphics[width=\textwidth]{latex/images/gradcam_petnet_mobilenet_baseline.jpg}
+        \caption{MobileNetV2 baseline GradCAM, note the focus on the entire face}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[p]{0.4\textwidth}
+        \includegraphics[width=\textwidth]{latex/images/gradcam_petnet_fine_tune.jpg}
+        \caption{final PetNet GradCAM, note the focus on the bottom part of the face}
+    \end{subfigure}
+\end{figure}
+
+\begin{table*}[h]
+\centering
+\begin{tabular}{l c c | c c | c c c}
+\hline
+ & \multicolumn{2}{c|}{\textbf{Score}}
+ & \multicolumn{2}{c|}{\textbf{Improvement}}
+ & \multicolumn{3}{c}{\textbf{Win/Loss Record}} \\
+\textbf{Model} & \textbf{Mean} & $\pm$
+ & \textbf{Point} & \textbf{Percentage}
+ & \textbf{Wins} & \textbf{Loss} & \textbf{Ties} \\
+\hline
+Base Model
+  & 9.73 & 3.19
+  & -- & --
+  & -- & -- & -- \\
+
+Base Model + RAG
+  & 11.72 & 2.61
+  & 1.99 & 20.50\%
+  & 58\% & 24\% & 18\% \\
+
+Fine-tuned Model
+  & 9.45 & 3.37
+  & -0.28 & -2.90\%
+  & 45\% & 44\% & 11\% \\
+
+Fine-tuned Model + RAG
+  & 11.02 & 2.79
+  & 1.29 & 13.30\%
+  & 57\% & 31\% & 12\% \\
+\hline
+\end{tabular}
+\caption{LLM Performance Summary}
+\label{tab:llm_performance}
+\end{table*}
+
+\subsection{Language Model}
+For our evaluation of language model performance, we used the LLM-as-a-judge method with Gemini 2.5 Flash\cite{gemini2.5}. This method is used to evaluate the performance of four possible combinations: the Qwen2.5 base model itself, the Qwen2.5 base model with RAG, the fine-tuned Qwen2.5 base model, and the fine-tuned Qwen2.5 base model with RAG. The scores of each method are shown in table \ref{tab:llm_performance}.
+
+From these results, it can be observed that the base model + RAG variant is the most successful, with a 20.50\% improvement in the LLM score, with the highest win rate against the base model. It is notably better at providing more accurate information. The fine-tuned model, in contrast, saw a couple of major score drops when it outputs the wrong information, or sometimes even the information of another breed. This is indicative of the LLM not being able to retain specific information about each breed distinctly. This may be due to flaws in the training dataset itself. It is too small and contains too little variation in phrasings and sentences. Furthermore, since conversations are automatically created from sections of the pet knowledge database, the model answer often contains extraneous data that are not needed to answer the question. This results in the fine-tuned model's answers being long-winded and including irrelevant information. Overall, breed specific pet knowledge contains complex and highly specific data, which makes it more suited for RAG implementation than fine tuning.
 
 %-------------------------------------------------------------------------
-\section{Other Sections}
 
-\begin{table*}
+\clearpage
+\begin{table*}[h]
 \begin{center}
 \begin{tabular}{|l|c|p{8cm}|}
 \hline
@@ -177,6 +318,9 @@ Student Name & Contributed Aspects & Details \\
 \hline\hline
 Team Member 1 & Data Creation and Implementation & Scraped the dataset for this project and trained the CNN of the encoder. Implemented attention mechanism to improve results. \\
 Team Member 2 & Implementation and Analysis & Trained the LSTM of the encoder and analyzed the results. Analyzed effect of number of nodes in hidden state.  Implemented Convolutional LSTM. \\
+Bright Wang & Data creation, Implementation, Experimentation & Gathered and created the composite dataset for breed classification + animal pose. Proposed and implemented the LDRE method. Implemented the majority of PetNet and pose model. Experimented with different configurations for PetNet.\\
+Hwaai Kang Kee & Tuning, Analysis, Report Writing & Run hyperparamter tuning on PACE using Optuna, modified the training script for distributed training, analyzed experiment results and wrote the majority of the report excluding the LLM part. \\
+Cindy Josephine Surjadi & Data Creation, Implementation, Analysis & Scraped the dataset for the RAG pet knowledge database, generated conversation dataset from pet database, implemented RAG with Qwen to improve LLM performance, analyzed LLM experiment results. \\
 \hline
 \end{tabular}
 \end{center}
@@ -184,329 +328,77 @@ Team Member 2 & Implementation and Analysis & Trained the LSTM of the encoder an
 \label{tab:contributions}
 \end{table*}
 
-
-
-You are welcome to introduce additional sections or subsections, if required, to address the following questions in detail. 
-
-(5 points) Appropriate use of figures / tables / visualizations. Are the ideas presented with appropriate illustration? Are the results presented clearly; are the important differences illustrated? 
-
-(5 points) Overall clarity. Is the manuscript self-contained? Can a peer who has also taken Deep Learning understand all of the points addressed above? Is sufficient detail provided? 
-
-(5 points) Finally, points will be distributed based on your understanding of how your project relates to Deep Learning. Here are some questions to think about: 
-
-What was the structure of your problem? How did the structure of your model reflect the structure of your problem? 
-
-What parts of your model had learned parameters (e.g., convolution layers) and what parts did not (e.g., post-processing classifier probabilities into decisions)? 
-
-What representations of input and output did the neural network expect? How was the data pre/post-processed?
-What was the loss function? 
-
-Did the model overfit? How well did the approach generalize? 
-
-What hyperparameters did the model have? How were they chosen? How did they affect performance? What optimizer was used? 
-
-What Deep Learning framework did you use? 
-
-What existing code or models did you start with and what did those starting points provide? 
-
-Briefly discuss potential future work that the research community could focus on to make improvements in the direction of your project's topic.
-
-
 %-------------------------------------------------------------------------
 
-\section{Work Division}
-
-Please add a section on the delegation of work among team members at the end of the report, in the form of a table and paragraph description. This and references do \textbf{NOT} count towards your page limit. An example has been provided in Table \ref{tab:contributions}.
-
-\newpage
-\newpage
-\section{Miscellaneous Information}
-
-The rest of the information in this format template has been adapted from CVPR 2020 and provides guidelines on the lower-level specifications regarding the paper's format.
-
-\subsection{Language}
-
-All manuscripts must be in English.
-
-
-\subsection{Paper length}
-Papers, excluding the references section,
-must be no longer than six pages in length. The references section
-will not be included in the page count, and there is no limit on the
-length of the references section. For example, a paper of six pages
-with two pages of references would have a total length of 8 pages.
-
-%-------------------------------------------------------------------------
-\subsection{The ruler}
-The \LaTeX\ style defines a printed ruler which should be present in the
-version submitted for review.  The ruler is provided in order that
-reviewers may comment on particular lines in the paper without
-circumlocution.  If you are preparing a document using a non-\LaTeX\
-document preparation system, please arrange for an equivalent ruler to
-appear on the final output pages.  The presence or absence of the ruler
-should not change the appearance of any other content on the page.  The
-camera ready copy should not contain a ruler. (\LaTeX\ users may uncomment
-the \verb'\cvprfinalcopy' command in the document preamble.)  Reviewers:
-note that the ruler measurements do not align well with lines in the paper
---- this turns out to be very difficult to do well when the paper contains
-many figures and equations, and, when done, looks ugly.  Just use fractional
-references (e.g.\ this line is $095.5$), although in most cases one would
-expect that the approximate location will be adequate.
-
-\subsection{Mathematics}
-
-Please number all of your sections and displayed equations.  It is
-important for readers to be able to refer to any particular equation.  Just
-because you didn't refer to it in the text doesn't mean some future reader
-might not need to refer to it.  It is cumbersome to have to use
-circumlocutions like ``the equation second from the top of page 3 column
-1''.  (Note that the ruler will not be present in the final copy, so is not
-an alternative to equation numbers).  All authors will benefit from reading
-Mermin's description of how to write mathematics:
-\url{http://www.pamitc.org/documents/mermin.pdf}.
-
-Finally, you may feel you need to tell the reader that more details can be
-found elsewhere, and refer them to a technical report.  For conference
-submissions, the paper must stand on its own, and not {\em require} the
-reviewer to go to a techreport for further details.  Thus, you may say in
-the body of the paper ``further details may be found
-in~\cite{Authors14b}''.  Then submit the techreport as additional material.
-Again, you may not assume the reviewers will read this material.
-
-Sometimes your paper is about a problem which you tested using a tool which
-is widely known to be restricted to a single institution.  For example,
-let's say it's 1969, you have solved a key problem on the Apollo lander,
-and you believe that the CVPR70 audience would like to hear about your
-solution.  The work is a development of your celebrated 1968 paper entitled
-``Zero-g frobnication: How being the only people in the world with access to
-the Apollo lander source code makes us a wow at parties'', by Zeus \etal.
-
-You can handle this paper like any other.  Don't write ``We show how to
-improve our previous work [Anonymous, 1968].  This time we tested the
-algorithm on a lunar lander [name of lander removed for blind review]''.
-That would be silly, and would immediately identify the authors. Instead
-write the following:
-\begin{quotation}
-\noindent
-   We describe a system for zero-g frobnication.  This
-   system is new because it handles the following cases:
-   A, B.  Previous systems [Zeus et al. 1968] didn't
-   handle case B properly.  Ours handles it by including
-   a foo term in the bar integral.
-
-   ...
-
-   The proposed system was integrated with the Apollo
-   lunar lander, and went all the way to the moon, don't
-   you know.  It displayed the following behaviours
-   which show how well we solved cases A and B: ...
-\end{quotation}
-As you can see, the above text follows standard scientific convention,
-reads better than the first version, and does not explicitly name you as
-the authors.  A reviewer might think it likely that the new paper was
-written by Zeus \etal, but cannot make any decision based on that guess.
-He or she would have to be sure that no other authors could have been
-contracted to solve problem B.
-\medskip
-
-\noindent
-FAQ\medskip\\
-{\bf Q:} Are acknowledgements OK?\\
-{\bf A:} No.  Leave them for the final copy.\medskip\\
-{\bf Q:} How do I cite my results reported in open challenges?
-{\bf A:} To conform with the double blind review policy, you can report results of other challenge participants together with your results in your paper. For your results, however, you should not identify yourself and should not mention your participation in the challenge. Instead present your results referring to the method proposed in your paper and draw conclusions based on the experimental comparison to other results.\medskip\\
-
-\begin{figure}[t]
-\begin{center}
-\fbox{\rule{0pt}{2in} \rule{0.9\linewidth}{0pt}}
-   %\includegraphics[width=0.8\linewidth]{egfigure.eps}
-\end{center}
-   \caption{Example of caption.  It is set in Roman so that mathematics
-   (always set in Roman: $B \sin A = A \sin B$) may be included without an
-   ugly clash.}
-\label{fig:long}
-\label{fig:onecol}
-\end{figure}
-
-\subsection{Miscellaneous}
-
-\noindent
-Compare the following:\\
-\begin{tabular}{ll}
- \verb'$conf_a$' &  $conf_a$ \\
- \verb'$\mathit{conf}_a$' & $\mathit{conf}_a$
-\end{tabular}\\
-See The \TeX book, p165.
-
-The space after \eg, meaning ``for example'', should not be a
-sentence-ending space. So \eg is correct, {\em e.g.} is not.  The provided
-\verb'\eg' macro takes care of this.
-
-When citing a multi-author paper, you may save space by using ``et alia'',
-shortened to ``\etal'' (not ``{\em et.\ al.}'' as ``{\em et}'' is a complete word.)
-However, use it only when there are three or more authors.  Thus, the
-following is correct: ``
-   Frobnication has been trendy lately.
-   It was introduced by Alpher~\cite{Alpher02}, and subsequently developed by
-   Alpher and Fotheringham-Smythe~\cite{Alpher03}, and Alpher \etal~\cite{Alpher04}.''
-
-This is incorrect: ``... subsequently developed by Alpher \etal~\cite{Alpher03} ...''
-because reference~\cite{Alpher03} has just two authors.  If you use the
-\verb'\etal' macro provided, then you need not worry about double periods
-when used at the end of a sentence as in Alpher \etal.
-
-For this citation style, keep multiple citations in numerical (not
-chronological) order, so prefer \cite{Alpher03,Alpher02,Authors14} to
-\cite{Alpher02,Alpher03,Authors14}.
-
-
-\begin{figure*}
-\begin{center}
-\fbox{\rule{0pt}{2in} \rule{.9\linewidth}{0pt}}
-\end{center}
-   \caption{Example of a short caption, which should be centered.}
-\label{fig:short}
-\end{figure*}
-
-%------------------------------------------------------------------------
-\subsection{Formatting your paper}
-
-All text must be in a two-column format. The total allowable width of the
-text area is $6\frac78$ inches (17.5 cm) wide by $8\frac78$ inches (22.54
-cm) high. Columns are to be $3\frac14$ inches (8.25 cm) wide, with a
-$\frac{5}{16}$ inch (0.8 cm) space between them. The main title (on the
-first page) should begin 1.0 inch (2.54 cm) from the top edge of the
-page. The second and following pages should begin 1.0 inch (2.54 cm) from
-the top edge. On all pages, the bottom margin should be 1-1/8 inches (2.86
-cm) from the bottom edge of the page for $8.5 \times 11$-inch paper; for A4
-paper, approximately 1-5/8 inches (4.13 cm) from the bottom edge of the
-page.
-
-%-------------------------------------------------------------------------
-\subsection{Margins and page numbering}
-
-All printed material, including text, illustrations, and charts, must be kept
-within a print area 6-7/8 inches (17.5 cm) wide by 8-7/8 inches (22.54 cm)
-high.
-
-
-
-%-------------------------------------------------------------------------
-\subsection{Type-style and fonts}
-
-Wherever Times is specified, Times Roman may also be used. If neither is
-available on your word processor, please use the font closest in
-appearance to Times to which you have access.
-
-MAIN TITLE. Center the title 1-3/8 inches (3.49 cm) from the top edge of
-the first page. The title should be in Times 14-point, boldface type.
-Capitalize the first letter of nouns, pronouns, verbs, adjectives, and
-adverbs; do not capitalize articles, coordinate conjunctions, or
-prepositions (unless the title begins with such a word). Leave two blank
-lines after the title.
-
-AUTHOR NAME(s) and AFFILIATION(s) are to be centered beneath the title
-and printed in Times 12-point, non-boldface type. This information is to
-be followed by two blank lines.
-
-The ABSTRACT and MAIN TEXT are to be in a two-column format.
-
-MAIN TEXT. Type main text in 10-point Times, single-spaced. Do NOT use
-double-spacing. All paragraphs should be indented 1 pica (approx. 1/6
-inch or 0.422 cm). Make sure your text is fully justified---that is,
-flush left and flush right. Please do not place any additional blank
-lines between paragraphs.
-
-Figure and table captions should be 9-point Roman type as in
-Figures~\ref{fig:onecol} and~\ref{fig:short}.  Short captions should be centred.
-
-\noindent Callouts should be 9-point Helvetica, non-boldface type.
-Initially capitalize only the first word of section titles and first-,
-second-, and third-order headings.
-
-FIRST-ORDER HEADINGS. (For example, {\large \bf 1. Introduction})
-should be Times 12-point boldface, initially capitalized, flush left,
-with one blank line before, and one blank line after.
-
-SECOND-ORDER HEADINGS. (For example, { \bf 1.1. Database elements})
-should be Times 11-point boldface, initially capitalized, flush left,
-with one blank line before, and one after. If you require a third-order
-heading (we discourage it), use 10-point Times, boldface, initially
-capitalized, flush left, preceded by one blank line, followed by a period
-and your text on the same line.
-
-%-------------------------------------------------------------------------
-\subsection{Footnotes}
-
-Please use footnotes\footnote {This is what a footnote looks like.  It
-often distracts the reader from the main flow of the argument.} sparingly.
-Indeed, try to avoid footnotes altogether and include necessary peripheral
-observations in
-the text (within parentheses, if you prefer, as in this sentence).  If you
-wish to use a footnote, place it at the bottom of the column on the page on
-which it is referenced. Use Times 8-point type, single-spaced.
-
-
-%-------------------------------------------------------------------------
-\subsection{References}
-
-List and number all bibliographical references in 9-point Times,
-single-spaced, at the end of your paper. When referenced in the text,
-enclose the citation number in square brackets, for
-example~\cite{Authors14}.  Where appropriate, include the name(s) of
-editors of referenced books.
-
-\begin{table}
-\begin{center}
-\begin{tabular}{|l|c|}
-\hline
-Method & Frobnability \\
-\hline\hline
-Theirs & Frumpy \\
-Yours & Frobbly \\
-Ours & Makes one's heart Frob\\
-\hline
-\end{tabular}
-\end{center}
-\caption{Results.   Ours is better.}
-\end{table}
-
-%-------------------------------------------------------------------------
-\subsection{Illustrations, graphs, and photographs}
-
-All graphics should be centered.  Please ensure that any point you wish to
-make is resolvable in a printed copy of the paper.  Resize fonts in figures
-to match the font in the body text, and choose line widths which render
-effectively in print.  Many readers (and reviewers), even of an electronic
-copy, will choose to print your paper in order to read it.  You cannot
-insist that they do otherwise, and therefore must not assume that they can
-zoom in to see tiny details on a graphic.
-
-When placing figures in \LaTeX, it's almost always best to use
-\verb+\includegraphics+, and to specify the  figure width as a multiple of
-the line width as in the example below
-{\small\begin{verbatim}
-   \usepackage[dvips]{graphicx} ...
-   \includegraphics[width=0.8\linewidth]
-                   {myfile.eps}
-\end{verbatim}
-}
-
-
-%-------------------------------------------------------------------------
-\subsection{Color}
-
-Please refer to the author guidelines on the CVPR 2020 web page for a discussion
-of the use of color in your document.
-
-%------------------------------------------------------------------------
-
-%-------------------------------------------------------------------------
-
-
+\clearpage
 {\small
 \bibliographystyle{ieee_fullname}
 \bibliography{egbib}
 }
+
+% \clearpage
+% \section{Appendix}
+% \subsection{GradCAM visualizations}
+% \begin{figure}[h]
+%     \centering
+%     \begin{subfigure}[p]{0.4\textwidth}
+%         \includegraphics[width=\textwidth]{latex/images/gradcam_efficientnet_b0.jpg}
+%         \caption{EfficientNet-B0 GradCAM}
+%     \end{subfigure}
+%     \hfill
+%     \begin{subfigure}[p]{0.4\textwidth}
+%         \includegraphics[width=\textwidth]{latex/images/gradcam_mobileone_s0.jpg}
+%         \caption{MobileOne-S0 GradCAM}
+%     \end{subfigure}
+%     \hfill
+%     \begin{subfigure}[p]{0.4\textwidth}
+%         \includegraphics[width=\textwidth]{latex/images/gradcam_petnet_att_skd_enldr.jpg}
+%         \caption{PetNet w/ attn., self KD, enh. LDRE GradCAM}
+%     \end{subfigure}
+% \end{figure}
+
+% \begin{figure*}[h]
+%     \centering
+%     \begin{subfigure}[p]{0.3\textwidth}
+%         \includegraphics[width=\textwidth]{latex/images/fig_mup_train_loss.png}
+%         \caption{Training loss for MixUp / FixMatch}
+%         \label{fig:mup_train_loss}
+%     \end{subfigure}
+%     \hfill
+%     \begin{subfigure}[p]{0.3\textwidth}
+%         \includegraphics[width=\textwidth]{latex/images/fig_mup_val_loss.png}
+%         \caption{Validation loss for MixUp / FixMatch}
+%         \label{fig:mup_val_loss}
+%     \end{subfigure}
+%     \hfill
+%     \begin{subfigure}[p]{0.3\textwidth}
+%         \includegraphics[width=\textwidth]{latex/images/fig_mup_val_acc.png}
+%         \caption{Validation acc. for MixUp / FixMatch}
+%         \label{fig:mup_val_acc}
+%     \end{subfigure}
+% \end{figure*}
+
+% \subsection{Other figures and charts}
+% \begin{figure}
+%     \centering
+%     \includegraphics[width=0.4\textwidth]{latex/images/sota_comparison.png}
+%     \caption{PetNet comparison with other popular architectures}
+% \end{figure}
+% \begin{figure}
+%     \centering
+%     \includegraphics[width=0.4\textwidth]{latex/images/confusion_petnet_finetune.png}
+%     \caption{Confusion matrix for final PetNet model}
+% \end{figure}
+% \begin{figure}
+%     \centering
+%     \includegraphics[width=0.4\textwidth]{latex/images/tsne_petnet_fine_tune.png}
+%     \caption{T-SNE for final PetNet model}
+% \end{figure}
+% \begin{figure}[h]
+%     \centering
+%     \includegraphics[width=0.4\textwidth]{latex/images/llm_model_scores_boxplot.png}
+%     \caption{LLM model scores with different configurations}
+% \end{figure}
+
 
 \end{document}

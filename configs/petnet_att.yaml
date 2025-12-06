@@ -54,7 +54,7 @@ evaluation:
   save_confusion_matrix: true
 
 logging:
-  log_dir:
+  log_dir: runs/petnet_att
   save_checkpoints: true
   checkpoint_freq: 10
   tensorboard: true

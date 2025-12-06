@@ -453,6 +453,7 @@ def train_with_config(config_path: str):
             if tb_writer:
                 tb_writer.add_scalar('Train/Loss', train_loss, epoch)
                 tb_writer.add_scalar('Val/Accuracy', val_acc, epoch)
+                tb_writer.add_scalar('Val/Loss', val_loss, epoch)
                 tb_writer.add_scalar('Train/LR', current_lr, epoch)
 
             # CSV
