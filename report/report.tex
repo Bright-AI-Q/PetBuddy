@@ -148,7 +148,7 @@ The first thing we tried, which is simply using MobileNetV2's pretrained backbon
 
 \section{Experiments and Results}
 
-\begin{table*}[h]
+\begin{table*}[t]
 \begin{center}
 \begin{tabular}{|l|l|l|l|l|}
 \hline
@@ -179,23 +179,23 @@ We measured success by comparing the validation accuracy of our vision model (Pe
 Pretrained weights for MobileNetV2\cite{sandler2018mobilenetv2}, EfficientNet-BO\cite{tan2019efficientnet}, and MobileOne-S0\cite{vasu2023mobileone} with finetuning are used as our baseline for comparison. The weights for MobileNetV2 were acquired from torchvision\cite{marcel2010torchvision}. The weights for the other 2 models were acquired from PyTorch Image Models (timm)\cite{rw2019timm}. These models are finetuned on our composite dataset for pet classification with the same hyperparameters. The performance of this baseline can be seen in table \ref{tab:petnet}.
 
 \subsubsection{Hyperparameter tuning}
-We optimized our model by running hyperparameter tuning using Optuna\cite{akiba2019optuna}. The Optuna script is ran on the PACE ICE cluster along with using local GPUs for training in a distributed manner with a SQLite file as the database with Write-ahead logging. A combination of V100, A100, and L40S is used as the GPU depending on their availability. The batch size is chosen such that it makes full use of the GPU's VRAM (as high as the VRAM allows). A sweep from 1e-6 to 1e-2 for learning rate, optimizer choice of AdamW or SGD, and weight decay from 1e-6 to 1e-2 are inputted into Optuna for hyperparameter tuning.
+The Optuna\cite{akiba2019optuna} scripts were run on the PACE cluster and a local RTX-3060 for training. The tuned parameters are learning rate (1e-6 - 1e-2), weight decay (1e-6 - 1e-2), and optimizer (AdamW / SGD). These hyperparameters are kept the same for different configurations to ensure a fair comparison.
 
-\begin{figure*}[h]
+\begin{figure*}[t]
     \centering
-    \begin{subfigure}[p]{0.3\textwidth}
+    \begin{subfigure}[b]{0.3\textwidth}
         \includegraphics[width=\textwidth]{latex/images/fig_module_ablation_train_loss.png}
         \caption{Training loss for attention}
         \label{fig:attn_train_loss}
     \end{subfigure}
     \hfill
-    \begin{subfigure}[p]{0.3\textwidth}
+    \begin{subfigure}[b]{0.3\textwidth}
         \includegraphics[width=\textwidth]{latex/images/fig_module_ablation_val_loss.png}
         \caption{Validation loss for attention}
         \label{fig:attn_val_loss}
     \end{subfigure}
     \hfill
-    \begin{subfigure}[p]{0.3\textwidth}
+    \begin{subfigure}[b]{0.3\textwidth}
         \includegraphics[width=\textwidth]{latex/images/fig_module_ablation.png}
         \caption{Validation accuracy for attention}
         \label{fig:attn_val_acc}
@@ -208,21 +208,21 @@ The addition of attention mechanisms increased validation accuracy. As seen in f
 \subsubsection{Self KD}
 Next, we tried adding self KD to act as a regularizer and to improve the model's ability to generalize. As seen in figure \ref{fig:attn_train_loss}, compared to the training loss curve for attention only, adding self KD increases the training loss, although the curve still decreases steadily. This makes sense because self KD makes training harder with a regularizing effect. As seen in figure \ref{fig:attn_val_loss}, the curve looks similar to the one with attention only, but the validation loss is lower after adding self KD. This correlates to our validation accuracy curve in figure \ref{fig:attn_val_acc}, where the 2 curves look similar, but ultimately adding self KD increased the model's validation accuracy. In this case, no underfitting or overfitting is observed. This led to a great increase in validation accuracy of 9.28\% compared to the baseline, as shown in table \ref{tab:petnet}.
 
-\begin{figure*}[h]
+\begin{figure*}[t]
     \centering
-    \begin{subfigure}[p]{0.3\textwidth}
+    \begin{subfigure}[b]{0.3\textwidth}
         \includegraphics[width=\textwidth]{latex/images/fig_ldre_innovation_train_loss.png}
         \caption{Training loss for LDRE}
         \label{fig:ldre_train_loss}
     \end{subfigure}
     \hfill
-    \begin{subfigure}[p]{0.3\textwidth}
+    \begin{subfigure}[b]{0.3\textwidth}
         \includegraphics[width=\textwidth]{latex/images/fig_ldre_innovation_val_loss.png}
         \caption{Validation loss for LDRE}
         \label{fig:ldre_val_loss}
     \end{subfigure}
     \hfill
-    \begin{subfigure}[p]{0.3\textwidth}
+    \begin{subfigure}[b]{0.3\textwidth}
         \includegraphics[width=\textwidth]{latex/images/fig_ldre_innovation.png}
         \caption{Validation accuracy for LDRE}
         \label{fig:ldre_val_acc}
@@ -255,18 +255,18 @@ In our previous section, we found that combining MixUp / FixMatch and LDRE did n
 
 \begin{figure}[h]
     \centering
-    \begin{subfigure}[p]{0.4\textwidth}
+    \begin{subfigure}[b]{0.4\textwidth}
         \includegraphics[width=\textwidth]{latex/images/gradcam_petnet_mobilenet_baseline.jpg}
         \caption{MobileNetV2 baseline GradCAM, note the focus on the entire face}
     \end{subfigure}
     \hfill
-    \begin{subfigure}[p]{0.4\textwidth}
+    \begin{subfigure}[b]{0.4\textwidth}
         \includegraphics[width=\textwidth]{latex/images/gradcam_petnet_fine_tune.jpg}
         \caption{final PetNet GradCAM, note the focus on the bottom part of the face}
     \end{subfigure}
 \end{figure}
 
-\begin{table*}[h]
+\begin{table*}[t]
 \centering
 \begin{tabular}{l c c | c c | c c c}
 \hline
@@ -310,7 +310,7 @@ From these results, it can be observed that the base model + RAG variant is the 
 %-------------------------------------------------------------------------
 
 \clearpage
-\begin{table*}[h]
+\begin{table*}[t]
 \begin{center}
 \begin{tabular}{|l|c|p{8cm}|}
 \hline
@@ -339,39 +339,39 @@ Cindy Josephine Surjadi & Data Creation, Implementation, Analysis & Scraped the 
 % \clearpage
 % \section{Appendix}
 % \subsection{GradCAM visualizations}
-% \begin{figure}[h]
+% \begin{figure}[t]
 %     \centering
-%     \begin{subfigure}[p]{0.4\textwidth}
+%     \begin{subfigure}[b]{0.4\textwidth}
 %         \includegraphics[width=\textwidth]{latex/images/gradcam_efficientnet_b0.jpg}
 %         \caption{EfficientNet-B0 GradCAM}
 %     \end{subfigure}
 %     \hfill
-%     \begin{subfigure}[p]{0.4\textwidth}
+%     \begin{subfigure}[b]{0.4\textwidth}
 %         \includegraphics[width=\textwidth]{latex/images/gradcam_mobileone_s0.jpg}
 %         \caption{MobileOne-S0 GradCAM}
 %     \end{subfigure}
 %     \hfill
-%     \begin{subfigure}[p]{0.4\textwidth}
+%     \begin{subfigure}[b]{0.4\textwidth}
 %         \includegraphics[width=\textwidth]{latex/images/gradcam_petnet_att_skd_enldr.jpg}
 %         \caption{PetNet w/ attn., self KD, enh. LDRE GradCAM}
 %     \end{subfigure}
 % \end{figure}
 
-% \begin{figure*}[h]
+% \begin{figure*}[t]
 %     \centering
-%     \begin{subfigure}[p]{0.3\textwidth}
+%     \begin{subfigure}[b]{0.3\textwidth}
 %         \includegraphics[width=\textwidth]{latex/images/fig_mup_train_loss.png}
 %         \caption{Training loss for MixUp / FixMatch}
 %         \label{fig:mup_train_loss}
 %     \end{subfigure}
 %     \hfill
-%     \begin{subfigure}[p]{0.3\textwidth}
+%     \begin{subfigure}[b]{0.3\textwidth}
 %         \includegraphics[width=\textwidth]{latex/images/fig_mup_val_loss.png}
 %         \caption{Validation loss for MixUp / FixMatch}
 %         \label{fig:mup_val_loss}
 %     \end{subfigure}
 %     \hfill
-%     \begin{subfigure}[p]{0.3\textwidth}
+%     \begin{subfigure}[b]{0.3\textwidth}
 %         \includegraphics[width=\textwidth]{latex/images/fig_mup_val_acc.png}
 %         \caption{Validation acc. for MixUp / FixMatch}
 %         \label{fig:mup_val_acc}
