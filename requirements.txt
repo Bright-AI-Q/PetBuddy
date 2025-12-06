@@ -4,7 +4,7 @@ huggingface_hub>=0.20.0
 ultralytics>=8.0.0
 gradio>=4.0.0
 torch>=2.0.0
-transformers>=4.35.0
+transformers>=4.44.2
 Pillow>=10.0.0
 pycocotools>=2.0.0
 scikit-learn>=1.0.0
@@ -18,3 +18,15 @@ timm>=0.6.12
 tensorboard>=2.15.0
 pandas>=2.0.0
 grad-cam>=1.4.7
+beautifulsoup4
+lxml
+accelerate
+peft
+bitsandbytes
+datasets
+trl>=0.7.0
+jsonlines
+sentence_transformers
+bert_score
+openai
+google-genai
