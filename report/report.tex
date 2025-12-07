@@ -278,24 +278,24 @@ In our previous section, we found that combining MixUp / FixMatch and LDRE did n
  & \textbf{Wins} & \textbf{Loss} & \textbf{Ties} \\
 \hline
 Base Model
-  & 9.73 & 3.19
+  & 9.76 & 2.65
   & -- & --
   & -- & -- & -- \\
 
 Base Model + RAG
-  & 11.72 & 2.61
-  & 1.99 & 20.50\%
-  & 58\% & 24\% & 18\% \\
+  & 11.64 & 2.66
+  & 1.88 & 19.30\%
+  & 62\% & 21\% & 17\% \\
 
 Fine-tuned Model
-  & 9.45 & 3.37
-  & -0.28 & -2.90\%
-  & 45\% & 44\% & 11\% \\
+  & 10.07 & 3.33
+  & 0.31 & 3.20\%
+  & 43\% & 39\% & 18\% \\
 
 Fine-tuned Model + RAG
-  & 11.02 & 2.79
-  & 1.29 & 13.30\%
-  & 57\% & 31\% & 12\% \\
+  & 10.9 & 2.87
+  & 1.14 & 11.70\%
+  & 57\% & 30\% & 13\% \\
 \hline
 \end{tabular}
 \caption{LLM Performance Summary}
@@ -303,12 +303,42 @@ Fine-tuned Model + RAG
 \end{table*}
 
 \subsection{Language Model}
+We compiled the test dataset for the LLM evaluation by scraping Q&A content from an online pet-care websites~\cite{everypaw-dog}~\cite{everypaw-cat} not included in the LLM’s training corpus. The dataset constist of 100 questions with corresponding model answers for randomly sampled breeds.
+
 For our evaluation of language model performance, we used the LLM-as-a-judge method~\cite{zheng2023judging} with Gemini 2.5 Flash~\cite{gemini2.5}. Gemini 2.5 is asked to rate each prompt on a score from 1 - 5, with 5 being the highest score on breed consistency, medical safety, and usefulness. This method is used to evaluate the performance of four possible combinations: the Qwen2.5 base model itself, the Qwen2.5 base model with RAG, the fine-tuned Qwen2.5 base model, and the fine-tuned Qwen2.5 base model with RAG. The scores of each method are shown in table~\ref{tab:llm_performance}.
 
-From these results, it can be observed that the base model + RAG variant is the most successful, with a 20.50\% improvement in the LLM score, with the highest win rate against the base model. It is notably better at providing more accurate information. The fine-tuned model, in contrast, saw a couple of major score drops when it outputs the wrong information, or sometimes even the information of another breed. This is indicative of the LLM not being able to retain specific information about each breed distinctly. This may be due to the LLM's small parameters size not being able to represent the full range of information. Trying out more training epochs resulted in the model's performance dropping, suggesting overfitting. Furthermore, there are flaws in the training dataset itself. It is too small and contains too little variation in phrasings and sentences. Furthermore, since conversations are automatically created from sections of the pet knowledge database, the model answer often contains extraneous data that are not needed to answer the question. This results in the fine-tuned model's answers being long-winded and including irrelevant information. Interestingly, the fine-tuned model with RAG performs slightly worse than the base LLM with RAG. Generally, it is given fewer points than the base model + RAG variant because of its long-winded answers. Overall, breed specific pet knowledge contains complex and highly specific data, which makes it more suited for RAG implementation than fine tuning.
+From these results, it can be observed that the base model + RAG variant is the most successful, with a 19.30\% improvement in the LLM score, with the highest win rate against the base model. It is notably better at providing more accurate information. In contrast, the fine-tuned model is only slightly better than the base model. The fine-tuned model saw a couple of major score drops when it outputs the wrong information, or sometimes even the information of another breed. This is indicative of the LLM not being able to retain specific information about each breed distinctly. This may be due to the LLM's small parameters size not being able to represent the full range of information. Trying out more training epochs resulted in the model's performance dropping, suggesting overfitting. Furthermore, there are flaws in the training dataset itself. It is too small and contains too little variation in phrasings and sentences. Since conversations are automatically created from sections of the pet knowledge database, the model answer often contains extraneous data that are not needed to answer the question. This results in the fine-tuned model's answers being long-winded and including irrelevant information. Interestingly, the fine-tuned model with RAG performs slightly worse than the base LLM with RAG. Generally, it is given fewer points than the base model + RAG variant because of its long-winded answers. Overall, breed specific pet knowledge contains complex and highly specific data, which makes it more suited for RAG implementation than the fine-tuning method.
 
 \subsubsection{Sample Language Model Outputs}
+*Question*: Do Gordon Setters need a lot of grooming?
 
+\subsubsubsection{Reference Answer}
+Gordon Setters have a beautiful, dense coat that requires regular grooming to keep it in optimal condition. Their long, silky hair is prone to tangling and matting, so regular brushing is essential to prevent these issues. Aim to brush their coat at least two to three times a week using a slicker brush or a comb with wide-spaced teeth. A professional groomer can support and advise on your Gordon Setter. Like any dog, regular tooth brushing with a dog-specific toothpaste twice daily is ideal. If you can’t manage that often, just do it as often as you can
+
+\subsubsubsection{Base Model}
+"Yes, Gordon Setters require regular grooming due to their double coat and long, thick fur. They have two layers of hair: an outer layer called the guard hairs that protect them from water and dirt, and a softer undercoat that helps insulate them in cold weather. The breed also has feathering on their legs and tails.
+Here's what you can expect with their grooming needs:
+1. Brushing: Regular brushing is essential to prevent tangles and mats. A good quality bristle brush or a slicker brush should be used to remove loose hair, dirt, and excess oils from their coat.
+2. Dusting: Due to their dense undercoat, they may get dust and pollen easily. It’s important to keep them clean by giving them a gentle dust bath using a specially formulated powder or a damp cloth.
+3. Trimming: Like other dog breeds, Gordon Setters may benefit from occasional trimming of their nails, teeth cleaning (using dental treats and chews), and any necessary ear cleaning.
+4. Grooming for Show Dogs: For show dogs, specific grooming routines might include clipping certain areas, which can help achieve a more polished appearance. Regular grooming will not only maintain your Gordon Setter’s health but also ensure they look beautiful."
+*AI Judge Score*: 4
+*AI Judge Response*: The AI assistant correctly identifies the Gordon Setter's coat type but includes a medically unsafe and completely inappropriate recommendation for 'dust baths' for a dog. It also misses crucial advice on regular tooth brushing and provides vague, unhelpful information regarding show grooming, severely impacting its usefulness and safety
+
+\subsubsubsection{Base Model + RAG}
+"Yes, Gordon Setters require regular grooming due to their long, silky coats. They should be brushed 3-4 times per week to prevent tangles and matting. Additionally, they need to have their feathering and ears trimmed as needed to avoid debris buildup."
+*AI Judge Score*: 14
+*AI Judge Response*: The AI assistant provided excellent breed-specific grooming advice, accurately detailing the coat type, brushing frequency, and the need to trim feathering and ears, which is crucial for Gordon Setters. The advice is medically safe and offers actionable steps, although it could have included details on brush types or professional grooming support for even greater usefulness, as seen in the reference.
+
+\subsubsubsection{Fine-tuned Model}
+"No, they don't require extensive grooming. However, regular brushing and nail trimming help keep their coats healthy and comfortable."
+*AI Judge Score*: 8
+*AI Judge Response*: The AI's initial statement that Gordon Setters do not require extensive grooming is inaccurate for the breed, which has a long, dense coat needing regular care. While the advice given (brushing and nail trimming) is safe, it lacks specific actionable steps or frequency recommendations, making it minimally useful
+
+\subsubsubsection{Fine-tuned MOdel + RAG}
+"Yes, Gordon Setters require regular grooming due to their long, silky coats. They need at least 3-4 weekly brushings to prevent tangles and matting. Additionally, trimming feathering and ear hair as needed helps maintain their healthy coat. Regular grooming ensures their beautiful black-and-tan coat stays shiny and prevents skin issues."
+*AI Judge Score*: 11
+*AI Judge Response*: The AI assistant's response is excellent for breed-specific coat care, accurately detailing the brushing frequency and the need for trimming feathering and ear hair. However, it completely omits crucial aspects of general dog grooming and medical safety, such as dental care and nail trims, which were included in the reference answer and are vital for a pet's overall well-being. This omission reduces its medical safety and usefulness scores despite good breed consistency
 
 %-------------------------------------------------------------------------
 
