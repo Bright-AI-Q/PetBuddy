@@ -305,7 +305,7 @@ Fine-tuned Model + RAG
 \subsection{Language Model}
 For our evaluation of language model performance, we used the LLM-as-a-judge method~\cite{zheng2023judging} with Gemini 2.5 Flash~\cite{gemini2.5}. Gemini 2.5 is asked to rate each prompt on a score from 1 - 5, with 5 being the highest score on breed consistency, medical safety, and usefulness. This method is used to evaluate the performance of four possible combinations: the Qwen2.5 base model itself, the Qwen2.5 base model with RAG, the fine-tuned Qwen2.5 base model, and the fine-tuned Qwen2.5 base model with RAG. The scores of each method are shown in table~\ref{tab:llm_performance}.
 
-From these results, it can be observed that the base model + RAG variant is the most successful, with a 20.50\% improvement in the LLM score, with the highest win rate against the base model. It is notably better at providing more accurate information. The fine-tuned model, in contrast, saw a couple of major score drops when it outputs the wrong information, or sometimes even the information of another breed. This is indicative of the LLM not being able to retain specific information about each breed distinctly. This may be due to the LLM's small parameters size not being able to represent the full range of information. Trying out more training epochs resulted in the model's performance droppping, suggesting overfitting. Furthermore, there are flaws in the training dataset itself. It is too small and contains too little variation in phrasings and sentences. Furthermore, since conversations are automatically created from sections of the pet knowledge database, the model answer often contains extraneous data that are not needed to answer the question. This results in the fine-tuned model's answers being long-winded and including irrelevant information. Interestingly, the fine-tuned model with RAG performs slightly worse than the base LLM with RAG. Generally, it is given fewer points than the base model + RAG variant because of its long-winded answers. Overall, breed specific pet knowledge contains complex and highly specific data, which makes it more suited for RAG implementation than fine tuning.
+From these results, it can be observed that the base model + RAG variant is the most successful, with a 20.50\% improvement in the LLM score, with the highest win rate against the base model. It is notably better at providing more accurate information. The fine-tuned model, in contrast, saw a couple of major score drops when it outputs the wrong information, or sometimes even the information of another breed. This is indicative of the LLM not being able to retain specific information about each breed distinctly. This may be due to the LLM's small parameters size not being able to represent the full range of information. Trying out more training epochs resulted in the model's performance dropping, suggesting overfitting. Furthermore, there are flaws in the training dataset itself. It is too small and contains too little variation in phrasings and sentences. Furthermore, since conversations are automatically created from sections of the pet knowledge database, the model answer often contains extraneous data that are not needed to answer the question. This results in the fine-tuned model's answers being long-winded and including irrelevant information. Interestingly, the fine-tuned model with RAG performs slightly worse than the base LLM with RAG. Generally, it is given fewer points than the base model + RAG variant because of its long-winded answers. Overall, breed specific pet knowledge contains complex and highly specific data, which makes it more suited for RAG implementation than fine tuning.
 
 \subsubsection{Sample Language Model Outputs}
 
@@ -319,11 +319,10 @@ From these results, it can be observed that the base model + RAG variant is the 
 \hline
 Student Name & Contributed Aspects & Details \\
 \hline\hline
-Team Member 1 & Data Creation and Implementation & Scraped the dataset for this project and trained the CNN of the encoder. Implemented attention mechanism to improve results. \\
-Team Member 2 & Implementation and Analysis & Trained the LSTM of the encoder and analyzed the results. Analyzed effect of number of nodes in hidden state.  Implemented Convolutional LSTM. \\
 Bright Wang & Data creation, Implementation, Experimentation & Gathered and created the composite dataset for breed classification + animal pose. Proposed and implemented the LDRE method. Implemented the majority of PetNet and pose model. Experimented with different configurations for PetNet.\\
 Hwaai Kang Kee & Tuning, Analysis, Report Writing & Run hyperparamter tuning on PACE using Optuna, modified the training script for distributed training, analyzed experiment results and wrote the majority of the report excluding the LLM part. \\
 Cindy Josephine Surjadi & Data Creation, Implementation, Analysis & Scraped the dataset for the RAG pet knowledge database, generated conversation dataset from pet database, implemented RAG with Qwen to improve LLM performance, analyzed LLM experiment results. \\
+Jinyang Deng & xx & xx. \\
 \hline
 \end{tabular}
 \end{center}
@@ -333,7 +332,6 @@ Cindy Josephine Surjadi & Data Creation, Implementation, Analysis & Scraped the 
 
 %-------------------------------------------------------------------------
 
-\clearpage
 {\small
 \bibliographystyle{ieee_fullname}
 \bibliography{egbib}
